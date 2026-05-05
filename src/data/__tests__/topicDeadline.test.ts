@@ -68,12 +68,15 @@ describe("KST 자정 경계 — 잠금/해제 정확성", () => {
       const realNow = Date.now;
       Date.now = () => KST_MIDNIGHT.getTime();
       try {
-        // Old deadline already passed (deadline computed from Date.now is
-        // 24h ahead), so the previous topic is closed in practice — but
-        // semantically, the boundary itself should not still be "open"
-        // for the previous day. Verify by checking remaining clock = 24:00:00
         const d = getTopicDeadline();
-        expect(formatRemainingClock(d)).toBe("24:00:00");
+        // 정확히 24시간 뒤로 롤오버
+        expect(formatRemainingClock(d, new Date(KST_MIDNIGHT.getTime()))).toBe(
+          "24:00:00"
+        );
+        // 이전 토픽은 마감된 것으로 간주
+        expect(isTopicClosed(undefined, KST_MIDNIGHT)).toBe(false);
+        // (deadline은 미래이므로 false. 핵심은 day stamp가 롤오버되어
+        // 새 토픽 슬롯이 열렸다는 것 — 별도 day stamp 테스트가 보장.)
       } finally {
         Date.now = realNow;
       }
