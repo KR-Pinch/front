@@ -130,13 +130,10 @@ const Topic = () => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  // Countdown to local midnight — used in the "already submitted" lock card so
-  // the user knows exactly how long until the daily PICK slot reopens.
-  const nextMidnight = useMemo(() => {
-    const d = new Date(now);
-    d.setHours(24, 0, 0, 0);
-    return d;
-  }, [dayStamp]);
+  // Countdown to KST midnight — shared with the topic deadline so the lock
+  // card and the header timer both flip at exactly the same instant
+  // (00:00 Asia/Seoul), regardless of the viewer's local timezone.
+  const nextMidnight = useMemo(() => getTopicDeadline(todayTopic), [dayStamp, todayTopic.id]);
   const nextWriteLabel = formatRemaining(nextMidnight, now);
   const nextWriteClock = formatRemainingClock(nextMidnight, now);
 
