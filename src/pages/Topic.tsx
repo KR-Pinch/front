@@ -49,6 +49,7 @@ const notifyClosed = () =>
 const Topic = () => {
   const [comments, setComments] = useState(initialComments);
   const [hasCommented, setHasCommented] = useState(false);
+  const submittingRef = useRef(false);
   const [text, setText] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [burstId, setBurstId] = useState<string | null>(null);
