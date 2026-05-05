@@ -89,14 +89,21 @@ const Topic = () => {
   // Helper to build a link that preserves the active category context.
   const withCategory = (path: string) => `${path}?category=${activeCategory}`;
 
-  // Restore "already commented today" state across reloads
+  // Restore "already commented today" state across reloads, and re-evaluate
+  // whenever the date rolls over so the lock auto-releases at midnight without
+  // needing a page refresh.
+  const dayStamp = useMemo(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    // `now` is updated by the 1s ticker below; recompute once per day-change.
+  }, [/* eslint-disable-line react-hooks/exhaustive-deps */ /* depends on now */]);
   useEffect(() => {
     try {
-      if (localStorage.getItem(todayKey()) === "1") setHasCommented(true);
+      setHasCommented(localStorage.getItem(todayKey()) === "1");
     } catch {
       // ignore storage access errors
     }
-  }, []);
+  }, [dayStamp]);
 
   // Live countdown — recompute the deadline whenever the active topic changes,
   // and tick every second so the header time and "closed" state stay accurate
