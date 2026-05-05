@@ -352,9 +352,14 @@ const Topic = () => {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-bold">오늘의 의견을 이미 남기셨습니다 ✅</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    하루에 한 번만 PICK을 남길 수 있어요. 다음 작성까지{" "}
-                    <span className="font-bold text-accent tabular-nums">{nextWriteLabel}</span>{" "}
-                    뒤에 새 주제로 다시 만나요.
+                    하루에 한 번만 PICK을 남길 수 있어요. 자정({" "}
+                    <span className="font-bold text-accent tabular-nums" aria-live="polite">
+                      {nextWriteClock}
+                    </span>{" "}
+                    뒤) 새 주제로 다시 만나요.
+                  </p>
+                  <p className="mt-2 text-[11px] text-muted-foreground/80">
+                    남은 시간: <span className="tabular-nums">{nextWriteLabel}</span>
                   </p>
                 </div>
               </div>
@@ -366,8 +371,11 @@ const Topic = () => {
                 className="min-h-[96px] w-full resize-none rounded-2xl border border-border bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground placeholder:text-muted-foreground/70 cursor-not-allowed opacity-70"
               />
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground tabular-nums">
-                  잠금 해제까지 {nextWriteLabel}
+                <span
+                  className="text-xs font-medium text-muted-foreground tabular-nums"
+                  aria-live="polite"
+                >
+                  잠금 해제까지 {nextWriteClock}
                 </span>
                 <button
                   type="button"
