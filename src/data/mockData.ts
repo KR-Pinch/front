@@ -287,6 +287,18 @@ export const formatRemaining = (deadline: Date, now: Date = new Date()): string 
   return `${s}초`;
 };
 
+// Precise live countdown — always renders HH:MM:SS so users can see the
+// exact moment the daily PICK slot reopens. Returns "00:00:00" when closed.
+export const formatRemainingClock = (deadline: Date, now: Date = new Date()): string => {
+  const ms = Math.max(0, deadline.getTime() - now.getTime());
+  const totalSec = Math.floor(ms / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(h)}:${pad(m)}:${pad(s)}`;
+};
+
 // Deterministic tie-break for ranking topics:
 // 1) heat desc  2) commentCount desc  3) id asc (lexicographic, stable fallback)
 // Guarantees a single, reproducible "#1" even when popularity scores tie.
