@@ -107,7 +107,7 @@ const Topic = () => {
   // Day-change detector — when the local date rolls over (e.g. crossing
   // midnight while the page is open), re-read the per-day "already commented"
   // flag so the submission lock automatically releases for the new day.
-  const dayStamp = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  const dayStamp = getKstDayStamp(now);
   useEffect(() => {
     try {
       setHasCommented(localStorage.getItem(todayKey()) === "1");
