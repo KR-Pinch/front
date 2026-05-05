@@ -128,6 +128,15 @@ const Topic = () => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
+  // Countdown to local midnight — used in the "already submitted" lock card so
+  // the user knows exactly how long until the daily PICK slot reopens.
+  const nextMidnight = useMemo(() => {
+    const d = new Date(now);
+    d.setHours(24, 0, 0, 0);
+    return d;
+  }, [dayStamp]);
+  const nextWriteLabel = formatRemaining(nextMidnight, now);
+
   const charPct = text.length / 500;
   const charColor =
     charPct >= 1
