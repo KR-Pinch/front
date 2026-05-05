@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-05-05T06:56:05.192Z",
+  "totalViolations": 4,
+  "byKind": {
+    "forbidden": 2,
+    "case": 2
+  },
+  "findings": [
+    {
+      "kind": "forbidden",
+      "file": "src/__brand_demo__/sample.tsx",
+      "line": 1,
+      "term": "한마디",
+      "reason": "레거시 서비스명. 'PICKS'로 대체하세요.",
+      "text": "한마디 Picks pick 박제"
+    },
+    {
+      "kind": "forbidden",
+      "file": "src/__brand_demo__/sample.tsx",
+      "line": 1,
+      "term": "박제",
+      "reason": "레거시 메타포. 문맥에 따라 '오늘의 PICK' 또는 '선택된 PICKS'로 대체하세요.",
+      "text": "한마디 Picks pick 박제"
+    },
+    {
+      "kind": "case",
+      "file": "src/__brand_demo__/sample.tsx",
+      "line": 1,
+      "term": "Picks",
+      "reason": "브랜드 표기는 항상 대문자 'PICKS' 입니다.",
+      "text": "한마디 Picks pick 박제"
+    },
+    {
+      "kind": "case",
+      "file": "src/__brand_demo__/sample.tsx",
+      "line": 1,
+      "term": "pick",
+      "reason": "브랜드 표기는 항상 대문자 'PICK' 입니다.",
+      "text": "한마디 Picks pick 박제"
+    }
+  ]
+}

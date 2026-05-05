@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quality:
+    name: Lint · Brand · Test · Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: PICKS brand consistency scan
+        id: brand
+        run: npm run scan:brand -- --report-dir reports
+        continue-on-error: false
+
+      - name: Unit tests
+        run: npm test -- --reporter=default
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload brand scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brand-scan-report
+          path: reports/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Comment brand report on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'reports/brand-scan.md';
+            if (!fs.existsSync(path)) return;
+            const body = fs.readFileSync(path, 'utf8');
+            const marker = '<!-- picks-brand-scan -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            if (!issue_number) return;
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            const fullBody = `${marker}\n${body}`;
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body: fullBody });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body: fullBody });
+            }

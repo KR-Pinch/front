@@ -1,0 +1,44 @@
+import { Link, useLocation } from "react-router-dom";
+import { Brain, Archive, Trophy, MessageCircle, User } from "lucide-react";
+
+const BottomNav = () => {
+  const location = useLocation();
+
+  const items = [
+    { to: "/", label: "홈", icon: Brain },
+    { to: "/topic", label: "PICK", icon: MessageCircle },
+    { to: "/archive", label: "아카이브", icon: Archive },
+    { to: "/ranking", label: "랭킹", icon: Trophy },
+    { to: "/mypage", label: "MY", icon: User },
+  ];
+
+  return (
+    <nav
+      className="mobile-only fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50"
+      aria-label="PICKS 주요 내비게이션"
+    >
+      <span className="sr-only">PICKS — 오직 선택된 하나만 남습니다.</span>
+      <div className="mx-auto flex max-w-lg items-center justify-around py-2">
+        {items.map(({ to, label, icon: Icon }) => {
+          const isActive = location.pathname === to;
+          return (
+            <Link
+              key={to}
+              to={to}
+              className={`flex flex-col items-center gap-0.5 rounded-xl px-4 py-2 text-xs transition-all ${
+                isActive
+                  ? "text-accent"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Icon className={`h-5 w-5 ${isActive ? "drop-shadow-[0_0_8px_hsl(45_100%_58%/0.5)]" : ""}`} />
+              <span className="font-medium">{label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+};
+
+export default BottomNav;

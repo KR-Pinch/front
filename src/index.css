@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 91%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 36%;
+    --accent: 38 92% 46%;
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 38 92% 46% / 0.12;
+    --brand-ink: 28 35% 18%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 82%;
+    --input: 0 0% 82%;
+    --ring: 35 95% 50%;
+    --radius: 1rem;
+
+    --glass: 0 0% 100% / 0.8;
+    --glass-border: 0 0% 0% / 0.1;
+    --glass-hover: 0 0% 100% / 0.9;
+    --glow: 35 95% 50%;
+
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 35 95% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 35 95% 50%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 45 100% 58%;
+    --accent-foreground: 0 0% 4%;
+    --accent-soft: 45 100% 58% / 0.14;
+    --brand-ink: 45 60% 88%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 45 100% 58%;
+    --radius: 1rem;
+
+    --glass: 0 0% 100% / 0.04;
+    --glass-border: 0 0% 100% / 0.08;
+    --glass-hover: 0 0% 100% / 0.08;
+    --glow: 45 100% 58%;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 45 100% 58%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 45 100% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Noto Sans KR', 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsla(var(--glass));
+    border: 1px solid hsla(var(--glass-border));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .glass-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-hover:hover {
+    background: hsla(var(--glass-hover));
+    border-color: hsla(0 0% 100% / 0.12);
+    transform: translateY(-2px);
+  }
+  .glow-accent {
+    box-shadow: 0 0 40px -8px hsl(var(--glow) / 0.25);
+  }
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(45 100% 58%), hsl(35 100% 70%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  :root .text-gradient {
+    background: linear-gradient(135deg, hsl(32 88% 32%), hsl(20 85% 42%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dark .text-gradient {
+    background: linear-gradient(135deg, hsl(45 100% 64%), hsl(38 100% 74%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* subtle gold halo so the wordmark lifts off near-black surfaces */
+    filter: drop-shadow(0 0 12px hsl(45 100% 58% / 0.18));
+  }
+
+  /* =====================================================================
+   * Brand typography
+   * ---------------------------------------------------------------------
+   * PICKS wordmark uses Space Grotesk with extra-wide tracking and heavy
+   * weight to feel editorial. Reserved for the brand name only — never
+   * apply to body copy or generic headings.
+   * ===================================================================== */
+  .brand-wordmark {
+    font-family: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .brand-eyebrow {
+    font-family: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    color: hsl(var(--muted-foreground));
+  }
+  /* In dark mode the brand eyebrow uses a warm "brand ink" so it reads as
+     part of the gold lockup instead of generic gray meta text. */
+  .dark .brand-eyebrow {
+    color: hsl(var(--brand-ink));
+    opacity: 0.85;
+  }
+  .text-gradient-white {
+    background: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 32%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dark .text-gradient-white {
+    background: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .noise {
+    position: relative;
+  }
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Brief highlight pulse used when a target card is scrolled into view */
+  @keyframes highlight-pulse {
+    0% {
+      box-shadow:
+        0 0 0 0 hsl(var(--accent) / 0.55),
+        0 0 0 -4px hsl(var(--glow) / 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 0 10px hsl(var(--accent) / 0),
+        0 0 60px -4px hsl(var(--glow) / 0.85);
+    }
+    100% {
+      box-shadow:
+        0 0 0 0 hsl(var(--accent) / 0),
+        0 0 40px -8px hsl(var(--glow) / 0.25);
+    }
+  }
+  .highlight-pulse {
+    animation: highlight-pulse 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* =====================================================================
+   * Device-tier semantic utilities
+   * ---------------------------------------------------------------------
+   * Source of truth for which UI belongs to which device class. Use these
+   * instead of raw `md:hidden` / `hidden md:block` / `hidden xl:flex` so
+   * intent is obvious and breakpoint changes happen in ONE place.
+   *
+   * Tier mapping (must match tailwind.config.ts):
+   *   - mobile  : <  768px  (shell hidden, BottomNav visible)
+   *   - tablet+ : >= 768px  (sidebar + main, BottomNav hidden)
+   *   - wide+   : >= 1280px (adds RightRail)
+   * =====================================================================
+   */
+
+  /* Visibility — display:none on the wrong tier */
+  .mobile-only   { @apply md:hidden; }                  /* < md */
+  .tablet-up     { @apply hidden md:block; }            /* >= md */
+  .tablet-up-flex{ @apply hidden md:flex; }             /* >= md, flex */
+  .wide-up       { @apply hidden xl:block; }            /* >= xl */
+  .wide-up-flex  { @apply hidden xl:flex; }             /* >= xl, flex */
+
+  /* Page-level sticky header used by every main route. Stacks under the
+     desktop shell top bar (h-12) so headers don't overlap.
+     Use as: <header class="page-sticky-header">…</header> */
+  .page-sticky-header {
+    @apply sticky top-0 z-40 glass border-b border-border/50;
+  }
+  @screen md {
+    .page-sticky-header { top: theme('spacing.12'); }
+  }
+
+  /* Shell desktop top bar — paired with .page-sticky-header. */
+  .shell-top-bar {
+    @apply sticky top-0 z-30 hidden md:flex h-12 items-center gap-2
+           border-b border-border/50 bg-background/80 backdrop-blur-md px-3;
+  }
+
+  /* ---------------------------------------------------------------------
+   * Page-content layout primitives
+   * ---------------------------------------------------------------------
+   * Use these instead of raw `container max-w-2xl` / `max-w-lg` so a single
+   * place defines how main routes scale across mobile / tablet / desktop.
+   */
+
+  /* Reading column — for opinion-heavy single-thread pages (Topic, MyPage,
+     Settings, Legal). Stays narrow even on desktop for readability.
+     Padding scales: mobile compact → tablet roomy → desktop generous. */
+  .page-reading {
+    @apply container max-w-2xl;
+    @apply px-4 py-5 md:px-6 md:py-8 xl:px-8 xl:py-10;
+  }
+
+  /* List/grid column — for browse pages (Index, Archive, Ranking). Expands
+     on tablet/desktop so cards have room to breathe; right rail still fits. */
+  .page-list {
+    @apply container;
+    @apply max-w-2xl md:max-w-3xl xl:max-w-5xl;
+    @apply px-4 py-5 md:px-6 md:py-8 xl:px-8 xl:py-10;
+  }
+
+  /* Card grid — 1 col mobile, 2 cols tablet, 3 cols desktop.
+     Gap scales with viewport for editorial breathing room. */
+  .card-grid {
+    @apply grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6;
+  }
+
+  /* Page heading — scales up on larger screens with tighter tracking. */
+  .page-heading {
+    @apply text-xl font-black tracking-tight;
+    @apply md:text-3xl md:leading-tight xl:text-4xl xl:leading-[1.15];
+  }
+
+  /* Section heading — for sub-sections inside a page. */
+  .section-heading {
+    @apply text-base font-bold md:text-lg xl:text-xl;
+  }
+
+  /* Body copy — long-form reading text (Topic body, comments). */
+  .body-text {
+    @apply text-sm leading-relaxed md:text-base md:leading-[1.7] xl:text-[17px];
+  }
+
+  /* Vertical rhythm between page sections. */
+  .section-stack {
+    @apply space-y-4 md:space-y-6 xl:space-y-8;
+  }
+
+  /* Card interior padding — scales with device. */
+  .card-pad {
+    @apply p-4 md:p-5 xl:p-6;
+  }
+}
+
+
