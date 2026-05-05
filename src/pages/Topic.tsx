@@ -128,6 +128,15 @@ const Topic = () => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
+  // Countdown to local midnight — used in the "already submitted" lock card so
+  // the user knows exactly how long until the daily PICK slot reopens.
+  const nextMidnight = useMemo(() => {
+    const d = new Date(now);
+    d.setHours(24, 0, 0, 0);
+    return d;
+  }, [dayStamp]);
+  const nextWriteLabel = formatRemaining(nextMidnight, now);
+
   const charPct = text.length / 500;
   const charColor =
     charPct >= 1
@@ -329,13 +338,45 @@ const Topic = () => {
           ) : hasCommented ? (
             <motion.div
               key="submitted"
-              className="glass rounded-2xl p-5 text-center"
-              initial={{ opacity: 0, scale: 0.9 }}
+              className="space-y-3"
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             >
-              <p className="text-sm font-medium">✅ 오늘의 의견을 남기셨습니다</p>
-              <p className="mt-1 text-xs text-muted-foreground">내일 새로운 주제에 참여해주세요!</p>
+              <div className="glass rounded-2xl p-4 border border-accent/30 flex items-start gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold">오늘의 의견을 이미 남기셨습니다 ✅</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    하루에 한 번만 PICK을 남길 수 있어요. 다음 작성까지{" "}
+                    <span className="font-bold text-accent tabular-nums">{nextWriteLabel}</span>{" "}
+                    뒤에 새 주제로 다시 만나요.
+                  </p>
+                </div>
+              </div>
+              <textarea
+                value=""
+                disabled
+                aria-disabled="true"
+                placeholder="내일 자정에 새 주제가 열립니다"
+                className="min-h-[96px] w-full resize-none rounded-2xl border border-border bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground placeholder:text-muted-foreground/70 cursor-not-allowed opacity-70"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground tabular-nums">
+                  잠금 해제까지 {nextWriteLabel}
+                </span>
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-muted-foreground opacity-60 cursor-not-allowed"
+                >
+                  <Lock className="h-3.5 w-3.5" />
+                  내일 다시 참여
+                </button>
+              </div>
             </motion.div>
           ) : (
             <motion.div
