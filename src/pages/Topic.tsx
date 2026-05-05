@@ -114,6 +114,20 @@ const Topic = () => {
     }
   }, [dayStamp]);
 
+  // Cross-tab sync — if another tab/window submits today's comment, lock this
+  // tab immediately via the `storage` event so the 1-per-day rule holds even
+  // with simultaneous submissions across multiple tabs/browsers on the same
+  // origin+profile.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === todayKey() && e.newValue === "1") {
+        setHasCommented(true);
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   const charPct = text.length / 500;
   const charColor =
     charPct >= 1
