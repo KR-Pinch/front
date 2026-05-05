@@ -49,6 +49,7 @@ const notifyClosed = () =>
 const Topic = () => {
   const [comments, setComments] = useState(initialComments);
   const [hasCommented, setHasCommented] = useState(false);
+  const submittingRef = useRef(false);
   const [text, setText] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [burstId, setBurstId] = useState<string | null>(null);
@@ -113,6 +114,20 @@ const Topic = () => {
     }
   }, [dayStamp]);
 
+  // Cross-tab sync — if another tab/window submits today's comment, lock this
+  // tab immediately via the `storage` event so the 1-per-day rule holds even
+  // with simultaneous submissions across multiple tabs/browsers on the same
+  // origin+profile.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === todayKey() && e.newValue === "1") {
+        setHasCommented(true);
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   const charPct = text.length / 500;
   const charColor =
     charPct >= 1
@@ -149,6 +164,24 @@ const Topic = () => {
       return;
     }
     if (!text.trim()) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
+    // Cross-tab atomic claim — re-check storage right before writing so a
+    // concurrent submission from another tab wins exactly once. The first
+    // write sets the flag; later writes here see it and bail out.
+    try {
+      if (localStorage.getItem(todayKey()) === "1") {
+        setHasCommented(true);
+        submittingRef.current = false;
+        notifyAlreadyCommented();
+        return;
+      }
+      localStorage.setItem(todayKey(), "1");
+    } catch {
+      // ignore storage access errors
+    }
+
     const id = String(Date.now());
     setComments([
       { id, username: user?.username || "나", text: text.trim(), likes: 0, isLiked: false },
@@ -157,11 +190,6 @@ const Topic = () => {
     setText("");
     setHasCommented(true);
     setNewCommentId(id);
-    try {
-      localStorage.setItem(todayKey(), "1");
-    } catch {
-      // ignore storage access errors
-    }
     toast.success("의견이 등록되었어요", {
       description: "오늘의 PICK 후보에 올랐습니다 ✨",
     });
@@ -169,6 +197,7 @@ const Topic = () => {
       commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     window.setTimeout(() => setNewCommentId(null), 1800);
+    submittingRef.current = false;
   };
 
   const goToLogin = () => {
