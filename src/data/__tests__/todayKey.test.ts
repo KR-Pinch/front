@@ -41,15 +41,13 @@ describe("todayKey — KST 자정 시뮬레이션 롤오버", () => {
 
   it("KST 자정에 어제 키로 저장된 잠금 플래그가 새 키 조회에서는 미설정으로 보인다", () => {
     // 1) 자정 직전: 사용자가 댓글 제출 → 어제 키에 '1' 저장
-    Date.now = () => ONE_SEC_BEFORE.getTime();
-    const yesterdayKey = todayKey();
+    const yesterdayKey = todayKey(ONE_SEC_BEFORE);
     const store = new Map<string, string>();
     store.set(yesterdayKey, "1");
-    expect(store.get(todayKey())).toBe("1"); // 잠금 상태
+    expect(store.get(todayKey(ONE_SEC_BEFORE))).toBe("1"); // 잠금 상태
 
     // 2) 자정 직후: 같은 사용자, 같은 origin — 새 키는 비어있어야 잠금 해제
-    Date.now = () => ONE_SEC_AFTER.getTime();
-    const todayK = todayKey();
+    const todayK = todayKey(ONE_SEC_AFTER);
     expect(todayK).not.toBe(yesterdayKey);
     expect(store.get(todayK)).toBeUndefined();
   });
