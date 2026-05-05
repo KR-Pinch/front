@@ -19,6 +19,7 @@ import {
   isTopicClosed,
   formatRemaining,
   formatRemainingClock,
+  getKstDayStamp,
   type CategoryId,
   type TodayTopic,
 } from "@/data/mockData";
@@ -32,10 +33,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-const todayKey = () => {
-  const d = new Date();
-  return `hanmadi:commented:${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-};
+// Per-day storage key — anchored to KST so the lock rolls over at 00:00
+// Asia/Seoul regardless of the viewer's local timezone (a user in NYC and a
+// user in Seoul share the same daily slot).
+const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
 
 const notifyAlreadyCommented = () =>
   toast("오늘은 댓글을 이미 작성했어요", {
@@ -106,7 +107,7 @@ const Topic = () => {
   // Day-change detector — when the local date rolls over (e.g. crossing
   // midnight while the page is open), re-read the per-day "already commented"
   // flag so the submission lock automatically releases for the new day.
-  const dayStamp = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  const dayStamp = getKstDayStamp(now);
   useEffect(() => {
     try {
       setHasCommented(localStorage.getItem(todayKey()) === "1");
@@ -129,13 +130,10 @@ const Topic = () => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  // Countdown to local midnight — used in the "already submitted" lock card so
-  // the user knows exactly how long until the daily PICK slot reopens.
-  const nextMidnight = useMemo(() => {
-    const d = new Date(now);
-    d.setHours(24, 0, 0, 0);
-    return d;
-  }, [dayStamp]);
+  // Countdown to KST midnight — shared with the topic deadline so the lock
+  // card and the header timer both flip at exactly the same instant
+  // (00:00 Asia/Seoul), regardless of the viewer's local timezone.
+  const nextMidnight = useMemo(() => getTopicDeadline(todayTopic), [dayStamp, todayTopic.id]);
   const nextWriteLabel = formatRemaining(nextMidnight, now);
   const nextWriteClock = formatRemainingClock(nextMidnight, now);
 
