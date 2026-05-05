@@ -262,12 +262,32 @@ export const todayTopics: TodayTopic[] = [
 ];
 
 // ===== Topic deadline helpers =====
-// All topics close at the next local midnight (00:00). Once a topic is closed,
-// the UI must disable comment input, submit, and like actions for that topic.
+// All topics close at the next KST midnight (00:00 Asia/Seoul, UTC+9, no DST).
+// We compute this in UTC so the result is identical regardless of the
+// viewer's local timezone — a user in New York and a user in Seoul both see
+// the same "next 00:00 KST" instant. Once a topic is closed, the UI must
+// disable comment input, submit, and like actions for that topic.
+const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
 export const getTopicDeadline = (_topic?: { date?: string }): Date => {
-  const d = new Date();
-  d.setHours(24, 0, 0, 0); // next local midnight
-  return d;
+  const now = Date.now();
+  // Shift to KST wall clock, floor to start-of-day, add one day, shift back.
+  const kstNow = now + KST_OFFSET_MS;
+  const kstStartOfDay = Math.floor(kstNow / ONE_DAY_MS) * ONE_DAY_MS;
+  const kstNextMidnight = kstStartOfDay + ONE_DAY_MS;
+  return new Date(kstNextMidnight - KST_OFFSET_MS);
+};
+
+// KST calendar day stamp (YYYY-MM-DD in Asia/Seoul) — used as the per-day
+// "already commented" key so the lock rolls over exactly at KST midnight,
+// not at the viewer's local midnight.
+export const getKstDayStamp = (now: Date = new Date()): string => {
+  const kst = new Date(now.getTime() + KST_OFFSET_MS);
+  const y = kst.getUTCFullYear();
+  const m = kst.getUTCMonth() + 1;
+  const d = kst.getUTCDate();
+  return `${y}-${m}-${d}`;
 };
 
 export const isTopicClosed = (topic?: { date?: string }, now: Date = new Date()): boolean => {
