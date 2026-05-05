@@ -89,22 +89,6 @@ const Topic = () => {
   // Helper to build a link that preserves the active category context.
   const withCategory = (path: string) => `${path}?category=${activeCategory}`;
 
-  // Restore "already commented today" state across reloads, and re-evaluate
-  // whenever the date rolls over so the lock auto-releases at midnight without
-  // needing a page refresh.
-  const dayStamp = useMemo(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-    // `now` is updated by the 1s ticker below; recompute once per day-change.
-  }, [/* eslint-disable-line react-hooks/exhaustive-deps */ /* depends on now */]);
-  useEffect(() => {
-    try {
-      setHasCommented(localStorage.getItem(todayKey()) === "1");
-    } catch {
-      // ignore storage access errors
-    }
-  }, [dayStamp]);
-
   // Live countdown — recompute the deadline whenever the active topic changes,
   // and tick every second so the header time and "closed" state stay accurate
   // without a page reload.
@@ -116,6 +100,18 @@ const Topic = () => {
   }, []);
   const closed = isTopicClosed(todayTopic, now);
   const remainingLabel = formatRemaining(deadline, now);
+
+  // Day-change detector — when the local date rolls over (e.g. crossing
+  // midnight while the page is open), re-read the per-day "already commented"
+  // flag so the submission lock automatically releases for the new day.
+  const dayStamp = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  useEffect(() => {
+    try {
+      setHasCommented(localStorage.getItem(todayKey()) === "1");
+    } catch {
+      // ignore storage access errors
+    }
+  }, [dayStamp]);
 
   const charPct = text.length / 500;
   const charColor =
