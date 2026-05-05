@@ -33,10 +33,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-const todayKey = () => {
-  const d = new Date();
-  return `hanmadi:commented:${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-};
+// Per-day storage key — anchored to KST so the lock rolls over at 00:00
+// Asia/Seoul regardless of the viewer's local timezone (a user in NYC and a
+// user in Seoul share the same daily slot).
+const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
 
 const notifyAlreadyCommented = () =>
   toast("오늘은 댓글을 이미 작성했어요", {
