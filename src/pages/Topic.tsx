@@ -164,6 +164,24 @@ const Topic = () => {
       return;
     }
     if (!text.trim()) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
+    // Cross-tab atomic claim — re-check storage right before writing so a
+    // concurrent submission from another tab wins exactly once. The first
+    // write sets the flag; later writes here see it and bail out.
+    try {
+      if (localStorage.getItem(todayKey()) === "1") {
+        setHasCommented(true);
+        submittingRef.current = false;
+        notifyAlreadyCommented();
+        return;
+      }
+      localStorage.setItem(todayKey(), "1");
+    } catch {
+      // ignore storage access errors
+    }
+
     const id = String(Date.now());
     setComments([
       { id, username: user?.username || "나", text: text.trim(), likes: 0, isLiked: false },
@@ -172,11 +190,6 @@ const Topic = () => {
     setText("");
     setHasCommented(true);
     setNewCommentId(id);
-    try {
-      localStorage.setItem(todayKey(), "1");
-    } catch {
-      // ignore storage access errors
-    }
     toast.success("의견이 등록되었어요", {
       description: "오늘의 PICK 후보에 올랐습니다 ✨",
     });
@@ -184,6 +197,7 @@ const Topic = () => {
       commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     window.setTimeout(() => setNewCommentId(null), 1800);
+    submittingRef.current = false;
   };
 
   const goToLogin = () => {
