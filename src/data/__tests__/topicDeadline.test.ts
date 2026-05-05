@@ -116,7 +116,9 @@ describe("KST 자정 경계 — 잠금/해제 정확성", () => {
       const realNow = Date.now;
       Date.now = () => ONE_SEC_BEFORE_KST_MIDNIGHT.getTime();
       try {
-        expect(formatRemainingClock(getTopicDeadline())).toBe("00:00:01");
+        expect(
+          formatRemainingClock(getTopicDeadline(), ONE_SEC_BEFORE_KST_MIDNIGHT)
+        ).toBe("00:00:01");
       } finally {
         Date.now = realNow;
       }
