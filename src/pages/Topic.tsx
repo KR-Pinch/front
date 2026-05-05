@@ -19,6 +19,7 @@ import {
   isTopicClosed,
   formatRemaining,
   formatRemainingClock,
+  getKstDayStamp,
   type CategoryId,
   type TodayTopic,
 } from "@/data/mockData";
