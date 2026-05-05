@@ -137,6 +137,7 @@ const Topic = () => {
     return d;
   }, [dayStamp]);
   const nextWriteLabel = formatRemaining(nextMidnight, now);
+  const nextWriteClock = formatRemainingClock(nextMidnight, now);
 
   const charPct = text.length / 500;
   const charColor =
