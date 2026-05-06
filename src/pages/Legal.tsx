@@ -24,6 +24,11 @@ const Legal = () => {
 
   return (
     <PageTransition>
+      <Seo
+        title={`${doc.title} — PICKS`}
+        description={`PICKS의 ${doc.title} 문서입니다.`}
+        path={pathname}
+      />
       <div className="min-h-screen bg-background pb-24 noise">
         {/* Header */}
         <header className="sticky top-0 z-40 glass border-b border-border/50">
