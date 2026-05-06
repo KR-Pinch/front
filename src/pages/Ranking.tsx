@@ -46,7 +46,14 @@ const Ranking = () => {
         transition={{ duration: 0.25 }}
       >
         <div className="mb-6">
-          <h1 className="page-heading flex items-center gap-2"><Trophy className="h-7 w-7 text-accent" aria-hidden="true" /> 똑똑이 랭킹</h1>
+          {(() => {
+            const RankingIcon = navRoutes.ranking.icon;
+            return (
+              <h1 className="page-heading flex items-center gap-2">
+                <RankingIcon className="h-7 w-7 text-accent" aria-hidden="true" /> {navRoutes.ranking.label}
+              </h1>
+            );
+          })()}
           <p className="mt-1 text-sm text-muted-foreground">가장 많은 공감을 받은 의견 작성자</p>
         </div>
 
