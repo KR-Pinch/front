@@ -6,13 +6,15 @@
 
 export type BanDuration = "week" | "month" | "permanent";
 
+import { type PickCount, normalizeAdminUserPickCount } from "./pickMetrics";
+
 export interface AdminMockUser {
   id: string;
   username: string;
   phone: string; // e.g. "010-1234-5678"
   email: string;
   joinedAt: string; // ISO
-  totalPicks: number;
+  totalPicks: PickCount;
   totalLikes: number;
   avatar: string; // single char fallback
 }
