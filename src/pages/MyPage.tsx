@@ -46,15 +46,19 @@ const StatCard = ({
   value,
   suffix,
   highlight,
+  hint,
 }: {
   icon: typeof Heart;
   label: string;
   value: string | number;
   suffix?: string;
   highlight?: boolean;
+  /** Short clarifying caption shown under the label and as a native tooltip. */
+  hint?: string;
 }) => (
   <motion.div
     variants={item}
+    title={hint}
     className={`relative overflow-hidden rounded-2xl border p-4 ${
       highlight
         ? "border-accent/30 bg-accent/5"
@@ -75,6 +79,9 @@ const StatCard = ({
         )}
       </div>
       <span className="text-[11px] font-medium text-muted-foreground">{label}</span>
+      {hint && (
+        <span className="text-[10px] leading-snug text-muted-foreground/70">{hint}</span>
+      )}
     </div>
   </motion.div>
 );
