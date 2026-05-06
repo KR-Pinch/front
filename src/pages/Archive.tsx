@@ -409,9 +409,12 @@ const Archive = () => {
                     <Heart className="h-3 w-3 fill-current" />
                     {selected.bestLikes}
                   </span>
-                  <span className="flex items-center gap-1 text-muted-foreground">
-                    <MessageCircle className="h-3 w-3" />
-                    {selected.totalComments}
+                  <span
+                    className="flex items-center gap-1 text-muted-foreground"
+                    title="이 주제에 PICK을 남긴 참여자 수"
+                  >
+                    <Users className="h-3 w-3" />
+                    {selected.totalPicks.toLocaleString()}명 참여
                   </span>
                 </div>
               </div>
