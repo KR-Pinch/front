@@ -577,8 +577,8 @@ const TopicsTab = () => {
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center gap-2 flex-wrap">
                     {cat && (
-                      <span className={`text-[10px] font-bold ${cat.accent}`}>
-                        {cat.emoji} {cat.label}
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${cat.accent}`}>
+                        <cat.icon className="h-3 w-3" aria-hidden="true" /> {cat.label}
                       </span>
                     )}
                     <span className="text-[10px] text-muted-foreground">{t.date}</span>
@@ -594,9 +594,9 @@ const TopicsTab = () => {
                         <Badge
                           key={cid}
                           variant="outline"
-                          className="text-[10px] px-1.5 py-0 border-accent/50"
+                          className="text-[10px] px-1.5 py-0 border-accent/50 inline-flex items-center gap-1"
                         >
-                          {cc.emoji} {cc.label}만
+                          <cc.icon className="h-3 w-3" aria-hidden="true" /> {cc.label}만
                         </Badge>
                       );
                     })}
