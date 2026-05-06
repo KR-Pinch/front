@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,6 +10,38 @@ import PicksLogo from "@/components/brand/PicksLogo";
 
 const Auth = () => {
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Safe back: prefer in-app history (router state idx > 0), otherwise
+  // fall back to home so external entries / refreshed tabs never land on
+  // about:blank or an unrelated origin.
+  const handleClose = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      const idx = (window.history.state && (window.history.state as { idx?: number }).idx) ?? 0;
+      const sameOriginReferrer =
+        typeof document !== "undefined" &&
+        document.referrer &&
+        (() => {
+          try {
+            return new URL(document.referrer).origin === window.location.origin;
+          } catch {
+            return false;
+          }
+        })();
+      if (idx > 0 || sameOriginReferrer) {
+        navigate(-1);
+      } else {
+        navigate("/", { replace: true });
+      }
+    },
+    [navigate]
+  );
+  // Suppress unused-var lint for location while keeping the import available
+  // for future redirect-state lookups.
+  void location;
+
 
   return (
     <PageTransition>
