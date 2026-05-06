@@ -8,6 +8,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
+import Seo from "@/components/Seo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
