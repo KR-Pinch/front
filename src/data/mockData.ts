@@ -495,7 +495,8 @@ export interface ArchiveItem {
   bestUser: string;
   bestComment: string;
   bestLikes: number;
-  totalComments: number;
+  /** 그날 PICK을 남긴 참여자 수 (하루 1인 1 PICK 기준). */
+  totalPicks: number;
 }
 
 export const archiveData: ArchiveItem[] = [
