@@ -61,16 +61,32 @@ const Topic = () => {
   const picksRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Resolve active topic from URL query: ?topic=<id> takes priority,
   // then ?category=<catId> picks the hottest topic in that category,
-  // otherwise we fall back to the global hottest topic of the day.
+  // otherwise we restore the most recently viewed topic for today
+  // (so tapping the "오늘의 PICK" nav item from another page doesn't reset
+  // the user back to the global hot topic). Falls back to the global hot
+  // topic only when no remembered selection exists.
   const topicParam = searchParams.get("topic");
   const categoryParam = searchParams.get("category") as CategoryId | null;
   // Subscribe to admin changes so the page reflects new/edited topics live.
   const liveTodayTopic = useTodayTopic();
   const allTopics = useMergedTopics();
+
+  // Per-day "last viewed topic" memory — scoped to KST day so it auto-clears
+  // when the daily topics roll over at midnight.
+  const lastViewedKey = `picks:lastTopic:${getKstDayStamp()}`;
+  const readLastViewed = (): { topic?: string; category?: CategoryId } => {
+    try {
+      const raw = sessionStorage.getItem(lastViewedKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  };
+
   const todayTopic = useMemo<TodayTopic>(() => {
     if (topicParam) {
       const found = findTopicById(topicParam);
@@ -80,9 +96,42 @@ const Topic = () => {
       const list = getMergedTopicsByCategory(categoryParam);
       if (list.length > 0) return list[0];
     }
+    // No URL params — try to restore the last viewed selection for today.
+    const remembered = readLastViewed();
+    if (remembered.topic) {
+      const found = findTopicById(remembered.topic);
+      if (found) return found;
+    }
+    if (remembered.category) {
+      const list = getMergedTopicsByCategory(remembered.category);
+      if (list.length > 0) return list[0];
+    }
     return liveTodayTopic;
     // allTopics dep ensures recompute after admin add/edit/delete
-  }, [topicParam, categoryParam, liveTodayTopic, allTopics]);
+  }, [topicParam, categoryParam, liveTodayTopic, allTopics, lastViewedKey]);
+
+  // Persist the active topic so a param-less re-entry restores it.
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        lastViewedKey,
+        JSON.stringify({ topic: todayTopic.id, category: todayTopic.category }),
+      );
+    } catch {
+      // ignore quota / privacy-mode failures
+    }
+  }, [lastViewedKey, todayTopic.id, todayTopic.category]);
+
+  // Reflect the resolved topic into the URL when the user landed without
+  // params, so refresh / share links are stable and the browser back button
+  // returns to the same topic instead of the default hot topic.
+  useEffect(() => {
+    if (topicParam || categoryParam) return;
+    const next = new URLSearchParams(searchParams);
+    next.set("topic", todayTopic.id);
+    next.set("category", todayTopic.category);
+    setSearchParams(next, { replace: true });
+  }, [topicParam, categoryParam, todayTopic.id, todayTopic.category, searchParams, setSearchParams]);
 
   // Active category — used to keep the filter state across the journey.
   const activeCategory = todayTopic.category;
