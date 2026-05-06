@@ -707,7 +707,9 @@ const TopicsTab = () => {
                 <SelectContent>
                   {categories.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {c.emoji} {c.label}
+                      <span className="inline-flex items-center gap-1.5">
+                        <c.icon className="h-3.5 w-3.5" aria-hidden="true" /> {c.label}
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>
