@@ -192,8 +192,8 @@ const MyPage = () => {
             >
               <StatCard
                 icon={MessageSquare}
-                label="총 댓글"
-                value={myStats.totalComments}
+                label="총 PICK"
+                value={myStats.totalPicks}
                 suffix="개"
               />
               <StatCard
@@ -204,8 +204,8 @@ const MyPage = () => {
               />
               <StatCard
                 icon={Award}
-                label="베스트 선정"
-                value={myStats.bestCount}
+                label="오늘의 PICK 선정"
+                value={myStats.bestPickCount}
                 suffix="회"
               />
               <StatCard
@@ -268,7 +268,7 @@ const MyPage = () => {
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-black flex items-center gap-1.5">
-                <MessageSquare className="h-4 w-4 text-accent" />내 댓글
+                <MessageSquare className="h-4 w-4 text-accent" />내 PICK
               </h3>
               <span className="text-[10px] font-medium text-muted-foreground">
                 {myComments.length}개

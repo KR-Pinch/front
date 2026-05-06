@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Crown, Heart, Link2, MessageCircle, Search, Share2, X } from "lucide-react";
+import { ArrowLeft, Crown, Heart, Link2, Search, Share2, Users, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
@@ -310,9 +310,12 @@ const Archive = () => {
                         </span>
                       )}
                       <span className="text-muted-foreground">{item.date}</span>
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <MessageCircle className="h-3 w-3" />
-                        {item.totalComments}
+                      <span
+                        className="flex items-center gap-1 text-muted-foreground"
+                        title="이 주제에 PICK을 남긴 참여자 수"
+                      >
+                        <Users className="h-3 w-3" />
+                        {item.totalPicks.toLocaleString()}명
                       </span>
                       <span
                         role="button"
@@ -406,9 +409,12 @@ const Archive = () => {
                     <Heart className="h-3 w-3 fill-current" />
                     {selected.bestLikes}
                   </span>
-                  <span className="flex items-center gap-1 text-muted-foreground">
-                    <MessageCircle className="h-3 w-3" />
-                    {selected.totalComments}
+                  <span
+                    className="flex items-center gap-1 text-muted-foreground"
+                    title="이 주제에 PICK을 남긴 참여자 수"
+                  >
+                    <Users className="h-3 w-3" />
+                    {selected.totalPicks.toLocaleString()}명 참여
                   </span>
                 </div>
               </div>

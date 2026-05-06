@@ -12,7 +12,7 @@ export interface AdminMockUser {
   phone: string; // e.g. "010-1234-5678"
   email: string;
   joinedAt: string; // ISO
-  totalComments: number;
+  totalPicks: number;
   totalLikes: number;
   avatar: string; // single char fallback
 }
@@ -60,16 +60,16 @@ export interface AdminTopicDraft {
 // ----- Initial mock seed --------------------------------------------------
 
 const seedUsers: AdminMockUser[] = [
-  { id: "u1", username: "시민의식", phone: "010-1111-2222", email: "citizen@example.com", joinedAt: "2025-09-12", totalComments: 142, totalLikes: 2310, avatar: "시" },
-  { id: "u2", username: "테크윤리", phone: "010-2222-3333", email: "tech@example.com", joinedAt: "2025-08-03", totalComments: 98, totalLikes: 1856, avatar: "테" },
-  { id: "u3", username: "법학도", phone: "010-3333-4444", email: "law@example.com", joinedAt: "2026-01-21", totalComments: 56, totalLikes: 941, avatar: "법" },
-  { id: "u4", username: "워라밸마스터", phone: "010-4444-5555", email: "wlb@example.com", joinedAt: "2025-11-09", totalComments: 78, totalLikes: 1204, avatar: "워" },
-  { id: "u5", username: "현실주의자", phone: "010-5555-6666", email: "real@example.com", joinedAt: "2026-02-14", totalComments: 33, totalLikes: 412, avatar: "현" },
-  { id: "u6", username: "따릉이러버", phone: "010-6666-7777", email: "bike@example.com", joinedAt: "2025-12-01", totalComments: 47, totalLikes: 689, avatar: "따" },
-  { id: "u7", username: "교육전문가", phone: "010-7777-8888", email: "edu@example.com", joinedAt: "2025-07-19", totalComments: 119, totalLikes: 1543, avatar: "교" },
-  { id: "u8", username: "동물복지연대", phone: "010-8888-9999", email: "animal@example.com", joinedAt: "2025-10-05", totalComments: 64, totalLikes: 1098, avatar: "동" },
-  { id: "u9", username: "광고봇1", phone: "010-9999-0000", email: "spam1@example.com", joinedAt: "2026-03-15", totalComments: 7, totalLikes: 2, avatar: "광" },
-  { id: "u10", username: "트롤유저", phone: "010-1010-2020", email: "troll@example.com", joinedAt: "2026-03-18", totalComments: 12, totalLikes: 4, avatar: "트" },
+  { id: "u1", username: "시민의식", phone: "010-1111-2222", email: "citizen@example.com", joinedAt: "2025-09-12", totalPicks: 142, totalLikes: 2310, avatar: "시" },
+  { id: "u2", username: "테크윤리", phone: "010-2222-3333", email: "tech@example.com", joinedAt: "2025-08-03", totalPicks: 98, totalLikes: 1856, avatar: "테" },
+  { id: "u3", username: "법학도", phone: "010-3333-4444", email: "law@example.com", joinedAt: "2026-01-21", totalPicks: 56, totalLikes: 941, avatar: "법" },
+  { id: "u4", username: "워라밸마스터", phone: "010-4444-5555", email: "wlb@example.com", joinedAt: "2025-11-09", totalPicks: 78, totalLikes: 1204, avatar: "워" },
+  { id: "u5", username: "현실주의자", phone: "010-5555-6666", email: "real@example.com", joinedAt: "2026-02-14", totalPicks: 33, totalLikes: 412, avatar: "현" },
+  { id: "u6", username: "따릉이러버", phone: "010-6666-7777", email: "bike@example.com", joinedAt: "2025-12-01", totalPicks: 47, totalLikes: 689, avatar: "따" },
+  { id: "u7", username: "교육전문가", phone: "010-7777-8888", email: "edu@example.com", joinedAt: "2025-07-19", totalPicks: 119, totalLikes: 1543, avatar: "교" },
+  { id: "u8", username: "동물복지연대", phone: "010-8888-9999", email: "animal@example.com", joinedAt: "2025-10-05", totalPicks: 64, totalLikes: 1098, avatar: "동" },
+  { id: "u9", username: "광고봇1", phone: "010-9999-0000", email: "spam1@example.com", joinedAt: "2026-03-15", totalPicks: 7, totalLikes: 2, avatar: "광" },
+  { id: "u10", username: "트롤유저", phone: "010-1010-2020", email: "troll@example.com", joinedAt: "2026-03-18", totalPicks: 12, totalLikes: 4, avatar: "트" },
 ];
 
 const seedReports: ReportedComment[] = [

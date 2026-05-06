@@ -189,7 +189,7 @@ const UsersTab = () => {
                   {u.phone} · {u.email}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
-                  댓글 {u.totalComments} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
+                  PICK {u.totalPicks} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
@@ -902,9 +902,9 @@ const Admin = () => {
     [bans]
   );
   const pendingReports = reports.filter((r) => r.status === "pending").length;
-  // Mock DAU & today's comments derived from users.
+  // Mock DAU & today's PICKs derived from users.
   const dau = Math.round(users.length * 7.4);
-  const todayComments = users.reduce((acc, u) => acc + Math.min(u.totalComments, 1), 0) + 12;
+  const todayPicks = users.reduce((acc, u) => acc + Math.min(u.totalPicks, 1), 0) + 12;
 
   const handleLogout = () => {
     logout();
@@ -953,9 +953,9 @@ const Admin = () => {
             <StatCard icon={BarChart3} label="DAU" value={dau} hint="오늘 활성 유저" />
             <StatCard
               icon={MessageSquare}
-              label="오늘 댓글"
-              value={todayComments}
-              hint="1인 1댓글 기준"
+              label="오늘 PICK"
+              value={todayPicks}
+              hint="1인 1일 1 PICK 기준"
             />
             <StatCard
               icon={Ban}

@@ -495,7 +495,8 @@ export interface ArchiveItem {
   bestUser: string;
   bestComment: string;
   bestLikes: number;
-  totalComments: number;
+  /** 그날 PICK을 남긴 참여자 수 (하루 1인 1 PICK 기준). */
+  totalPicks: number;
 }
 
 export const archiveData: ArchiveItem[] = [
@@ -510,7 +511,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "AI 면접은 편향을 줄일 수 있지만, 학습 데이터 자체에 편향이 있다면 오히려 차별을 고착화할 수 있습니다. 투명한 알고리즘 공개가 선행되어야 합니다.",
     bestLikes: 203,
-    totalComments: 89,
+    totalPicks: 89,
   },
   {
     date: "2026년 3월 19일",
@@ -523,7 +524,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "아이슬란드의 실험 결과를 보면 생산성이 오히려 올랐습니다. 한국도 단계적으로 도입할 수 있다고 봅니다. 다만 중소기업 지원책이 병행되어야 해요.",
     bestLikes: 176,
-    totalComments: 112,
+    totalPicks: 112,
   },
   {
     date: "2026년 3월 18일",
@@ -536,7 +537,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "전면 금지보다는 수업 시간 사용 제한이 현실적입니다. 디지털 리터러시 교육을 통해 올바른 사용 습관을 길러주는 게 장기적으로 더 효과적이에요.",
     bestLikes: 154,
-    totalComments: 76,
+    totalPicks: 76,
   },
   {
     date: "2026년 3월 17일",
@@ -549,7 +550,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "유기동물 문제의 근본 해결을 위해 반드시 필요합니다. 다만 등록 절차를 간소화하고, 저소득층에 대한 비용 지원이 함께 이루어져야 실효성이 있습니다.",
     bestLikes: 189,
-    totalComments: 93,
+    totalPicks: 93,
   },
   {
     date: "2026년 3월 16일",
@@ -562,7 +563,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "참여 장벽을 낮추는 방향은 맞습니다. 다만 사전투표함 보관·이송 검증을 동시에 강화해야 신뢰가 따라옵니다.",
     bestLikes: 142,
-    totalComments: 81,
+    totalPicks: 81,
   },
   {
     date: "2026년 3월 15일",
@@ -575,7 +576,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "효율은 분명하지만 감정 연기의 결은 아직 사람만이 만듭니다. 사용 표기 의무화와 수익 배분 체계가 선결돼야 합니다.",
     bestLikes: 131,
-    totalComments: 64,
+    totalPicks: 64,
   },
   {
     date: "2026년 3월 14일",
@@ -588,7 +589,7 @@ export const archiveData: ArchiveItem[] = [
     bestComment:
       "템포 빨라진 건 환영합니다. 다만 투수 부상 리스크 데이터가 한 시즌은 누적돼야 진짜 평가가 가능할 것 같아요.",
     bestLikes: 118,
-    totalComments: 57,
+    totalPicks: 57,
   },
 ];
 
