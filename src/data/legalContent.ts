@@ -135,7 +135,7 @@ export const privacyContent: LegalDoc = {
 export const communityContent: LegalDoc = {
   slug: "community",
   title: "운영 정책",
-  description: "건강한 토론 문화를 위한 댓글·신고·제재 기준을 안내합니다",
+  description: "건강한 토론 문화를 위한 PICK·신고·제재 기준을 안내합니다",
   version: "v1.0",
   effectiveDate: "2026년 1월 10일",
   content: `## 1. 운영 원칙
