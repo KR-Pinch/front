@@ -953,9 +953,9 @@ const Admin = () => {
             <StatCard icon={BarChart3} label="DAU" value={dau} hint="오늘 활성 유저" />
             <StatCard
               icon={MessageSquare}
-              label="오늘 댓글"
-              value={todayComments}
-              hint="1인 1댓글 기준"
+              label="오늘 PICK"
+              value={todayPicks}
+              hint="1인 1일 1 PICK 기준"
             />
             <StatCard
               icon={Ban}
