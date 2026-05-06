@@ -10,7 +10,7 @@ import Seo from "@/components/Seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
-  todayComments as initialComments,
+  todayPicks as initialPicks,
   categories,
   useTodayTopic,
   useMergedTopics,
