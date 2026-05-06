@@ -74,7 +74,7 @@ const StatCard = ({
   value: string | number;
   hint?: string;
 }) => (
-  <div className="glass noise rounded-2xl p-4">
+  <div className="glass noise rounded-2xl p-4" title={hint}>
     <div className="mb-2 flex items-center justify-between">
       <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
         {label}
@@ -82,7 +82,7 @@ const StatCard = ({
       <Icon className="h-4 w-4 text-accent" />
     </div>
     <p className="text-2xl font-black tracking-tight">{value}</p>
-    {hint && <p className="mt-1 text-[10px] text-muted-foreground">{hint}</p>}
+    {hint && <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{hint}</p>}
   </div>
 );
 
@@ -188,8 +188,11 @@ const UsersTab = () => {
                 <p className="truncate text-[11px] text-muted-foreground">
                   {u.phone} · {u.email}
                 </p>
-                <p className="text-[10px] text-muted-foreground">
-                  PICK {u.totalPicks} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
+                <p
+                  className="text-[10px] text-muted-foreground"
+                  title={`누적 PICK ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
+                >
+                  PICK {u.totalPicks} · ❤️ {u.totalLikes.toLocaleString()} · 가입 {u.joinedAt}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
@@ -957,24 +960,29 @@ const Admin = () => {
         >
           {/* Stats */}
           <div className="grid grid-cols-2 gap-2">
-            <StatCard icon={BarChart3} label="DAU" value={dau} hint="오늘 활성 유저" />
+            <StatCard
+              icon={BarChart3}
+              label="DAU"
+              value={dau}
+              hint="오늘 1회 이상 접속한 활성 유저 수"
+            />
             <StatCard
               icon={MessageSquare}
               label="오늘 PICK"
               value={todayPicks}
-              hint="1인 1일 1 PICK 기준"
+              hint={`오늘 작성된 PICK 수 · 1인 1일 1 PICK (예: ${todayPicks}개 = ${todayPicks}명 참여)`}
             />
             <StatCard
               icon={Ban}
               label="활성 정지"
               value={activeBans}
-              hint={`총 ${bans.length}건`}
+              hint={`현재 정지 중 / 누적 ${bans.length}건`}
             />
             <StatCard
               icon={AlertTriangle}
               label="신고 대기"
               value={pendingReports}
-              hint={`댓글(신고 대상) · 총 ${reports.length}건`}
+              hint={`처리 대기 중인 댓글(신고 대상) · 누적 ${reports.length}건`}
             />
           </div>
 
