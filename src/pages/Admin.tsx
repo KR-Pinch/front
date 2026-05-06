@@ -236,9 +236,9 @@ const UsersTab = () => {
             <DialogDescription>
               {target?.username} ({target?.phone}) 계정을 정지합니다.
               {duration === "permanent" && (
-                <span className="mt-2 block rounded-lg border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
-                  ⚠️ 영구 정지 시 해당 전화번호({target?.phone})는 차단 목록에 등록되어
-                  재가입이 불가능해집니다.
+                <span className="mt-2 flex items-start gap-1.5 rounded-lg border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>영구 정지 시 해당 전화번호({target?.phone})는 차단 목록에 등록되어 재가입이 불가능해집니다.</span>
                 </span>
               )}
             </DialogDescription>
