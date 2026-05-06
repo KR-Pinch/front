@@ -512,7 +512,7 @@ export interface ArchiveItem {
   totalPicks: PickCount;
 }
 
-export const archiveData: ArchiveItem[] = [
+const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number }> = [
   {
     date: "2026년 3월 20일",
     category: "tech",
@@ -606,7 +606,10 @@ export const archiveData: ArchiveItem[] = [
   },
 ];
 
-// Stable, URL-safe ID for an archive item — derived from its KST date
+// Same guarantee as `todayTopics`: every archive entry is normalized so
+// `totalPicks` is a branded `PickCount` and any legacy comment fields would
+// be stripped/warned about.
+export const archiveData: ArchiveItem[] = archiveSeed.map(normalizeArchivePickCount);
 // string. Used for deep-link sharing (e.g. /archive?item=2026-03-20).
 export const getArchiveItemId = (item: ArchiveItem): string => {
   const m = item.date.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
