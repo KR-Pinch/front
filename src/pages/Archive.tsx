@@ -18,6 +18,7 @@ import {
 import {
   archiveData,
   categories,
+  allCategoryChip,
   findArchiveItemById,
   getArchiveItemId,
   type ArchiveItem,
