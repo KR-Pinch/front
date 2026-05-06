@@ -505,7 +505,7 @@ const Topic = () => {
           <div className="mb-4 flex items-center gap-2">
             <MessageCircle className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-bold">
-              PINCH <span className="text-muted-foreground font-normal">{entry.length}개</span>
+              PINCH <span className="text-muted-foreground font-normal">{pinches.length}개</span>
             </h2>
           </div>
 
