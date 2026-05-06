@@ -252,6 +252,11 @@ const Topic = () => {
 
   return (
     <PageTransition>
+    <Seo
+      title={`${todayTopic.title} — 오늘의 PICK | PICKS`}
+      description={`${todayTopic.title} — PICKS에서 오늘의 핫토픽에 PICK을 남기고 가장 공감받은 의견을 확인하세요.`}
+      path="/topic"
+    />
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="page-sticky-header">
