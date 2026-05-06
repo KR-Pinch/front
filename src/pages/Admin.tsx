@@ -513,8 +513,8 @@ const TopicsTab = () => {
                   className="flex items-center justify-between gap-2 rounded-lg bg-secondary/40 px-2.5 py-1.5"
                 >
                   <div className="min-w-0 flex-1">
-                    <span className={`text-[10px] font-bold ${cat.accent}`}>
-                      {cat.emoji} {cat.label}
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${cat.accent}`}>
+                      <cat.icon className="h-3 w-3" aria-hidden="true" /> {cat.label}
                     </span>
                     <p className="truncate text-xs font-semibold">{t.title}</p>
                   </div>
