@@ -74,7 +74,7 @@ const StatCard = ({
   value: string | number;
   hint?: string;
 }) => (
-  <div className="glass noise rounded-2xl p-4">
+  <div className="glass noise rounded-2xl p-4" title={hint}>
     <div className="mb-2 flex items-center justify-between">
       <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
         {label}
@@ -82,7 +82,7 @@ const StatCard = ({
       <Icon className="h-4 w-4 text-accent" />
     </div>
     <p className="text-2xl font-black tracking-tight">{value}</p>
-    {hint && <p className="mt-1 text-[10px] text-muted-foreground">{hint}</p>}
+    {hint && <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{hint}</p>}
   </div>
 );
 
