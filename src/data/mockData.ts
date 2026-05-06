@@ -42,7 +42,7 @@ export interface TodayTopic {
   heat: number;
 }
 
-export const todayTopics: TodayTopic[] = [
+const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number }> = [
   {
     id: "society-1",
     category: "society",
@@ -267,6 +267,12 @@ export const todayTopics: TodayTopic[] = [
     heat: 145,
   },
 ];
+
+// Run every seed entry through the PICK normalizer so the exported list is
+// guaranteed to use the branded `PickCount` type and never carries legacy
+// comment-count fields. Any future drift (e.g. raw `commentCount: 12`) will
+// be caught at compile time and warned about at runtime in dev.
+export const todayTopics: TodayTopic[] = todayTopicsSeed.map(normalizeTopicPickCount);
 
 // ===== Topic deadline helpers =====
 // All topics close at the next KST midnight (00:00 Asia/Seoul, UTC+9, no DST).
