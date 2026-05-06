@@ -315,15 +315,23 @@ const BannedPhonesTab = () => {
         />
         {check.trim() && (
           <div
-            className={`rounded-lg border p-2.5 text-xs ${
+            className={`flex items-start gap-1.5 rounded-lg border p-2.5 text-xs ${
               result
                 ? "border-destructive/40 bg-destructive/10 text-destructive"
                 : "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
             }`}
           >
-            {result
-              ? `🚫 차단된 번호입니다 — ${result.username} (${result.reason})`
-              : "✅ 차단되지 않은 번호입니다."}
+            {result ? (
+              <>
+                <Ban className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                <span>차단된 번호입니다 — {result.username} ({result.reason})</span>
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                <span>차단되지 않은 번호입니다.</span>
+              </>
+            )}
           </div>
         )}
       </div>
