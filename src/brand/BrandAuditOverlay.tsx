@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { X } from "lucide-react";
 import {
   subscribeBrandFindings,
   clearBrandFindings,
@@ -169,7 +170,7 @@ export const BrandAuditOverlay = () => {
               className="rounded px-2 py-0.5 text-[11px] font-medium text-muted-foreground hover:bg-muted"
               title="1분간 숨김"
             >
-              ✕
+              <X className="h-3 w-3" aria-hidden="true" />
             </button>
           </div>
         </header>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, Settings, LogOut, ChevronDown, Brain, Heart } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import FirstVisitOnboarding from "@/components/onboarding/FirstVisitOnboarding";
@@ -544,8 +544,8 @@ const Index = () => {
         {/* Weekly Top 3 Preview */}
         <motion.div variants={item} className="glass noise rounded-2xl p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
-              🧠 이번 주 똑똑이
+            <h3 className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              <Brain className="h-4 w-4 text-accent" aria-hidden="true" /> 이번 주 똑똑이
             </h3>
             <Link to="/ranking" className="text-xs text-accent hover:underline">
               전체 보기
@@ -570,8 +570,8 @@ const Index = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="truncate text-sm font-semibold">{user.username}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {user.wins}회 선정 · {user.totalLikes} ❤️
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                    {user.wins}회 선정 · {user.totalLikes} <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
                   </p>
                 </div>
               </motion.div>

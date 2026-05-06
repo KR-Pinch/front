@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Crown, Heart, Link2, Search, Share2, Users, X } from "lucide-react";
+import { ArrowLeft, BookMarked, Crown, Heart, Link2, Search, Share2, Users, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
@@ -188,7 +188,7 @@ const Archive = () => {
         transition={{ duration: 0.25 }}
       >
         <div className="mb-6">
-          <h1 className="page-heading">📚 아카이브</h1>
+          <h1 className="page-heading flex items-center gap-2"><BookMarked className="h-7 w-7 text-accent" aria-hidden="true" /> 아카이브</h1>
           <p className="mt-1 text-sm text-muted-foreground">지난 주제와 선택된 PICKS</p>
         </div>
 

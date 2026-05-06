@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, Trophy, Medal } from "lucide-react";
+import { ArrowLeft, Crown, Trophy, Medal, Brain, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
@@ -45,7 +45,7 @@ const Ranking = () => {
         transition={{ duration: 0.25 }}
       >
         <div className="mb-6">
-          <h1 className="page-heading">🧠 똑똑이 랭킹</h1>
+          <h1 className="page-heading flex items-center gap-2"><Brain className="h-7 w-7 text-accent" aria-hidden="true" /> 똑똑이 랭킹</h1>
           <p className="mt-1 text-sm text-muted-foreground">가장 많은 공감을 받은 의견 작성자</p>
         </div>
 
@@ -107,8 +107,8 @@ const Ranking = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="truncate font-bold">{user.username}</p>
-                      <p className="text-xs text-muted-foreground">
-                        🏆 {user.wins}회 선정 · ❤️ {user.totalLikes}
+                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Trophy className="h-3 w-3 text-accent" aria-hidden="true" /> {user.wins}회 선정 · <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" /> {user.totalLikes}
                       </p>
                     </div>
                     {style.icon && (

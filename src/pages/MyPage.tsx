@@ -92,7 +92,7 @@ const MyPage = () => {
 
   const handleLogout = () => {
     logout();
-    toast({ title: "로그아웃되었습니다", description: "다음에 또 만나요 👋" });
+    toast({ title: "로그아웃되었습니다", description: "다음에 또 만나요." });
     navigate("/", { replace: true });
   };
 
@@ -211,7 +211,7 @@ const MyPage = () => {
                 label="받은 좋아요"
                 value={myStats.totalLikes.toLocaleString()}
                 highlight
-                hint="내 PICK이 받은 ❤️ 총합"
+                hint="내 PICK이 받은 좋아요 총합"
               />
               <StatCard
                 icon={Award}
@@ -232,7 +232,7 @@ const MyPage = () => {
                 icon={TrendingUp}
                 label="평균 좋아요"
                 value={myStats.avgLikes}
-                hint="PICK 1개당 평균 ❤️ 수"
+                hint="PICK 1개당 평균 좋아요 수"
               />
               <StatCard
                 icon={Trophy}

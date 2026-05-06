@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   FileText,
   Flag,
+  Heart,
   LogOut,
   MessageSquare,
   Pin,
@@ -189,10 +190,15 @@ const UsersTab = () => {
                   {u.phone} · {u.email}
                 </p>
                 <p
-                  className="text-[10px] text-muted-foreground"
+                  className="flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground"
                   title={`누적 PICK ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
                 >
-                  PICK {u.totalPicks} · ❤️ {u.totalLikes.toLocaleString()} · 가입 {u.joinedAt}
+                  <span>PICK {u.totalPicks}</span>
+                  <span aria-hidden="true">·</span>
+                  <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
+                  <span>{u.totalLikes.toLocaleString()}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>가입 {u.joinedAt}</span>
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
@@ -230,9 +236,9 @@ const UsersTab = () => {
             <DialogDescription>
               {target?.username} ({target?.phone}) 계정을 정지합니다.
               {duration === "permanent" && (
-                <span className="mt-2 block rounded-lg border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
-                  ⚠️ 영구 정지 시 해당 전화번호({target?.phone})는 차단 목록에 등록되어
-                  재가입이 불가능해집니다.
+                <span className="mt-2 flex items-start gap-1.5 rounded-lg border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>영구 정지 시 해당 전화번호({target?.phone})는 차단 목록에 등록되어 재가입이 불가능해집니다.</span>
                 </span>
               )}
             </DialogDescription>
@@ -309,15 +315,23 @@ const BannedPhonesTab = () => {
         />
         {check.trim() && (
           <div
-            className={`rounded-lg border p-2.5 text-xs ${
+            className={`flex items-start gap-1.5 rounded-lg border p-2.5 text-xs ${
               result
                 ? "border-destructive/40 bg-destructive/10 text-destructive"
                 : "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
             }`}
           >
-            {result
-              ? `🚫 차단된 번호입니다 — ${result.username} (${result.reason})`
-              : "✅ 차단되지 않은 번호입니다."}
+            {result ? (
+              <>
+                <Ban className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                <span>차단된 번호입니다 — {result.username} ({result.reason})</span>
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                <span>차단되지 않은 번호입니다.</span>
+              </>
+            )}
           </div>
         )}
       </div>

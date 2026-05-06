@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Clock, MessageCircle, Send, Heart, Crown, LogIn, Lock, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, Clock, MessageCircle, Send, Heart, Crown, LogIn, Lock, Sparkles, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
@@ -41,12 +41,12 @@ const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
 
 const notifyAlreadyPicked = () =>
   toast("오늘은 PICK을 이미 남겼어요", {
-    description: "내일 새로운 주제로 다시 만나요 ✍️",
+    description: "내일 새로운 주제로 다시 만나요.",
   });
 
 const notifyClosed = () =>
   toast("이 토픽은 마감되었어요", {
-    description: "오늘의 토픽은 자정에 종료됩니다. 내일 새로운 주제로 만나요 ⏰",
+    description: "오늘의 토픽은 자정에 종료됩니다. 내일 새로운 주제로 만나요.",
   });
 
 const Topic = () => {
@@ -201,7 +201,7 @@ const Topic = () => {
     setHasCommented(true);
     setNewCommentId(id);
     toast.success("의견이 등록되었어요", {
-      description: "오늘의 PICK 후보에 올랐습니다 ✨",
+      description: "오늘의 PICK 후보에 올랐습니다.",
     });
     requestAnimationFrame(() => {
       picksRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -360,7 +360,7 @@ const Topic = () => {
                   <Lock className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold">오늘의 의견을 이미 남기셨습니다 ✅</p>
+                  <p className="flex items-center gap-1.5 text-sm font-bold">오늘의 의견을 이미 남기셨습니다 <CheckCircle2 className="h-4 w-4 text-accent" aria-hidden="true" /></p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     하루에 한 번만 PICK을 남길 수 있어요. 자정({" "}
                     <span className="font-bold text-accent tabular-nums" aria-live="polite">
