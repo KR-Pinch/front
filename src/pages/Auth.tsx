@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
@@ -24,6 +24,13 @@ const Auth = () => {
               {mode === "login" ? "로그인" : "회원가입"}
             </p>
             <ThemeToggle />
+            <Link
+              to="/"
+              aria-label="닫기"
+              className="rounded-full p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 
