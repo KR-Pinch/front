@@ -84,6 +84,13 @@ const Archive = () => {
   // Track history entries we pushed for opened items so close == back.
   const pushedDepthRef = useRef(0);
 
+  // Browser back removes ?item= without calling closeItem — keep depth in sync.
+  useEffect(() => {
+    if (!itemId && pushedDepthRef.current > 0) {
+      pushedDepthRef.current = 0;
+    }
+  }, [itemId]);
+
   const openItem = (item: ArchiveItem) => {
     const next = new URLSearchParams(searchParams);
     next.set("item", getArchiveItemId(item));
