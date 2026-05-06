@@ -8,6 +8,7 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { weeklyRanking, monthlyRanking } from "@/data/mockData";
+import { navRoutes } from "@/config/navIcons";
 
 const getRankStyle = (rank: number) => {
   if (rank === 1) return { icon: Crown, bg: "bg-accent text-accent-foreground", glow: "glow-accent border-accent/30" };
