@@ -993,7 +993,7 @@ const Admin = () => {
                 <FileText className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline ml-1">토픽 ({topics.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="reports" className="text-xs">
+              <TabsTrigger value="reports" className="text-xs" title="댓글(신고 대상) 모더레이션">
                 <Flag className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline ml-1">신고 ({pendingReports})</span>
               </TabsTrigger>
