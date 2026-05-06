@@ -189,7 +189,7 @@ const UsersTab = () => {
                   {u.phone} · {u.email}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
-                  댓글 {u.totalComments} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
+                  PICK {u.totalPicks} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
