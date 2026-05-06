@@ -37,7 +37,7 @@ export interface TodayTopic {
   newsUrl: string;
   newsSource: string;
   date: string;
-  pickCount: number;
+  pickCount: PickCount;
   remainingTime: string;
   heat: number;
 }
@@ -503,7 +503,7 @@ export interface ArchiveItem {
   bestPick: string;
   bestLikes: number;
   /** 그날 PICK을 남긴 참여자 수 (하루 1인 1 PICK 기준). */
-  totalPicks: number;
+  totalPicks: PickCount;
 }
 
 export const archiveData: ArchiveItem[] = [
