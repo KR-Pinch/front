@@ -11,7 +11,7 @@ alter table public.user_roles              enable row level security;
 alter table public.categories              enable row level security;
 alter table public.topics                  enable row level security;
 alter table public.pinch                   enable row level security;
-alter table public.pick_likes              enable row level security;
+alter table public.pinch_likes              enable row level security;
 alter table public.daily_winners           enable row level security;
 alter table public.active_topic_global     enable row level security;
 alter table public.active_topic_by_category enable row level security;
@@ -57,12 +57,12 @@ create policy "pinch_update_self" on public.pinch
 create policy "pinch_admin_all" on public.pinch
   for all to authenticated using (public.is_admin(auth.uid())) with check (public.is_admin(auth.uid()));
 
--- ----- pick_likes --------------------------------------------------------
-create policy "likes_read_all" on public.pick_likes
+-- ----- pinch_likes --------------------------------------------------------
+create policy "likes_read_all" on public.pinch_likes
   for select to anon, authenticated using (true);
-create policy "likes_insert_self" on public.pick_likes
+create policy "likes_insert_self" on public.pinch_likes
   for insert to authenticated with check (user_id = auth.uid() and not public.is_user_banned(auth.uid()));
-create policy "likes_delete_self" on public.pick_likes
+create policy "likes_delete_self" on public.pinch_likes
   for delete to authenticated using (user_id = auth.uid());
 
 -- ----- daily_winners (read-only public) ---------------------------------
