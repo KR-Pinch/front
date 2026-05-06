@@ -385,8 +385,8 @@ const TopicsTab = () => {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   // Per-row "scope" picker state for the "apply as today" action.
-  const [scopePick, setScopePick] = useState<Record<string, string>>({});
-  const getScope = (topicId: string) => scopePick[topicId] ?? "global";
+  const [scopePinch, setScopePinch] = useState<Record<string, string>>({});
+  const getScope = (topicId: string) => scopePinch[topicId] ?? "global";
   const [form, setForm] = useState<{
     category: string;
     title: string;
@@ -626,7 +626,7 @@ const TopicsTab = () => {
               <div className="flex flex-wrap items-center gap-2 pt-1">
                 <Select
                   value={scope}
-                  onValueChange={(v) => setScopePick((s) => ({ ...s, [t.id]: v }))}
+                  onValueChange={(v) => setScopePinch((s) => ({ ...s, [t.id]: v }))}
                 >
                   <SelectTrigger className="h-8 text-xs w-auto min-w-[140px] flex-1">
                     <SelectValue />

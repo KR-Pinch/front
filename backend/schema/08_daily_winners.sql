@@ -8,7 +8,7 @@ create table if not exists public.daily_winners (
   kst_day       date not null,
   category_id   public.category_id not null references public.categories(id),
   topic_id      uuid not null references public.topics(id),
-  pick_id       uuid not null references public.pinch(id),
+  pinch_id       uuid not null references public.pinch(id),
   total_pinches   int  not null default 0,           -- 해당일 카테고리 참여자 수
   best_likes    int  not null default 0,
   archived_at   timestamptz not null default now(),
