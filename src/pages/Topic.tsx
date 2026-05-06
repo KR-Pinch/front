@@ -445,12 +445,12 @@ const Topic = () => {
         {/* Ad Banner */}
         <AdFitBanner className="w-full" />
 
-        {/* Comments */}
+        {/* PICKS list */}
         <div ref={picksRef}>
           <div className="mb-4 flex items-center gap-2">
             <MessageCircle className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-bold">
-              의견 <span className="text-muted-foreground font-normal">{picks.length}개</span>
+              PICKS <span className="text-muted-foreground font-normal">{picks.length}개</span>
             </h2>
           </div>
 
