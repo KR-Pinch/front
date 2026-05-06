@@ -1,3 +1,10 @@
+import {
+  type PickCount,
+  toPickCount,
+  normalizeTopicPickCount,
+  normalizeArchivePickCount,
+} from "./pickMetrics";
+
 export type CategoryId =
   | "politics"
   | "tech"
