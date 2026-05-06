@@ -91,6 +91,7 @@ const MyPage = () => {
 
   return (
     <PageTransition>
+      <Seo title="마이페이지 — PICKS" description="내 PICK과 받은 좋아요, 활동 기록을 확인하세요." path="/mypage" noindex />
       <div className="min-h-screen bg-background pb-24">
         {/* Header */}
         <div className="page-sticky-header">
