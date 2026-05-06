@@ -41,12 +41,12 @@ const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
 
 const notifyAlreadyPicked = () =>
   toast("오늘은 PICK을 이미 남겼어요", {
-    description: "내일 새로운 주제로 다시 만나요 ✍️",
+    description: "내일 새로운 주제로 다시 만나요.",
   });
 
 const notifyClosed = () =>
   toast("이 토픽은 마감되었어요", {
-    description: "오늘의 토픽은 자정에 종료됩니다. 내일 새로운 주제로 만나요 ⏰",
+    description: "오늘의 토픽은 자정에 종료됩니다. 내일 새로운 주제로 만나요.",
   });
 
 const Topic = () => {
