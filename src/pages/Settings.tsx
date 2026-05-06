@@ -215,7 +215,7 @@ const Settings = () => {
             <div className="space-y-1">
               {[
                 {
-                  key: "pick-reactions",
+                  key: "pinch-reactions",
                   label: "내 PINCH 반응",
                   desc: "내 PINCH에 좋아요가 눌렸을 때",
                   value: notifyPickReactions,

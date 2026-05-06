@@ -30,9 +30,9 @@ export const toPinchCount = (value: unknown, fallback = 0): PinchCount => {
   return Math.floor(n) as PinchCount;
 };
 
-// Legacy keys we explicitly forbid on PICK-bearing records. Kept in one place
+// Legacy keys we explicitly forbid on PINCH-bearing records. Kept in one place
 // so future reviewers can see exactly which names are off-limits.
-const LEGACY_PICK_KEYS = [
+const LEGACY_PINCH_KEYS = [
   "commentCount",
   "totalComments",
   "comments",       // when used as a count, not a list
@@ -43,13 +43,13 @@ const LEGACY_PICK_KEYS = [
 /** Dev-only sanity check. Throws in dev if a legacy comment-count key sneaks in. */
 export const assertNoLegacyCommentField = <T extends object>(record: T, label: string): T => {
   if (!isDev) return record;
-  for (const key of LEGACY_PICK_KEYS) {
+  for (const key of LEGACY_PINCH_KEYS) {
     if (key === "comments") continue; // skip — list-typed elsewhere
     if (key in record) {
       // eslint-disable-next-line no-console
       console.error(
         `[pinchMetrics] "${label}" still has legacy field "${key}". ` +
-          `Rename to the PICK-equivalent (pinchCount / totalPinches / bestPinch).`,
+          `Rename to the PINCH-equivalent (pinchCount / totalPinches / bestPinch).`,
       );
     }
   }
