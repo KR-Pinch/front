@@ -149,8 +149,6 @@ const Archive = () => {
     const sorted = [...base];
     if (sortKey === "likes") {
       sorted.sort((a, b) => b.bestLikes - a.bestLikes);
-    } else if (sortKey === "comments") {
-      sorted.sort((a, b) => b.totalComments - a.totalComments);
     }
     return sorted;
   }, [activeCat, query, sortKey]);
