@@ -592,6 +592,20 @@ export const archiveData: ArchiveItem[] = [
   },
 ];
 
+// Stable, URL-safe ID for an archive item — derived from its KST date
+// string. Used for deep-link sharing (e.g. /archive?item=2026-03-20).
+export const getArchiveItemId = (item: ArchiveItem): string => {
+  const m = item.date.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
+  if (m) {
+    const [, y, mo, d] = m;
+    return `${y}-${mo.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  }
+  return encodeURIComponent(item.date);
+};
+
+export const findArchiveItemById = (id: string): ArchiveItem | undefined =>
+  archiveData.find((it) => getArchiveItemId(it) === id);
+
 export const weeklyRanking = [
   { rank: 1, username: "시민의식", wins: 3, totalLikes: 412 },
   { rank: 2, username: "테크윤리", wins: 2, totalLikes: 356 },
