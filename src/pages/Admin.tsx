@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   FileText,
   Flag,
+  Heart,
   LogOut,
   MessageSquare,
   Pin,
