@@ -258,8 +258,9 @@ const Archive = () => {
             </span>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
-            {[{ id: "all", label: "전체", emoji: "🗂️" }, ...categories].map((cat) => {
+            {[allCategoryChip, ...categories].map((cat) => {
               const active = activeCat === cat.id;
+              const Icon = cat.icon;
               return (
                 <button
                   key={cat.id}
@@ -270,7 +271,7 @@ const Archive = () => {
                       : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
                   }`}
                 >
-                  <span>{cat.emoji}</span>
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>{cat.label}</span>
                 </button>
               );
