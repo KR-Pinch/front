@@ -63,6 +63,10 @@ export interface AdminTopicDraft {
 
 const seedUsers: AdminMockUser[] = [
   { id: "u1", username: "시민의식", phone: "010-1111-2222", email: "citizen@example.com", joinedAt: "2025-09-12", totalPicks: 142, totalLikes: 2310, avatar: "시" },
+// Raw seed values use plain numbers; we normalize them to branded PickCount
+// below so any consumer of `seedUsers` gets the safe type.
+const rawSeedUsers = [
+  { id: "u1", username: "시민의식", phone: "010-1111-2222", email: "citizen@example.com", joinedAt: "2025-09-12", totalPicks: 142, totalLikes: 2310, avatar: "시" },
   { id: "u2", username: "테크윤리", phone: "010-2222-3333", email: "tech@example.com", joinedAt: "2025-08-03", totalPicks: 98, totalLikes: 1856, avatar: "테" },
   { id: "u3", username: "법학도", phone: "010-3333-4444", email: "law@example.com", joinedAt: "2026-01-21", totalPicks: 56, totalLikes: 941, avatar: "법" },
   { id: "u4", username: "워라밸마스터", phone: "010-4444-5555", email: "wlb@example.com", joinedAt: "2025-11-09", totalPicks: 78, totalLikes: 1204, avatar: "워" },
@@ -73,8 +77,8 @@ const seedUsers: AdminMockUser[] = [
   { id: "u9", username: "광고봇1", phone: "010-9999-0000", email: "spam1@example.com", joinedAt: "2026-03-15", totalPicks: 7, totalLikes: 2, avatar: "광" },
   { id: "u10", username: "트롤유저", phone: "010-1010-2020", email: "troll@example.com", joinedAt: "2026-03-18", totalPicks: 12, totalLikes: 4, avatar: "트" },
 ];
+const seedUsers: AdminMockUser[] = rawSeedUsers.map(normalizeAdminUserPickCount);
 
-const seedReports: ReportedComment[] = [
   {
     id: "r1",
     topicId: "society-1",
