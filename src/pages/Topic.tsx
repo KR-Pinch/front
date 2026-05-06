@@ -269,11 +269,14 @@ const Topic = () => {
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div className="flex-1 min-w-0 flex items-center gap-2">
-            {categoryMeta && (
-              <span className={`shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold ${categoryMeta.accent}`}>
-                {categoryMeta.emoji} {categoryMeta.label}
-              </span>
-            )}
+            {categoryMeta && (() => {
+              const CatIcon = categoryMeta.icon;
+              return (
+                <span className={`shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold ${categoryMeta.accent}`}>
+                  <CatIcon className="h-3 w-3" aria-hidden="true" /> {categoryMeta.label}
+                </span>
+              );
+            })()}
             <p className="truncate text-sm font-bold">오늘의 주제</p>
           </div>
           <div className="flex items-center gap-3">
