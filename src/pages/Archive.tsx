@@ -69,6 +69,59 @@ const Archive = () => {
         {/* Ad Banner */}
         <AdFitBanner className="w-full mb-3" />
 
+        {/* Search */}
+        <div className="mb-3">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="제목·설명으로 검색"
+              aria-label="아카이브 검색"
+              className="w-full rounded-full bg-secondary/70 border border-border/50 py-2.5 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="검색어 지우기"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Sort */}
+        <div className="mb-4">
+          <div className="mb-2 px-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              정렬
+            </h3>
+          </div>
+          <div className="flex gap-2">
+            {sortOptions.map((opt) => {
+              const active = sortKey === opt.key;
+              return (
+                <button
+                  key={opt.key}
+                  onClick={() => setSortKey(opt.key)}
+                  className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                    active
+                      ? "bg-accent text-accent-foreground shadow-[0_0_20px_hsl(var(--accent)/0.4)]"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+
         {/* Category filter chips */}
         <div className="mb-4">
           <div className="mb-2 flex items-center justify-between px-1">
