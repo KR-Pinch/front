@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Archive as ArchiveIcon, ArrowLeft, Crown, Heart, Link2, Search, Share2, Users, X } from "lucide-react";
+import { ArrowLeft, Crown, Heart, Link2, Search, Share2, Users, X } from "lucide-react";
+import { navRoutes } from "@/config/navIcons";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
