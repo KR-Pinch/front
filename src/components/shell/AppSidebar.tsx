@@ -1,13 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import {
-  Brain,
-  Archive,
-  Trophy,
-  MessageCircle,
-  User,
-  Settings as SettingsIcon,
-  LogIn,
-} from "lucide-react";
+import { LogIn } from "lucide-react";
 import PicksLogo from "@/components/brand/PicksLogo";
 import {
   Sidebar,
@@ -23,18 +15,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
+import { sidebarMainRoutes, sidebarAccountRoutes } from "@/config/navIcons";
 
-const mainItems = [
-  { to: "/", label: "홈", icon: Brain },
-  { to: "/topic", label: "오늘의 PICK", icon: MessageCircle },
-  { to: "/archive", label: "아카이브", icon: Archive },
-  { to: "/ranking", label: "랭킹", icon: Trophy },
-];
-
-const accountItems = [
-  { to: "/mypage", label: "마이페이지", icon: User },
-  { to: "/settings", label: "설정", icon: SettingsIcon },
-];
+const mainItems = sidebarMainRoutes;
+const accountItems = sidebarAccountRoutes;
 
 const AppSidebar = () => {
   const { state } = useSidebar();
