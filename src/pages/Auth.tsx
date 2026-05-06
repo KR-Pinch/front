@@ -46,6 +46,7 @@ const Auth = () => {
 
   return (
     <PageTransition>
+      <Seo title="로그인 · 회원가입 — PICKS" description="PICKS에 로그인하거나 회원가입하세요." path="/auth" noindex />
       <div className="min-h-screen bg-background flex flex-col">
         {/* Header */}
         <div className="sticky top-0 z-40 glass border-b border-border/50">
