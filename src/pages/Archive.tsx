@@ -22,12 +22,11 @@ import {
   type ArchiveItem,
 } from "@/data/mockData";
 
-type SortKey = "recent" | "likes" | "comments";
+type SortKey = "recent" | "likes";
 
 const sortOptions: { key: SortKey; label: string }[] = [
   { key: "recent", label: "최신순" },
   { key: "likes", label: "좋아요순" },
-  { key: "comments", label: "댓글순" },
 ];
 
 const buildShareUrl = (id: string) => {
