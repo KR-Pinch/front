@@ -1,228 +1,190 @@
+<div align="center">
+
 # PICKS
 
-> 모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다.
+### 매일 하나의 주제, 단 하나의 의견.
 
-**PICKS**는 매일 단 하나의 핫이슈에 대해, 사용자가 하루에 단 하나의 의견(=PICK)만 남길 수 있는 한국어 토론 플랫폼입니다. 자정(KST 기준)에 가장 많은 공감을 받은 PICK 하나만 아카이브에 영구 기록되고, 나머지 의견은 모두 사라집니다.
+**모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다.**
 
-- 사용자 1명 = 하루 1 PICK
-- 매일 KST 자정에 잠금 해제 / 마감
-- 그날의 1위 PICK만 아카이브로 박제
-- 누적 1위 횟수·공감 수로 주간/월간 랭킹 산출
+[![Live Preview](https://img.shields.io/badge/Live-usepicks.lovable.app-FFC400?style=for-the-badge)](https://usepicks.lovable.app)
+[![Built with Lovable](https://img.shields.io/badge/Built%20with-Lovable-7C3AED?style=for-the-badge)](https://lovable.dev)
+[![License](https://img.shields.io/badge/License-Non--Commercial-lightgrey?style=for-the-badge)](#license)
 
----
+한국어 · 2026 futuristic dark editorial design
 
-## 핵심 컨셉
-
-| 항목 | 규칙 |
-|---|---|
-| 토론 주기 | 매일 1개 토픽 (카테고리별 핫토픽 + 전체 1위 토픽) |
-| 발언 한도 | 사용자당 하루 1개의 PICK (수정/삭제 불가) |
-| 마감 시점 | **KST(Asia/Seoul, UTC+9) 자정** — 전 세계 사용자가 같은 순간에 잠김/해제 |
-| 아카이브 | 마감 시점 기준 최다 공감 PICK 1건만 영구 보존 |
-| 랭킹 | 1위 채택 횟수와 누적 공감을 합산해 주간/월간 산정 |
-
-용어 정의
-- **PICK**: 한 사용자가 그날 남기는 단 하나의 의견
-- **PICKS**: 그날 모인 의견 모음 (마감 후 1개만 살아남음)
+</div>
 
 ---
 
-## 주요 기능
+## About
 
-- **오늘의 토픽**: 카테고리별(정치/테크/사회/문화/경제/스포츠) 일일 핫토픽
-- **PICK 작성**: 1인 1일 1회 제한. 다중 탭/브라우저 동시 제출에도 깨지지 않는 클라이언트 동시성 가드
-- **실시간 카운트다운**: KST 자정까지 남은 시간을 HH:MM:SS로 라이브 표시
-- **아카이브**: 지난 날의 1위 PICK 모음
-- **랭킹**: 주간/월간 베스트 사용자
-- **인증 UI**: 이메일/소셜 로그인, 비밀번호 강도 미터, 휴대폰 인증, 약관 동의
-- **관리자 콘솔**: 토픽 등록·교체, 카테고리별/전체 토픽 강제 지정
-- **테마**: 라이트/다크 토글 (시스템 설정 + localStorage 우선)
-- **반응형 셸**: 모바일은 BottomNav, md+에서는 사이드바, xl+에서는 우측 레일 추가
-- **브랜드 가드**: `BrandText`/스캐너로 "한마디" 등 레거시 표기를 자동 차단
+**PICKS** 는 한국형 일일 토론 플랫폼입니다.
+하루에 단 하나의 토픽이 열리고, 사용자는 **하루 1개의 PICK** 만 남길 수 있습니다.
+가장 많은 좋아요를 받은 PICK 한 개만 자정에 **아카이브** 로 살아남습니다.
+
+> "매일 하나의 주제, 단 하나의 의견. 오직 선택된 하나만 남습니다."
+
+PICKS 는 토론을 정리하지 않습니다. **선별** 합니다.
 
 ---
 
-## 기술 스택
+## Preview
 
-- **프레임워크**: React 18 + Vite 5 + TypeScript 5
-- **스타일**: Tailwind CSS v3, shadcn/ui (Radix UI 기반), `index.css`의 시맨틱 디자인 토큰 (HSL)
-- **애니메이션**: framer-motion (페이지 전환은 `AnimatePresence`)
-- **라우팅**: react-router-dom v6
-- **폼/검증**: react-hook-form + zod
-- **상태/데이터**: @tanstack/react-query, localStorage 기반 mock store
-- **테스트**: Vitest (단위), Playwright (E2E 픽스처)
-- **타이포**: Space Grotesk(영문/숫자) + Noto Sans KR(한글)
+| 홈 — Hot Topic | 오늘의 PICK | 아카이브 | 똑똑이 랭킹 |
+| :--: | :--: | :--: | :--: |
+| ![Home](docs/screenshots/home.png) | ![Topic](docs/screenshots/topic.png) | ![Archive](docs/screenshots/archive.png) | ![Ranking](docs/screenshots/ranking.png) |
 
-> 백엔드는 현재 프론트 목업 단계입니다. 인증·토픽·PICK 데이터는 mock + localStorage로 구현되어 있고, 실제 백엔드는 추후 연동될 예정입니다.
+### 홈 — `/`
+LIVE NOW 배너 아래 오늘의 가장 뜨거운 토픽이 단 한 장의 카드로 떠 있고, 좌측엔 사이드바, 우측엔 주간 랭킹 레일이 자리합니다. 카테고리 칩(정치·테크·사회·문화·경제·스포츠)을 누르면 해당 카테고리의 HOT 토픽으로 즉시 교체됩니다.
 
----
+### 오늘의 PICK — `/topic`
+한 주제에 대해 **로그인 후 단 1개의 의견** 만 남길 수 있는 작성 화면. 500자 카운터, 마감까지 라이브 카운트다운, 마감 후 자동 잠금, 다중 탭 동시 제출 방지, 그리고 직전에 보던 토픽을 KST 일자 단위로 기억해 메뉴 재진입 시 복원합니다.
 
-## 라우트
+### 아카이브 — `/archive`
+지난 주제와 그날 살아남은 단 하나의 PICK. 검색 · 정렬(최신/좋아요) · 카테고리 필터를 지원하고, 각 카드는 딥링크로 공유 가능한 상세 다이얼로그를 엽니다.
 
-| 경로 | 설명 | 보호 |
-|---|---|---|
-| `/` | 홈 — 카테고리별 오늘의 토픽 | 공개 |
-| `/topic` | 토픽 상세 + PICK 작성/공감 | 공개 (작성은 로그인 필요) |
-| `/archive` | 지난 1위 PICK 아카이브 | 공개 |
-| `/ranking` | 주간/월간 랭킹 | 공개 |
-| `/auth` | 로그인 / 회원가입 | 공개 |
-| `/mypage` | 내 PICK 기록 | 로그인 필요 |
-| `/settings` | 계정/알림 설정 | 로그인 필요 |
-| `/legal/:slug`, `/terms`, `/privacy` | 약관·개인정보처리방침 | 공개 |
-| `/admin/login`, `/admin` | 관리자 콘솔 | 관리자 인증 필요 |
+### 똑똑이 랭킹 — `/ranking`
+주간 / 월간 단위 PICK 선정 횟수 + 누적 좋아요 기준 상위 작성자 랭킹. 1·2·3위에는 Crown · Trophy · Medal 배지가 부여됩니다.
 
 ---
 
-## "하루 1 PICK" 동작 방식
+## Tech Stack
 
-1. PICK을 제출하면 KST 자정 기준의 day-stamp 키로 `localStorage`에 기록됩니다 (`getKstDayStamp`).
-2. 페이지 로드 시 같은 키가 있으면 입력창과 제출 버튼을 비활성화하고, 다음 잠금 해제 시각까지의 카운트다운을 표시합니다.
-3. 같은 사용자가 여러 탭/브라우저에서 동시에 제출해도, 제출 직전 키 재확인 + 단일 in-flight 가드로 한 번만 반영됩니다.
-4. KST 자정이 지나면 day-stamp 키가 자동으로 바뀌어 입력이 다시 열립니다 (사용자의 로컬 시간대 무관).
+**Frontend (only — backend는 사용자 측에서 추후 연결)**
 
-관련 헬퍼: `src/data/mockData.ts`
-- `getKstDayStamp(now?)` — KST 기준 `YYYY-M-D`
-- `getTopicDeadline(topic?)` — 다음 KST 자정 (Date)
-- `isTopicClosed(topic?, now?)` — 마감 여부
-- `formatRemainingClock(deadline, now?)` — `HH:MM:SS`
+| 영역 | 사용 기술 |
+| :-- | :-- |
+| Framework | **React 18** + **TypeScript 5** + **Vite 5** |
+| Routing | `react-router-dom` v6 |
+| Styling | **Tailwind CSS v3** + 시맨틱 디자인 토큰(HSL) |
+| UI Primitives | **shadcn/ui** + **Radix UI** |
+| Animation | **framer-motion** (snappy, AnimatePresence 기반 페이지 전환) |
+| Icons | **lucide-react** (중앙 매핑: `src/config/navIcons.ts`) |
+| Forms / Validation | `react-hook-form` + `zod` + `@hookform/resolvers` |
+| Data fetching | `@tanstack/react-query` |
+| Notifications | `sonner` + shadcn `toast` |
+| Theme | Light/Dark 토글 (시스템 감지 + `localStorage` 우선) |
+| Date/Time | `date-fns` (KST 일자 기준 마감/롤오버) |
+| Charts | `recharts` |
+| Testing | **Vitest** + Testing Library + **Playwright** |
+| Linting | ESLint + 자체 브랜드 용어 스캐너 (`scripts/scan-brand-terms.mjs`) |
 
-테스트: `src/data/__tests__/topicDeadline.test.ts`, `src/data/__tests__/todayKey.test.ts` (KST/UTC/EST 시뮬레이션 포함)
+### 디자인 시스템 원칙
+- **Bento grid · glassmorphism · noise texture** 의 2026 futuristic dark editorial 톤
+- 폰트: **Space Grotesk** (영문/숫자) + **Noto Sans KR** (한글)
+- 색상은 모두 `index.css` 의 HSL 시맨틱 토큰만 사용 — 컴포넌트에 raw color 클래스 금지
+- 반응형 셸: mobile = BottomNav, md+ = sidebar, xl+ = right rail
+- 디바이스 분기는 시맨틱 유틸(`.mobile-only`, `.tablet-up`, `.wide-up-flex`) 만 사용
+
+### 브랜드 거버넌스
+- **PICKS** (서비스명, 영문 대문자 고정), **PICK** (개별 의견)
+- 모든 브랜드 용어 정의는 `src/brand/terms.mjs` 단일 소스
+- `npm run scan:brand` 로 레거시 표기("한마디"·"댓글" 등) 자동 감지
 
 ---
 
-## 디자인 시스템
+## Quick Start
 
-- 2026 미래지향 다크 에디토리얼 톤. 벤토 그리드, 글래스모피즘, 노이즈 텍스처, 골드 뉴럴 네트워크 히어로 캔버스.
-- **컴포넌트에서 raw 컬러 클래스(`text-white`, `bg-black` 등) 금지**. `index.css`에 정의된 시맨틱 토큰(`--background`, `--primary`, `--accent` …)과 Tailwind 시맨틱 유틸만 사용합니다.
-- 반응형 셸 가시성은 `mobile-only` / `tablet-up` / `wide-up-flex` / `page-sticky-header` / `shell-top-bar` 등 시맨틱 유틸로 분기합니다 (`md:hidden` 같은 raw 분기 금지).
-- 페이지 컨텐츠 스케일은 `page-reading` / `page-list` / `card-grid` / `page-heading` 유틸을 사용합니다.
-- 브랜드 로고는 항상 `<PicksLogo />` / `<PicksMark />` 사용. 워드마크는 `.brand-wordmark` + 내부 `text-gradient`.
+```bash
+# 1) 의존성 설치
+npm install
+
+# 2) 개발 서버
+npm run dev
+
+# 3) 프로덕션 빌드 & 미리보기
+npm run build
+npm run preview
+```
+
+추가 스크립트:
+
+```bash
+npm run lint           # ESLint
+npm run test           # Vitest 단위 테스트
+npm run scan:brand     # 브랜드 용어 스캐너 (PICKS 표기 검증)
+```
+
+> Node.js `>=18` 권장.
 
 ---
 
-## 프로젝트 구조
+## Project Structure
 
 ```
 src/
-  App.tsx                    # 라우트 정의
-  main.tsx                   # 엔트리
-  index.css                  # 시맨틱 토큰 + 반응형 유틸
-  brand/                     # PICKS 브랜드 용어 시스템 (terms, BrandText, 스캐너)
-  components/
-    shell/                   # AppShell, AppSidebar, RightRail, SiteFooter
-    auth/                    # 로그인/회원가입/비밀번호 정책 UI
-    admin/                   # 관리자 보호 라우트
-    brand/                   # PicksLogo, PicksMark
-    topic/                   # HeartBurst 등 토픽 상호작용
-    ui/                      # shadcn/ui 컴포넌트
-    BottomNav.tsx, ThemeToggle.tsx, ParticleField.tsx, ...
-  pages/                     # Index, Topic, Archive, Ranking, Auth, MyPage, Settings, Legal, Admin, ...
-  data/
-    mockData.ts              # 토픽/댓글/랭킹 mock + KST 데드라인 헬퍼
-    adminData.ts             # 관리자 콘솔용 store + 이벤트
-    myPageData.ts, legalContent.ts
-    __tests__/               # KST 데드라인/today-key 테스트
-  hooks/                     # useAuth, useAdminAuth, use-mobile, use-toast
-  lib/                       # passwordPolicy, utils
-scripts/scan-brand-terms.mjs # 레거시 브랜드 표기 스캐너
-reports/                     # 스캐너 리포트
-docs/                        # 컴포넌트/QA 체크리스트
+├── pages/              # 라우트 단위 화면 (Index, Topic, Archive, Ranking, MyPage, Settings, Admin, Auth)
+├── components/
+│   ├── shell/          # AppShell · AppSidebar · BottomNav · RightRail · SiteFooter
+│   ├── brand/          # PicksLogo, PicksMark (브랜드 락업 단일 소스)
+│   ├── auth/           # 로그인/회원가입/비밀번호 정책 UI
+│   ├── topic/          # HeartBurst 등 토픽 인터랙션
+│   ├── onboarding/     # 첫 방문 온보딩
+│   └── ui/             # shadcn primitives
+├── config/
+│   └── navIcons.ts     # 모든 네비 아이콘 단일 매핑
+├── data/               # mockData, adminData, myPageData, pickMetrics (브랜디드 타입 가드)
+├── brand/              # 브랜드 용어 시스템 (terms.mjs · BrandText · 스캐너 연동)
+├── hooks/              # useAuth, useAdminAuth, use-toast, use-mobile
+└── index.css           # HSL 디자인 토큰 + 시맨틱 유틸리티
 ```
 
 ---
 
-## 개발
+## Routes
 
-```bash
-# 의존성
-npm i
-
-# 개발 서버
-npm run dev
-
-# 프로덕션 빌드
-npm run build
-
-# 린트
-npm run lint
-
-# 테스트
-npm run test          # 1회 실행
-npm run test:watch    # watch 모드
-
-# 브랜드 용어 스캐너 (레거시 표기 검출)
-npm run scan:brand
-```
+| Path | Page |
+| :-- | :-- |
+| `/` | 홈 — 오늘의 HOT 토픽 + 카테고리 + 주간 랭킹 |
+| `/topic` | 오늘의 PICK 작성/조회 (1인 1 PICK / 자정 KST 마감) |
+| `/archive` | 아카이브 (검색·필터·딥링크 다이얼로그) |
+| `/ranking` | 똑똑이 랭킹 (주간/월간) |
+| `/mypage` | 마이페이지 (내 PICK · 받은 좋아요 · 연속 참여) |
+| `/settings` | 설정 (테마·알림·계정) |
+| `/auth` | 로그인 / 회원가입 / 전화번호 인증 |
+| `/admin` | 어드민 (토픽/유저/신고 모더레이션) |
+| `/legal` | 약관 · 개인정보 처리방침 |
 
 ---
 
-## 관리자
+## Core Rules
 
-기본 자격증명 (프론트 목업 전용 — 실배포 전 반드시 백엔드 인증으로 교체):
-
-```
-username: admin
-password: admin1234
-```
-
-`/admin/login`에서 로그인 후 `/admin`에서 토픽 등록·교체 및 카테고리별/전체 강제 지정이 가능합니다.
+1. **하루 1 PICK** — KST 자정 기준으로 잠금/해제. 다중 탭/디바이스 동기화.
+2. **단 하나만 남는다** — 자정에 가장 좋아요가 많은 PICK 한 개만 아카이브로 영속화.
+3. **카테고리당 1 토픽** — 하루에 카테고리당 정확히 한 개의 토픽이 열림.
+4. **랭킹** — PICK 선정 횟수 + 누적 좋아요 기준, 주간·월간 집계.
 
 ---
 
-## 배포
+## Roadmap (Frontend Mockup → Production)
 
-- Preview: https://id-preview--4aa85271-7e20-4d0b-8d09-96c9a22c5acb.lovable.app
-- Published: https://hot-topic-today.lovable.app
+현재 저장소는 **프론트엔드 UI 목업** 입니다. 다음 백엔드 연동이 예정되어 있습니다:
 
-Lovable 프로젝트에서 Publish 버튼으로 배포합니다.
+- [ ] 인증 (전화번호 OTP + 소셜 로그인 OAuth)
+- [ ] PICK 제출/좋아요 영속화
+- [ ] 자정 마감 → 아카이브 승급 배치
+- [ ] 신고/모더레이션 큐
+- [ ] 실시간 랭킹 집계
 
 ---
 
-## FAQ
+## License
 
-### Q. PICKS는 어떤 서비스인가요?
-매일 하나의 핫이슈에 대해, 사용자가 하루 단 하나의 의견(=PICK)만 남길 수 있는 한국어 토론 플랫폼입니다. KST 자정에 가장 많이 공감받은 PICK 1건만 아카이브로 박제되고, 나머지는 모두 사라집니다.
+This project is distributed under a **Non-Commercial License**.
 
-### Q. 왜 하루에 한 번만 쓸 수 있나요?
-"모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다." — 무한 댓글이 만드는 소음 대신, 한 번의 신중한 발언과 공감만 남기기 위해서입니다. 발언의 가치를 높이고 어뷰징을 줄이기 위한 핵심 규칙입니다.
+- Commercial use is not allowed.
+- Selling this software is not allowed.
+- Monetized distribution is not allowed.
+- Redistributed copies must include this license notice.
 
-### Q. PICK과 PICKS는 어떻게 다른가요?
-- **PICK**: 한 사용자가 그날 남기는 단 하나의 의견
-- **PICKS**: 그날 모인 PICK 묶음 (마감 시 1개만 살아남음)
+This is a custom non-commercial license and not an OSI-approved open-source license.
 
-### Q. 마감 시각은 언제인가요?
-**KST(Asia/Seoul, UTC+9) 자정**입니다. 사용자의 로컬 시간대와 무관하게 전 세계 사용자가 같은 순간에 잠금/해제됩니다.
+---
 
-### Q. PICK을 작성한 뒤 수정하거나 삭제할 수 있나요?
-할 수 없습니다. 1인 1일 1회 규칙을 보존하기 위해 제출된 PICK은 그날 마감까지 그대로 유지됩니다.
+<div align="center">
 
-### Q. 여러 탭이나 브라우저에서 동시에 제출하면 어떻게 되나요?
-제출 직전 day-stamp 키 재확인과 단일 in-flight 가드로 한 번만 반영됩니다. 동시성으로 1일 1 PICK 규칙이 깨지지 않습니다.
+**PICKS** — One PICK a day.
 
-### Q. 마감되면 어떻게 되나요?
-공감 수 1위 PICK이 아카이브에 영구 기록되고, 작성자는 주간/월간 랭킹의 1위 채택 횟수와 누적 공감 수에 반영됩니다. 나머지 PICK은 사라집니다.
+[usepicks.lovable.app](https://usepicks.lovable.app)
 
-### Q. 토픽은 누가 정하나요?
-관리자(`/admin`)가 카테고리별/전체 토픽을 등록·교체·강제 지정할 수 있습니다. 별도 지정이 없으면 카테고리 내 자연 순위 1위가 노출됩니다.
-
-### Q. 백엔드는 어디에 있나요?
-현재는 프론트 목업 단계입니다. 인증·토픽·PICK 데이터는 mock + `localStorage` 기반이며, 실제 백엔드는 추후 사용자가 직접 연동할 예정입니다. 따라서 관리자 자격증명 등은 실배포 전 반드시 교체해야 합니다.
-
-### Q. 다크/라이트 테마를 바꿀 수 있나요?
-네. 우상단 테마 토글로 전환할 수 있고, 시스템 설정을 기본값으로 사용하되 `localStorage` 선택이 우선합니다.
-
-### Q. 모바일에서도 잘 동작하나요?
-반응형 셸이 적용되어 있습니다. 모바일은 BottomNav 중심, 태블릿(md+)에서는 사이드바, 와이드(xl+)에서는 우측 레일이 추가됩니다.
-
-### Q. "한마디"라는 표기를 본 적 있는데요?
-레거시 명칭이며 현재는 사용하지 않습니다. 서비스명은 항상 **PICKS**(영문 대문자)로 표기하며, `npm run scan:brand` 스캐너가 레거시 표기를 자동 검출합니다.
-
-### Q. 기여하려면 어떻게 해야 하나요?
-1. 이슈로 제안/버그를 공유  
-2. 변경 후 `npm run lint`, `npm run test`, `npm run scan:brand` 통과 확인  
-3. 디자인은 `index.css`의 시맨틱 토큰과 반응형 유틸만 사용 (raw 컬러/`md:hidden` 등 금지)
-
-### Q. 어디에서 확인할 수 있나요?
-- Preview: https://id-preview--4aa85271-7e20-4d0b-8d09-96c9a22c5acb.lovable.app
-- Published: https://hot-topic-today.lovable.app
-
+</div>
