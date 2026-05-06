@@ -1,4 +1,15 @@
 import {
+  Landmark,
+  Cpu,
+  Building2,
+  Clapperboard,
+  TrendingUp,
+  Trophy,
+  Flame,
+  Layers,
+  type LucideIcon,
+} from "lucide-react";
+import {
   type PickCount,
   toPickCount,
   normalizeTopicPickCount,
