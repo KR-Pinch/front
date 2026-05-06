@@ -41,9 +41,27 @@ const buildShareUrl = (id: string) => {
 
 const Archive = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeCat, setActiveCat] = useState<string>("all");
+  const validCatIds = useMemo(() => new Set(["all", ...categories.map((c) => c.id)]), []);
+  const catParam = searchParams.get("cat");
+  const activeCat = catParam && validCatIds.has(catParam) ? catParam : "all";
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("recent");
+
+  const setActiveCat = (catId: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (catId === "all") next.delete("cat");
+    else next.set("cat", catId);
+    setSearchParams(next, { replace: true });
+  };
+
+  // Drop unknown ?cat= values from URL so shared links stay clean.
+  useEffect(() => {
+    if (catParam && !validCatIds.has(catParam)) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("cat");
+      setSearchParams(next, { replace: true });
+    }
+  }, [catParam, validCatIds, searchParams, setSearchParams]);
 
   // Deep-linked item from ?item=<id> — survives refresh + share.
   const itemId = searchParams.get("item");
