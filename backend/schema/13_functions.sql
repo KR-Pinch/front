@@ -1,0 +1,85 @@
+-- ============================================================================
+-- 13_functions.sql — RPC: PICK 제출 / 좋아요 토글 / 일일 마감
+-- 모두 SECURITY DEFINER + auth.uid() 검증 + 정지자 차단.
+-- ============================================================================
+
+-- PICK 제출 (오늘 이미 PICK 했다면 UNIQUE 제약으로 거절)
+create or replace function public.submit_pick(_topic_id uuid, _body text)
+returns public.picks
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_row public.picks;
+begin
+  if v_uid is null then
+    raise exception 'Not authenticated' using errcode = '28000';
+  end if;
+  if public.is_user_banned(v_uid) then
+    raise exception 'User is banned' using errcode = '42501';
+  end if;
+
+  insert into public.picks (topic_id, user_id, body)
+  values (_topic_id, v_uid, _body)
+  returning * into v_row;
+
+  return v_row;
+end $$;
+
+-- 좋아요 토글: insert 실패 시(이미 있음) 삭제로 전환
+create or replace function public.toggle_pick_like(_pick_id uuid)
+returns boolean   -- true = liked, false = unliked
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_existed int;
+begin
+  if v_uid is null then
+    raise exception 'Not authenticated' using errcode = '28000';
+  end if;
+
+  delete from public.pick_likes
+   where pick_id = _pick_id and user_id = v_uid;
+  get diagnostics v_existed = row_count;
+  if v_existed > 0 then
+    return false;
+  end if;
+
+  insert into public.pick_likes (pick_id, user_id) values (_pick_id, v_uid);
+  return true;
+end $$;
+
+-- 일일 마감: 어제(KST) 의 카테고리별 우승 PICK 을 daily_winners 로 이관
+-- 운영에서는 KST 00:05 cron 으로 매일 호출.
+create or replace function public.close_topic_day(_target_day date default null)
+returns int
+language plpgsql security definer set search_path = public as $$
+declare
+  v_day date := coalesce(_target_day, (now() at time zone 'Asia/Seoul')::date - 1);
+  v_count int := 0;
+begin
+  with ranked as (
+    select p.id as pick_id,
+           p.topic_id,
+           t.category_id,
+           coalesce(ps.like_count, 0) as likes,
+           row_number() over (
+             partition by t.category_id
+             order by coalesce(ps.like_count, 0) desc, p.created_at asc
+           ) as rn,
+           count(*) over (partition by t.category_id) as total_picks_in_cat
+      from public.picks p
+      join public.topics t on t.id = p.topic_id
+      left join public.view_pick_stats ps on ps.pick_id = p.id
+     where p.kst_day = v_day
+       and p.is_hidden = false
+  )
+  insert into public.daily_winners
+        (kst_day, category_id, topic_id, pick_id, total_picks, best_likes)
+  select v_day, category_id, topic_id, pick_id, total_picks_in_cat, likes
+    from ranked
+   where rn = 1
+  on conflict (kst_day, category_id) do nothing;
+
+  get diagnostics v_count = row_count;
+  return v_count;
+end $$;
