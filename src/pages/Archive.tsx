@@ -416,18 +416,26 @@ const Archive = () => {
                   "{selected.bestPick}"
                 </p>
                 <div className="mt-2 flex items-center gap-3 text-xs">
-                  <span className="flex items-center gap-1 text-accent">
+                  <span
+                    className="flex items-center gap-1 text-accent"
+                    title={`우승 PICK이 받은 좋아요 (${selected.bestLikes.toLocaleString()}개)`}
+                    aria-label={`좋아요 ${selected.bestLikes.toLocaleString()}개`}
+                  >
                     <Heart className="h-3 w-3 fill-current" />
-                    {selected.bestLikes}
+                    {selected.bestLikes.toLocaleString()}
                   </span>
                   <span
                     className="flex items-center gap-1 text-muted-foreground"
-                    title="이 주제에 PICK을 남긴 참여자 수"
+                    title={`이 주제에 PICK을 남긴 참여자 수 (1인 1 PICK · 그중 1개만 아카이브)`}
+                    aria-label={`참여자 ${selected.totalPicks.toLocaleString()}명`}
                   >
                     <Users className="h-3 w-3" />
                     {selected.totalPicks.toLocaleString()}명 참여
                   </span>
                 </div>
+                <p className="mt-2 text-[10px] leading-snug text-muted-foreground/70">
+                  ※ {selected.totalPicks.toLocaleString()}개의 PICK 중 가장 많은 좋아요를 받은 1개만 아카이브에 남습니다.
+                </p>
               </div>
 
               <button
