@@ -58,6 +58,7 @@ const Auth = () => {
             <ThemeToggle />
             <Link
               to="/"
+              onClick={handleClose}
               aria-label="닫기"
               className="rounded-full p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
             >
