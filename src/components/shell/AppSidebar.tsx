@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { LogIn } from "lucide-react";
-import PicksLogo from "@/components/brand/PicksLogo";
+import PinchLogo from "@/components/brand/PinchLogo";
 import {
   Sidebar,
   SidebarContent,
@@ -44,7 +44,7 @@ const AppSidebar = () => {
             collapsed ? "justify-center" : "px-1"
           }`}
         >
-          <PicksLogo size="md" markOnly={collapsed} />
+          <PinchLogo size="md" markOnly={collapsed} />
         </NavLink>
       </SidebarHeader>
 

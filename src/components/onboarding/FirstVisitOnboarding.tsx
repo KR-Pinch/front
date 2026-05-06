@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Archive, Clock, MessageCircle, Sparkles, X } from "lucide-react";
-import PicksMark from "@/components/brand/PicksMark";
+import PinchMark from "@/components/brand/PinchMark";
 import { useAuth } from "@/hooks/useAuth";
 import { useTodayTopic } from "@/data/mockData";
 
@@ -122,7 +122,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
               {/* header */}
               <div className="space-y-3 text-center">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center">
-                  <PicksMark className="h-12 w-12" />
+                  <PinchMark className="h-12 w-12" />
                 </div>
                 <p className="brand-eyebrow">Welcome to PINCH</p>
                 <h2 id="onboarding-title" className="text-2xl font-black sm:text-3xl">

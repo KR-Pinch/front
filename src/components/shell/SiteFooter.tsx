@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PicksLogo from "@/components/brand/PicksLogo";
+import PinchLogo from "@/components/brand/PinchLogo";
 
 /**
  * Brand footer rendered inside AppShell on tablet+ screens.
@@ -31,7 +31,7 @@ const SiteFooter = () => {
               <span id="site-footer-brand" className="sr-only">
                 PINCH
               </span>
-              <PicksLogo size="md" withTagline />
+              <PinchLogo size="md" withTagline />
             </Link>
 
             <p className="text-sm leading-relaxed text-muted-foreground">

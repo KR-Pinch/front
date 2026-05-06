@@ -116,7 +116,7 @@ src/
 ├── pages/              # 라우트 단위 화면 (Index, Topic, Archive, Ranking, MyPage, Settings, Admin, Auth)
 ├── components/
 │   ├── shell/          # AppShell · AppSidebar · BottomNav · RightRail · SiteFooter
-│   ├── brand/          # PicksLogo, PicksMark (브랜드 락업 단일 소스)
+│   ├── brand/          # PinchLogo, PinchMark (브랜드 락업 단일 소스)
 │   ├── auth/           # 로그인/회원가입/비밀번호 정책 UI
 │   ├── topic/          # HeartBurst 등 토픽 인터랙션
 │   ├── onboarding/     # 첫 방문 온보딩

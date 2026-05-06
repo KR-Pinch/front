@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import AuthLoginForm from "@/components/auth/AuthLoginForm";
 import AuthSignupFlow from "@/components/auth/AuthSignupFlow";
-import PicksLogo from "@/components/brand/PicksLogo";
+import PinchLogo from "@/components/brand/PinchLogo";
 import Seo from "@/components/Seo";
 
 const Auth = () => {
@@ -78,7 +78,7 @@ const Auth = () => {
           >
             {/* Logo area */}
             <div className="flex flex-col items-center space-y-3 text-center">
-              <PicksLogo size="lg" />
+              <PinchLogo size="lg" />
               <p className="brand-eyebrow">Only one remains</p>
               <p className="text-sm text-muted-foreground">
                 {mode === "login"

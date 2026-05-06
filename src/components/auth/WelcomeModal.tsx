@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import PicksMark from "@/components/brand/PicksMark";
+import PinchMark from "@/components/brand/PinchMark";
 
 interface Props {
   open: boolean;
@@ -78,7 +78,7 @@ const WelcomeModal = ({
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ delay: 0.1, type: "spring", stiffness: 260, damping: 18 }}
                 >
-                  <PicksMark className="h-14 w-14" />
+                  <PinchMark className="h-14 w-14" />
                 </motion.div>
 
                 {/* Title */}

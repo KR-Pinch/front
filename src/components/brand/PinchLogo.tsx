@@ -1,10 +1,10 @@
-import PicksMark from "./PicksMark";
+import PinchMark from "./PinchMark";
 
 /**
- * Canonical PINCH logo lockup: PicksMark + wordmark.
+ * Canonical PINCH logo lockup: PinchMark + wordmark.
  *
  * Use this anywhere the full brand should appear (sidebar header, footer,
- * auth screen, hero). For icon-only contexts use <PicksMark /> directly.
+ * auth screen, hero). For icon-only contexts use <PinchMark /> directly.
  */
 interface Props {
   className?: string;
@@ -22,7 +22,7 @@ const sizeMap = {
   lg: { mark: "h-10 w-10", word: "text-xl", gap: "gap-3" },
 };
 
-const PicksLogo = ({
+const PinchLogo = ({
   className = "",
   size = "md",
   markOnly = false,
@@ -32,7 +32,7 @@ const PicksLogo = ({
 
   return (
     <span className={`inline-flex items-center ${s.gap} ${className}`}>
-      <PicksMark className={`${s.mark} shrink-0`} />
+      <PinchMark className={`${s.mark} shrink-0`} />
       {!markOnly && (
         <span className="flex flex-col leading-none">
           <span className={`brand-wordmark ${s.word}`}>
@@ -49,4 +49,4 @@ const PicksLogo = ({
   );
 };
 
-export default PicksLogo;
+export default PinchLogo;

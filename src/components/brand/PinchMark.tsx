@@ -1,7 +1,7 @@
 import markSrc from "@/assets/pinch-mark.png";
 
 /**
- * PicksMark — official PINCH brand logomark.
+ * PinchMark — official PINCH brand logomark.
  *
  * Final mark (decided): a dark rounded-square tile with a white stroke
  * leaning toward a single gold dot — visualizing the brand idea
@@ -12,8 +12,8 @@ import markSrc from "@/assets/pinch-mark.png";
  * its own dark background, so it works on both light and dark themes.
  *
  * Usage:
- *   <PicksMark className="h-8 w-8" />
- *   <PicksMark size={24} />
+ *   <PinchMark className="h-8 w-8" />
+ *   <PinchMark size={24} />
  *
  * Always pair with the PINCH wordmark using `.brand-wordmark` for the
  * canonical lockup. Never recolor or redraw.
@@ -26,7 +26,7 @@ interface Props {
   title?: string;
 }
 
-const PicksMark = ({ className, size, title = "PINCH" }: Props) => {
+const PinchMark = ({ className, size, title = "PINCH" }: Props) => {
   const dimension = size ? { width: size, height: size } : undefined;
 
   return (
@@ -40,4 +40,4 @@ const PicksMark = ({ className, size, title = "PINCH" }: Props) => {
   );
 };
 
-export default PicksMark;
+export default PinchMark;
