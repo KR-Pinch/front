@@ -22,6 +22,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import {
   categories,
+  hotCategoryChip,
   useTodayTopic,
   useMergedTopics,
   getMergedTopicsByCategory,
@@ -402,8 +403,9 @@ const Index = () => {
             </h3>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
-            {[{ id: "all", label: "전체", emoji: "🔥", accent: "text-accent" }, ...categories].map((cat) => {
+            {[hotCategoryChip, ...categories].map((cat) => {
               const active = activeCat === cat.id;
+              const Icon = cat.icon;
               return (
                 <button
                   key={cat.id}
@@ -414,7 +416,7 @@ const Index = () => {
                       : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
                   }`}
                 >
-                  <span>{cat.emoji}</span>
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -459,11 +461,14 @@ const Index = () => {
                           <Flame className="h-3 w-3" /> HOT #1
                         </motion.span>
                       )}
-                      {displayCat && (
-                        <span className={`flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold ${displayCat.accent}`}>
-                          <span>{displayCat.emoji}</span> {displayCat.label}
-                        </span>
-                      )}
+                      {displayCat && (() => {
+                        const DisplayCatIcon = displayCat.icon;
+                        return (
+                          <span className={`flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold ${displayCat.accent}`}>
+                            <DisplayCatIcon className="h-3 w-3" aria-hidden="true" /> {displayCat.label}
+                          </span>
+                        );
+                      })()}
                       <span className="ml-auto text-[11px] text-muted-foreground">{displayTopic.date}</span>
                     </div>
                     <h2 className="mb-3 text-2xl font-black leading-tight tracking-tight md:text-4xl">

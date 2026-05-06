@@ -269,11 +269,14 @@ const Topic = () => {
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div className="flex-1 min-w-0 flex items-center gap-2">
-            {categoryMeta && (
-              <span className={`shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold ${categoryMeta.accent}`}>
-                {categoryMeta.emoji} {categoryMeta.label}
-              </span>
-            )}
+            {categoryMeta && (() => {
+              const CatIcon = categoryMeta.icon;
+              return (
+                <span className={`shrink-0 inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold ${categoryMeta.accent}`}>
+                  <CatIcon className="h-3 w-3" aria-hidden="true" /> {categoryMeta.label}
+                </span>
+              );
+            })()}
             <p className="truncate text-sm font-bold">오늘의 주제</p>
           </div>
           <div className="flex items-center gap-3">
@@ -299,14 +302,17 @@ const Topic = () => {
       >
         {/* Topic */}
         <div className="space-y-3">
-          {categoryMeta && (
-            <Link
-              to={`/?category=${activeCategory}`}
-              className={`inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold transition-colors hover:bg-secondary/70 ${categoryMeta.accent}`}
-            >
-              <span>{categoryMeta.emoji}</span> {categoryMeta.label}
-            </Link>
-          )}
+          {categoryMeta && (() => {
+            const CatIcon = categoryMeta.icon;
+            return (
+              <Link
+                to={`/?category=${activeCategory}`}
+                className={`inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold transition-colors hover:bg-secondary/70 ${categoryMeta.accent}`}
+              >
+                <CatIcon className="h-3 w-3" aria-hidden="true" /> {categoryMeta.label}
+              </Link>
+            );
+          })()}
           <h1 className="text-2xl font-black leading-tight md:text-3xl">
             {todayTopic.title}
           </h1>

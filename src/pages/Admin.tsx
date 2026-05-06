@@ -513,8 +513,8 @@ const TopicsTab = () => {
                   className="flex items-center justify-between gap-2 rounded-lg bg-secondary/40 px-2.5 py-1.5"
                 >
                   <div className="min-w-0 flex-1">
-                    <span className={`text-[10px] font-bold ${cat.accent}`}>
-                      {cat.emoji} {cat.label}
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${cat.accent}`}>
+                      <cat.icon className="h-3 w-3" aria-hidden="true" /> {cat.label}
                     </span>
                     <p className="truncate text-xs font-semibold">{t.title}</p>
                   </div>
@@ -577,8 +577,8 @@ const TopicsTab = () => {
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center gap-2 flex-wrap">
                     {cat && (
-                      <span className={`text-[10px] font-bold ${cat.accent}`}>
-                        {cat.emoji} {cat.label}
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold ${cat.accent}`}>
+                        <cat.icon className="h-3 w-3" aria-hidden="true" /> {cat.label}
                       </span>
                     )}
                     <span className="text-[10px] text-muted-foreground">{t.date}</span>
@@ -594,9 +594,9 @@ const TopicsTab = () => {
                         <Badge
                           key={cid}
                           variant="outline"
-                          className="text-[10px] px-1.5 py-0 border-accent/50"
+                          className="text-[10px] px-1.5 py-0 border-accent/50 inline-flex items-center gap-1"
                         >
-                          {cc.emoji} {cc.label}만
+                          <cc.icon className="h-3 w-3" aria-hidden="true" /> {cc.label}만
                         </Badge>
                       );
                     })}
@@ -621,7 +621,9 @@ const TopicsTab = () => {
                     <SelectItem value="global">전체 (모든 카테고리)</SelectItem>
                     {categories.map((c) => (
                       <SelectItem key={c.id} value={c.id}>
-                        {c.emoji} {c.label} 카테고리만
+                        <span className="inline-flex items-center gap-1.5">
+                          <c.icon className="h-3.5 w-3.5" aria-hidden="true" /> {c.label} 카테고리만
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -705,7 +707,9 @@ const TopicsTab = () => {
                 <SelectContent>
                   {categories.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {c.emoji} {c.label}
+                      <span className="inline-flex items-center gap-1.5">
+                        <c.icon className="h-3.5 w-3.5" aria-hidden="true" /> {c.label}
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>

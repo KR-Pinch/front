@@ -18,6 +18,7 @@ import {
 import {
   archiveData,
   categories,
+  allCategoryChip,
   findArchiveItemById,
   getArchiveItemId,
   type ArchiveItem,
@@ -257,8 +258,9 @@ const Archive = () => {
             </span>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
-            {[{ id: "all", label: "전체", emoji: "🗂️" }, ...categories].map((cat) => {
+            {[allCategoryChip, ...categories].map((cat) => {
               const active = activeCat === cat.id;
+              const Icon = cat.icon;
               return (
                 <button
                   key={cat.id}
@@ -269,7 +271,7 @@ const Archive = () => {
                       : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
                   }`}
                 >
-                  <span>{cat.emoji}</span>
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -299,6 +301,7 @@ const Archive = () => {
             >
               {filtered.map((item, idx) => {
                 const cat = categories.find((c) => c.id === item.category);
+                const CatIcon = cat?.icon;
                 const id = getArchiveItemId(item);
                 return (
                   <motion.button
@@ -313,9 +316,9 @@ const Archive = () => {
                     aria-label={`${item.title} 자세히 보기`}
                   >
                     <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                      {cat && (
+                      {cat && CatIcon && (
                         <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${cat.accent}`}>
-                          <span>{cat.emoji}</span>
+                          <CatIcon className="h-3 w-3" aria-hidden="true" />
                           <span>{cat.label}</span>
                         </span>
                       )}
@@ -385,12 +388,15 @@ const Archive = () => {
             <>
               <DialogHeader>
                 <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                  {selectedCat && (
-                    <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${selectedCat.accent}`}>
-                      <span>{selectedCat.emoji}</span>
-                      <span>{selectedCat.label}</span>
-                    </span>
-                  )}
+                  {selectedCat && (() => {
+                    const SelectedCatIcon = selectedCat.icon;
+                    return (
+                      <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${selectedCat.accent}`}>
+                        <SelectedCatIcon className="h-3 w-3" aria-hidden="true" />
+                        <span>{selectedCat.label}</span>
+                      </span>
+                    );
+                  })()}
                   <span className="text-muted-foreground">{selected.date}</span>
                 </div>
                 <DialogTitle className="text-left text-lg leading-snug">
