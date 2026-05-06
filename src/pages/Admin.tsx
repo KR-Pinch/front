@@ -188,8 +188,11 @@ const UsersTab = () => {
                 <p className="truncate text-[11px] text-muted-foreground">
                   {u.phone} · {u.email}
                 </p>
-                <p className="text-[10px] text-muted-foreground">
-                  PICK {u.totalPicks} · ❤️ {u.totalLikes} · 가입 {u.joinedAt}
+                <p
+                  className="text-[10px] text-muted-foreground"
+                  title={`누적 PICK ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
+                >
+                  PICK {u.totalPicks} · ❤️ {u.totalLikes.toLocaleString()} · 가입 {u.joinedAt}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
