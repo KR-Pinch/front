@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
+import Seo from "@/components/Seo";
 import { legalDocs } from "@/data/legalContent";
 
 const Legal = () => {
