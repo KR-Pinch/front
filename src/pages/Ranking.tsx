@@ -6,6 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
+import Seo from "@/components/Seo";
 import { weeklyRanking, monthlyRanking } from "@/data/mockData";
 
 const getRankStyle = (rank: number) => {
