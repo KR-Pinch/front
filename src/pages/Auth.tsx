@@ -7,6 +7,7 @@ import PageTransition from "@/components/PageTransition";
 import AuthLoginForm from "@/components/auth/AuthLoginForm";
 import AuthSignupFlow from "@/components/auth/AuthSignupFlow";
 import PicksLogo from "@/components/brand/PicksLogo";
+import Seo from "@/components/Seo";
 
 const Auth = () => {
   const [mode, setMode] = useState<"login" | "signup">("login");
