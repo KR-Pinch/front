@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { X } from "lucide-react";
 import {
   subscribeBrandFindings,
   clearBrandFindings,
