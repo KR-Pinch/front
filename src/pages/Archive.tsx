@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, Heart, MessageCircle } from "lucide-react";
+import { ArrowLeft, Crown, Heart, MessageCircle, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
@@ -8,16 +8,39 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import { archiveData, categories } from "@/data/mockData";
 
+type SortKey = "recent" | "likes" | "comments";
+
+const sortOptions: { key: SortKey; label: string }[] = [
+  { key: "recent", label: "최신순" },
+  { key: "likes", label: "좋아요순" },
+  { key: "comments", label: "댓글순" },
+];
+
 const Archive = () => {
   const [activeCat, setActiveCat] = useState<string>("all");
+  const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("recent");
 
-  const filtered = useMemo(
-    () =>
-      activeCat === "all"
-        ? archiveData
-        : archiveData.filter((item) => item.category === activeCat),
-    [activeCat]
-  );
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const base = archiveData.filter((item) => {
+      if (activeCat !== "all" && item.category !== activeCat) return false;
+      if (!q) return true;
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q)
+      );
+    });
+    const sorted = [...base];
+    if (sortKey === "likes") {
+      sorted.sort((a, b) => b.bestLikes - a.bestLikes);
+    } else if (sortKey === "comments") {
+      sorted.sort((a, b) => b.totalComments - a.totalComments);
+    }
+    // "recent" → keep archiveData's existing date-desc order
+    return sorted;
+  }, [activeCat, query, sortKey]);
+
 
   return (
     <PageTransition>
