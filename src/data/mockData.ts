@@ -1,3 +1,10 @@
+import {
+  type PickCount,
+  toPickCount,
+  normalizeTopicPickCount,
+  normalizeArchivePickCount,
+} from "./pickMetrics";
+
 export type CategoryId =
   | "politics"
   | "tech"
@@ -30,12 +37,12 @@ export interface TodayTopic {
   newsUrl: string;
   newsSource: string;
   date: string;
-  pickCount: number;
+  pickCount: PickCount;
   remainingTime: string;
   heat: number;
 }
 
-export const todayTopics: TodayTopic[] = [
+const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number }> = [
   {
     id: "society-1",
     category: "society",
@@ -261,6 +268,12 @@ export const todayTopics: TodayTopic[] = [
   },
 ];
 
+// Run every seed entry through the PICK normalizer so the exported list is
+// guaranteed to use the branded `PickCount` type and never carries legacy
+// comment-count fields. Any future drift (e.g. raw `commentCount: 12`) will
+// be caught at compile time and warned about at runtime in dev.
+export const todayTopics: TodayTopic[] = todayTopicsSeed.map(normalizeTopicPickCount);
+
 // ===== Topic deadline helpers =====
 // All topics close at the next KST midnight (00:00 Asia/Seoul, UTC+9, no DST).
 // We compute this in UTC so the result is identical regardless of the
@@ -355,7 +368,7 @@ const adminDraftToTopic = (d: AdminTopicDraft): TodayTopic => ({
   date: d.date,
   // Admin-pushed topics start cold but are pinned via override; give them a
   // small heat so they still rank reasonably if not explicitly forced.
-  pickCount: 0,
+  pickCount: toPickCount(0),
   remainingTime: "",
   heat: 0,
 });
@@ -496,10 +509,10 @@ export interface ArchiveItem {
   bestPick: string;
   bestLikes: number;
   /** 그날 PICK을 남긴 참여자 수 (하루 1인 1 PICK 기준). */
-  totalPicks: number;
+  totalPicks: PickCount;
 }
 
-export const archiveData: ArchiveItem[] = [
+const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number }> = [
   {
     date: "2026년 3월 20일",
     category: "tech",
@@ -593,7 +606,10 @@ export const archiveData: ArchiveItem[] = [
   },
 ];
 
-// Stable, URL-safe ID for an archive item — derived from its KST date
+// Same guarantee as `todayTopics`: every archive entry is normalized so
+// `totalPicks` is a branded `PickCount` and any legacy comment fields would
+// be stripped/warned about.
+export const archiveData: ArchiveItem[] = archiveSeed.map(normalizeArchivePickCount);
 // string. Used for deep-link sharing (e.g. /archive?item=2026-03-20).
 export const getArchiveItemId = (item: ArchiveItem): string => {
   const m = item.date.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
