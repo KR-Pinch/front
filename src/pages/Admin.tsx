@@ -190,10 +190,15 @@ const UsersTab = () => {
                   {u.phone} · {u.email}
                 </p>
                 <p
-                  className="text-[10px] text-muted-foreground"
+                  className="flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground"
                   title={`누적 PICK ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
                 >
-                  PICK {u.totalPicks} · ❤️ {u.totalLikes.toLocaleString()} · 가입 {u.joinedAt}
+                  <span>PICK {u.totalPicks}</span>
+                  <span aria-hidden="true">·</span>
+                  <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
+                  <span>{u.totalLikes.toLocaleString()}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>가입 {u.joinedAt}</span>
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-1.5">
