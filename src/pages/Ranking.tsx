@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, Trophy, Medal } from "lucide-react";
+import { ArrowLeft, Crown, Trophy, Medal, Brain, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
