@@ -368,7 +368,7 @@ const adminDraftToTopic = (d: AdminTopicDraft): TodayTopic => ({
   date: d.date,
   // Admin-pushed topics start cold but are pinned via override; give them a
   // small heat so they still rank reasonably if not explicitly forced.
-  pickCount: 0,
+  pickCount: toPickCount(0),
   remainingTime: "",
   heat: 0,
 });
