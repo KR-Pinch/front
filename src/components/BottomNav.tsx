@@ -1,16 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { Brain, Archive, Trophy, MessageCircle, User } from "lucide-react";
+import { bottomNavRoutes } from "@/config/navIcons";
 
 const BottomNav = () => {
   const location = useLocation();
-
-  const items = [
-    { to: "/", label: "홈", icon: Brain },
-    { to: "/topic", label: "PICK", icon: MessageCircle },
-    { to: "/archive", label: "아카이브", icon: Archive },
-    { to: "/ranking", label: "랭킹", icon: Trophy },
-    { to: "/mypage", label: "MY", icon: User },
-  ];
 
   return (
     <nav
@@ -19,7 +11,7 @@ const BottomNav = () => {
     >
       <span className="sr-only">PICKS — 오직 선택된 하나만 남습니다.</span>
       <div className="mx-auto flex max-w-lg items-center justify-around py-2">
-        {items.map(({ to, label, icon: Icon }) => {
+        {bottomNavRoutes.map(({ to, shortLabel, icon: Icon }) => {
           const isActive = location.pathname === to;
           return (
             <Link
@@ -32,7 +24,7 @@ const BottomNav = () => {
               }`}
             >
               <Icon className={`h-5 w-5 ${isActive ? "drop-shadow-[0_0_8px_hsl(45_100%_58%/0.5)]" : ""}`} />
-              <span className="font-medium">{label}</span>
+              <span className="font-medium">{shortLabel}</span>
             </Link>
           );
         })}
