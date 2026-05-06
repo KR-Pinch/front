@@ -302,14 +302,17 @@ const Topic = () => {
       >
         {/* Topic */}
         <div className="space-y-3">
-          {categoryMeta && (
-            <Link
-              to={`/?category=${activeCategory}`}
-              className={`inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold transition-colors hover:bg-secondary/70 ${categoryMeta.accent}`}
-            >
-              <span>{categoryMeta.emoji}</span> {categoryMeta.label}
-            </Link>
-          )}
+          {categoryMeta && (() => {
+            const CatIcon = categoryMeta.icon;
+            return (
+              <Link
+                to={`/?category=${activeCategory}`}
+                className={`inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold transition-colors hover:bg-secondary/70 ${categoryMeta.accent}`}
+              >
+                <CatIcon className="h-3 w-3" aria-hidden="true" /> {categoryMeta.label}
+              </Link>
+            );
+          })()}
           <h1 className="text-2xl font-black leading-tight md:text-3xl">
             {todayTopic.title}
           </h1>
