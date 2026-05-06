@@ -621,7 +621,9 @@ const TopicsTab = () => {
                     <SelectItem value="global">전체 (모든 카테고리)</SelectItem>
                     {categories.map((c) => (
                       <SelectItem key={c.id} value={c.id}>
-                        {c.emoji} {c.label} 카테고리만
+                        <span className="inline-flex items-center gap-1.5">
+                          <c.icon className="h-3.5 w-3.5" aria-hidden="true" /> {c.label} 카테고리만
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
