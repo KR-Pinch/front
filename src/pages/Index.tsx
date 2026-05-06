@@ -22,6 +22,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import {
   categories,
+  hotCategoryChip,
   useTodayTopic,
   useMergedTopics,
   getMergedTopicsByCategory,
