@@ -150,7 +150,9 @@ const Archive = () => {
               </motion.div>
             );
           })}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       <BottomNav />
