@@ -192,8 +192,8 @@ const MyPage = () => {
             >
               <StatCard
                 icon={MessageSquare}
-                label="총 댓글"
-                value={myStats.totalComments}
+                label="총 PICK"
+                value={myStats.totalPicks}
                 suffix="개"
               />
               <StatCard
@@ -204,8 +204,8 @@ const MyPage = () => {
               />
               <StatCard
                 icon={Award}
-                label="베스트 선정"
-                value={myStats.bestCount}
+                label="오늘의 PICK 선정"
+                value={myStats.bestPickCount}
                 suffix="회"
               />
               <StatCard
