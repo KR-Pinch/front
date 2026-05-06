@@ -40,6 +40,7 @@ const buildShareUrl = (id: string) => {
 };
 
 const Archive = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const validCatIds = useMemo(() => new Set(["all", ...categories.map((c) => c.id)]), []);
   const catParam = searchParams.get("cat");
