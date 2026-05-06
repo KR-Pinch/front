@@ -570,8 +570,8 @@ const Index = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="truncate text-sm font-semibold">{user.username}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {user.wins}회 선정 · {user.totalLikes} ❤️
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                    {user.wins}회 선정 · {user.totalLikes} <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
                   </p>
                 </div>
               </motion.div>
