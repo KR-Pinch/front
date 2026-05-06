@@ -204,18 +204,21 @@ const MyPage = () => {
                 label="총 PICK"
                 value={myStats.totalPicks}
                 suffix="개"
+                hint="내가 남긴 PICK 누계 (예: 47일 참여 = 47개)"
               />
               <StatCard
                 icon={Heart}
                 label="받은 좋아요"
                 value={myStats.totalLikes.toLocaleString()}
                 highlight
+                hint="내 PICK이 받은 ❤️ 총합"
               />
               <StatCard
                 icon={Award}
                 label="오늘의 PICK 선정"
                 value={myStats.bestPickCount}
                 suffix="회"
+                hint="하루 1개로 뽑힌 횟수 (예: 5회 = 5일 우승)"
               />
               <StatCard
                 icon={Flame}
@@ -223,17 +226,20 @@ const MyPage = () => {
                 value={myStats.streak}
                 suffix="일"
                 highlight
+                hint="끊김 없이 PICK을 남긴 일수"
               />
               <StatCard
                 icon={TrendingUp}
                 label="평균 좋아요"
                 value={myStats.avgLikes}
+                hint="PICK 1개당 평균 ❤️ 수"
               />
               <StatCard
                 icon={Trophy}
                 label="참여율"
                 value={myStats.participationRate}
                 suffix="%"
+                hint="가입 후 가능 일수 대비 PICK을 남긴 비율"
               />
             </motion.div>
           </section>
