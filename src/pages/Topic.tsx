@@ -37,9 +37,9 @@ import {
 // Per-day storage key — anchored to KST so the lock rolls over at 00:00
 // Asia/Seoul regardless of the viewer's local timezone (a user in NYC and a
 // user in Seoul share the same daily slot).
-const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
+const todayKey = () => `pinch:submitted:${getKstDayStamp()}`;
 
-const notifyAlreadyPicked = () =>
+const notifyAlreadyPinched = () =>
   toast("오늘은 PINCH을 이미 남겼어요", {
     description: "내일 새로운 주제로 다시 만나요.",
   });
@@ -51,13 +51,13 @@ const notifyClosed = () =>
 
 const Topic = () => {
   const [pinches, setPinches] = useState(initialPinches);
-  const [hasPicked, setHasCommented] = useState(false);
+  const [hasPinched, setHasPinched] = useState(false);
   const submittingRef = useRef(false);
   const [text, setText] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [burstId, setBurstId] = useState<string | null>(null);
   const [bumpId, setBumpId] = useState<string | null>(null);
-  const [newPickId, setNewCommentId] = useState<string | null>(null);
+  const [newPinchId, setNewPinchId] = useState<string | null>(null);
   const pinchesRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -160,7 +160,7 @@ const Topic = () => {
   const dayStamp = getKstDayStamp(now);
   useEffect(() => {
     try {
-      setHasCommented(localStorage.getItem(todayKey()) === "1");
+      setHasPinched(localStorage.getItem(todayKey()) === "1");
     } catch {
       // ignore storage access errors
     }
@@ -173,7 +173,7 @@ const Topic = () => {
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (e.key === todayKey() && e.newValue === "1") {
-        setHasCommented(true);
+        setHasPinched(true);
       }
     };
     window.addEventListener("storage", onStorage);
@@ -204,8 +204,8 @@ const Topic = () => {
       setShowLoginModal(true);
       return;
     }
-    if (hasPicked) {
-      notifyAlreadyPicked();
+    if (hasPinched) {
+      notifyAlreadyPinched();
     }
   };
 
@@ -218,8 +218,8 @@ const Topic = () => {
       setShowLoginModal(true);
       return;
     }
-    if (hasPicked) {
-      notifyAlreadyPicked();
+    if (hasPinched) {
+      notifyAlreadyPinched();
       return;
     }
     if (!text.trim()) return;
@@ -231,9 +231,9 @@ const Topic = () => {
     // write sets the flag; later writes here see it and bail out.
     try {
       if (localStorage.getItem(todayKey()) === "1") {
-        setHasCommented(true);
+        setHasPinched(true);
         submittingRef.current = false;
-        notifyAlreadyPicked();
+        notifyAlreadyPinched();
         return;
       }
       localStorage.setItem(todayKey(), "1");
@@ -247,15 +247,15 @@ const Topic = () => {
       ...pinches,
     ]);
     setText("");
-    setHasCommented(true);
-    setNewCommentId(id);
+    setHasPinched(true);
+    setNewPinchId(id);
     toast.success("의견이 등록되었어요", {
       description: "오늘의 PINCH 후보에 올랐습니다.",
     });
     requestAnimationFrame(() => {
       pinchesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-    window.setTimeout(() => setNewCommentId(null), 1800);
+    window.setTimeout(() => setNewPinchId(null), 1800);
     submittingRef.current = false;
   };
 
@@ -396,7 +396,7 @@ const Topic = () => {
                 오늘의 토픽은 매일 자정에 종료됩니다. 내일 새로운 주제로 다시 만나요.
               </p>
             </motion.div>
-          ) : hasPicked ? (
+          ) : hasPinched ? (
             <motion.div
               key="submitted"
               className="space-y-3"
@@ -511,7 +511,7 @@ const Topic = () => {
 
           <div className="space-y-3">
             {sorted.map((entry, idx) => {
-              const isNew = entry.id === newPickId;
+              const isNew = entry.id === newPinchId;
               return (
               <motion.div
                 key={entry.id}

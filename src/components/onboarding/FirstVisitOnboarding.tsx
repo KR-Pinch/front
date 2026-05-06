@@ -70,7 +70,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
     onClose?.();
   };
 
-  const goPick = () => {
+  const goPinch = () => {
     persistSeen();
     setOpen(false);
     navigate(`/topic/${topic.id}`);
@@ -173,7 +173,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
               <div className="grid gap-2 sm:grid-cols-2">
                 <motion.button
                   type="button"
-                  onClick={goPick}
+                  onClick={goPinch}
                   className="group inline-flex items-center justify-center gap-1.5 rounded-xl bg-accent py-3 text-sm font-bold text-accent-foreground transition-colors hover:bg-accent/90"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

@@ -84,7 +84,7 @@ const Settings = () => {
   const { user, login, logout } = useAuth();
 
   const [nickname, setNickname] = useState(user?.username ?? "");
-  const [notifyPickReactions, setNotifyPickReactions] = useState(true);
+  const [notifyPinchReactions, setNotifyPinchReactions] = useState(true);
   const [notifyRanking, setNotifyRanking] = useState(true);
   const [notifyDaily, setNotifyDaily] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
@@ -218,8 +218,8 @@ const Settings = () => {
                   key: "pinch-reactions",
                   label: "내 PINCH 반응",
                   desc: "내 PINCH에 좋아요가 눌렸을 때",
-                  value: notifyPickReactions,
-                  set: setNotifyPickReactions,
+                  value: notifyPinchReactions,
+                  set: setNotifyPinchReactions,
                 },
                 {
                   key: "ranking",
