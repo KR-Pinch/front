@@ -301,6 +301,7 @@ const Archive = () => {
             >
               {filtered.map((item, idx) => {
                 const cat = categories.find((c) => c.id === item.category);
+                const CatIcon = cat?.icon;
                 const id = getArchiveItemId(item);
                 return (
                   <motion.button
@@ -315,9 +316,9 @@ const Archive = () => {
                     aria-label={`${item.title} 자세히 보기`}
                   >
                     <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                      {cat && (
+                      {cat && CatIcon && (
                         <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${cat.accent}`}>
-                          <span>{cat.emoji}</span>
+                          <CatIcon className="h-3 w-3" aria-hidden="true" />
                           <span>{cat.label}</span>
                         </span>
                       )}
