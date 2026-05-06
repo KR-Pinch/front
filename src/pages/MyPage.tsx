@@ -16,6 +16,7 @@ import {
 import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
+import Seo from "@/components/Seo";
 import {
   myProfile,
   myStats,
