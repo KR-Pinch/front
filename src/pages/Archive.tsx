@@ -1,12 +1,26 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, Heart, MessageCircle, Search, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Crown, Heart, Link2, MessageCircle, Search, Share2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
-import { archiveData, categories } from "@/data/mockData";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  archiveData,
+  categories,
+  findArchiveItemById,
+  getArchiveItemId,
+  type ArchiveItem,
+} from "@/data/mockData";
 
 type SortKey = "recent" | "likes" | "comments";
 
@@ -16,10 +30,74 @@ const sortOptions: { key: SortKey; label: string }[] = [
   { key: "comments", label: "댓글순" },
 ];
 
+const buildShareUrl = (id: string) => {
+  if (typeof window === "undefined") return `/archive?item=${id}`;
+  const url = new URL(window.location.href);
+  url.searchParams.set("item", id);
+  // Drop transient state (search/sort/cat) so the shared URL is minimal.
+  ["q", "sort", "cat"].forEach((k) => url.searchParams.delete(k));
+  return url.toString();
+};
+
 const Archive = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeCat, setActiveCat] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("recent");
+
+  // Deep-linked item from ?item=<id> — survives refresh + share.
+  const itemId = searchParams.get("item");
+  const selected: ArchiveItem | undefined = useMemo(
+    () => (itemId ? findArchiveItemById(itemId) : undefined),
+    [itemId]
+  );
+
+  // If the URL points at a missing id (typo / removed), drop it cleanly.
+  useEffect(() => {
+    if (itemId && !selected) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("item");
+      setSearchParams(next, { replace: true });
+      toast.error("존재하지 않는 아카이브 항목입니다.");
+    }
+  }, [itemId, selected, searchParams, setSearchParams]);
+
+  const openItem = (item: ArchiveItem) => {
+    const next = new URLSearchParams(searchParams);
+    next.set("item", getArchiveItemId(item));
+    setSearchParams(next);
+  };
+
+  const closeItem = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("item");
+    setSearchParams(next, { replace: true });
+  };
+
+  const shareItem = async (item: ArchiveItem, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    const url = buildShareUrl(getArchiveItemId(item));
+    const shareData = {
+      title: `PICKS 아카이브 · ${item.title}`,
+      text: `"${item.bestComment}" — @${item.bestUser}`,
+      url,
+    };
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+    } catch {
+      // user cancelled or share failed → fall through to clipboard
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("링크가 복사되었습니다");
+    } catch {
+      toast.error("링크 복사에 실패했습니다");
+    }
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -37,10 +115,12 @@ const Archive = () => {
     } else if (sortKey === "comments") {
       sorted.sort((a, b) => b.totalComments - a.totalComments);
     }
-    // "recent" → keep archiveData's existing date-desc order
     return sorted;
   }, [activeCat, query, sortKey]);
 
+  const selectedCat = selected
+    ? categories.find((c) => c.id === selected.category)
+    : undefined;
 
   return (
     <PageTransition>
@@ -121,7 +201,6 @@ const Archive = () => {
           </div>
         </div>
 
-
         {/* Category filter chips */}
         <div className="mb-4">
           <div className="mb-2 flex items-center justify-between px-1">
@@ -174,62 +253,143 @@ const Archive = () => {
               transition={{ duration: 0.2 }}
             >
               {filtered.map((item, idx) => {
+                const cat = categories.find((c) => c.id === item.category);
+                const id = getArchiveItemId(item);
+                return (
+                  <motion.button
+                    type="button"
+                    onClick={() => openItem(item)}
+                    key={id}
+                    className="glass glass-hover noise rounded-2xl p-5 text-left w-full"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.04, duration: 0.2 }}
+                    whileHover={{ scale: 1.01 }}
+                    aria-label={`${item.title} 자세히 보기`}
+                  >
+                    <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                      {cat && (
+                        <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${cat.accent}`}>
+                          <span>{cat.emoji}</span>
+                          <span>{cat.label}</span>
+                        </span>
+                      )}
+                      <span className="text-muted-foreground">{item.date}</span>
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <MessageCircle className="h-3 w-3" />
+                        {item.totalComments}
+                      </span>
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={(e) => shareItem(item, e)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            shareItem(item);
+                          }
+                        }}
+                        aria-label="이 항목 공유 링크 복사"
+                        className="ml-auto inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold text-muted-foreground hover:bg-accent/15 hover:text-accent transition-colors cursor-pointer"
+                      >
+                        <Share2 className="h-3 w-3" />
+                        공유
+                      </span>
+                    </div>
+                    <h3 className="mb-1.5 text-base font-bold leading-snug">{item.title}</h3>
+                    <p className="mb-3 text-xs leading-relaxed text-muted-foreground line-clamp-3">
+                      {item.description}
+                    </p>
+                    <p className="mb-4 text-[10px] uppercase tracking-wider text-muted-foreground/70">
+                      출처 · {item.newsSource}
+                    </p>
 
-            const cat = categories.find((c) => c.id === item.category);
-            return (
-              <motion.div
-                key={idx}
-                className="glass glass-hover noise rounded-2xl p-5"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.04, duration: 0.2 }}
-                whileHover={{ scale: 1.01 }}
-              >
-                {/* Topic header — mirrors the home topic card */}
-                <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                  {cat && (
-                    <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${cat.accent}`}>
-                      <span>{cat.emoji}</span>
-                      <span>{cat.label}</span>
-                    </span>
-                  )}
-                  <span className="text-muted-foreground">{item.date}</span>
-                  <span className="flex items-center gap-1 text-muted-foreground">
-                    <MessageCircle className="h-3 w-3" />
-                    {item.totalComments}
-                  </span>
-                </div>
-                <h3 className="mb-1.5 text-base font-bold leading-snug">{item.title}</h3>
-                <p className="mb-3 text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                  {item.description}
-                </p>
-                <p className="mb-4 text-[10px] uppercase tracking-wider text-muted-foreground/70">
-                  출처 · {item.newsSource}
-                </p>
-
-                {/* Winning PICK */}
-                <div className="rounded-xl bg-accent/5 border border-accent/15 p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
-                      <Crown className="h-3 w-3" /> 오늘의 PICK
-                    </span>
-                    <span className="text-sm font-semibold">{item.bestUser}</span>
-                  </div>
-                  <p className="text-sm leading-relaxed text-foreground/70">
-                    "{item.bestComment}"
-                  </p>
-                  <div className="mt-2 flex items-center gap-1 text-xs text-accent">
-                    <Heart className="h-3 w-3 fill-current" />
-                    {item.bestLikes}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                    {/* Winning PICK */}
+                    <div className="rounded-xl bg-accent/5 border border-accent/15 p-4">
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
+                          <Crown className="h-3 w-3" /> 오늘의 PICK
+                        </span>
+                        <span className="text-sm font-semibold">{item.bestUser}</span>
+                      </div>
+                      <p className="text-sm leading-relaxed text-foreground/70">
+                        "{item.bestComment}"
+                      </p>
+                      <div className="mt-2 flex items-center gap-1 text-xs text-accent">
+                        <Heart className="h-3 w-3 fill-current" />
+                        {item.bestLikes}
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Deep-link detail dialog — driven by ?item=<id> so refresh + share work */}
+      <Dialog open={!!selected} onOpenChange={(open) => { if (!open) closeItem(); }}>
+        <DialogContent className="glass border-accent/20 sm:max-w-lg">
+          {selected && (
+            <>
+              <DialogHeader>
+                <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                  {selectedCat && (
+                    <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${selectedCat.accent}`}>
+                      <span>{selectedCat.emoji}</span>
+                      <span>{selectedCat.label}</span>
+                    </span>
+                  )}
+                  <span className="text-muted-foreground">{selected.date}</span>
+                </div>
+                <DialogTitle className="text-left text-lg leading-snug">
+                  {selected.title}
+                </DialogTitle>
+                <DialogDescription className="text-left text-sm leading-relaxed text-muted-foreground">
+                  {selected.description}
+                </DialogDescription>
+              </DialogHeader>
+
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground/70">
+                출처 · {selected.newsSource}
+              </p>
+
+              <div className="mt-2 rounded-xl bg-accent/5 border border-accent/15 p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
+                    <Crown className="h-3 w-3" /> 오늘의 PICK
+                  </span>
+                  <span className="text-sm font-semibold">{selected.bestUser}</span>
+                </div>
+                <p className="text-sm leading-relaxed text-foreground/80">
+                  "{selected.bestComment}"
+                </p>
+                <div className="mt-2 flex items-center gap-3 text-xs">
+                  <span className="flex items-center gap-1 text-accent">
+                    <Heart className="h-3 w-3 fill-current" />
+                    {selected.bestLikes}
+                  </span>
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <MessageCircle className="h-3 w-3" />
+                    {selected.totalComments}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => shareItem(selected)}
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity"
+              >
+                <Link2 className="h-4 w-4" />
+                공유 링크 복사
+              </button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <BottomNav />
     </div>
