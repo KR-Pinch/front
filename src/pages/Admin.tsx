@@ -957,24 +957,29 @@ const Admin = () => {
         >
           {/* Stats */}
           <div className="grid grid-cols-2 gap-2">
-            <StatCard icon={BarChart3} label="DAU" value={dau} hint="오늘 활성 유저" />
+            <StatCard
+              icon={BarChart3}
+              label="DAU"
+              value={dau}
+              hint="오늘 1회 이상 접속한 활성 유저 수"
+            />
             <StatCard
               icon={MessageSquare}
               label="오늘 PICK"
               value={todayPicks}
-              hint="1인 1일 1 PICK 기준"
+              hint={`오늘 작성된 PICK 수 · 1인 1일 1 PICK (예: ${todayPicks}개 = ${todayPicks}명 참여)`}
             />
             <StatCard
               icon={Ban}
               label="활성 정지"
               value={activeBans}
-              hint={`총 ${bans.length}건`}
+              hint={`현재 정지 중 / 누적 ${bans.length}건`}
             />
             <StatCard
               icon={AlertTriangle}
               label="신고 대기"
               value={pendingReports}
-              hint={`댓글(신고 대상) · 총 ${reports.length}건`}
+              hint={`처리 대기 중인 댓글(신고 대상) · 누적 ${reports.length}건`}
             />
           </div>
 
