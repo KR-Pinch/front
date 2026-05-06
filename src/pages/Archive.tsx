@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, Heart, MessageCircle } from "lucide-react";
+import { ArrowLeft, Crown, Heart, MessageCircle, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
@@ -8,16 +8,39 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import { archiveData, categories } from "@/data/mockData";
 
+type SortKey = "recent" | "likes" | "comments";
+
+const sortOptions: { key: SortKey; label: string }[] = [
+  { key: "recent", label: "최신순" },
+  { key: "likes", label: "좋아요순" },
+  { key: "comments", label: "댓글순" },
+];
+
 const Archive = () => {
   const [activeCat, setActiveCat] = useState<string>("all");
+  const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("recent");
 
-  const filtered = useMemo(
-    () =>
-      activeCat === "all"
-        ? archiveData
-        : archiveData.filter((item) => item.category === activeCat),
-    [activeCat]
-  );
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const base = archiveData.filter((item) => {
+      if (activeCat !== "all" && item.category !== activeCat) return false;
+      if (!q) return true;
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q)
+      );
+    });
+    const sorted = [...base];
+    if (sortKey === "likes") {
+      sorted.sort((a, b) => b.bestLikes - a.bestLikes);
+    } else if (sortKey === "comments") {
+      sorted.sort((a, b) => b.totalComments - a.totalComments);
+    }
+    // "recent" → keep archiveData's existing date-desc order
+    return sorted;
+  }, [activeCat, query, sortKey]);
+
 
   return (
     <PageTransition>
@@ -45,6 +68,59 @@ const Archive = () => {
 
         {/* Ad Banner */}
         <AdFitBanner className="w-full mb-3" />
+
+        {/* Search */}
+        <div className="mb-3">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="제목·설명으로 검색"
+              aria-label="아카이브 검색"
+              className="w-full rounded-full bg-secondary/70 border border-border/50 py-2.5 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="검색어 지우기"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Sort */}
+        <div className="mb-4">
+          <div className="mb-2 px-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              정렬
+            </h3>
+          </div>
+          <div className="flex gap-2">
+            {sortOptions.map((opt) => {
+              const active = sortKey === opt.key;
+              return (
+                <button
+                  key={opt.key}
+                  onClick={() => setSortKey(opt.key)}
+                  className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                    active
+                      ? "bg-accent text-accent-foreground shadow-[0_0_20px_hsl(var(--accent)/0.4)]"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
 
         {/* Category filter chips */}
         <div className="mb-4">
@@ -86,11 +162,11 @@ const Archive = () => {
               exit={{ opacity: 0 }}
               className="glass rounded-2xl p-8 text-center text-sm text-muted-foreground"
             >
-              이 카테고리에는 아직 아카이브된 PICK이 없습니다.
+              {query ? `"${query}"에 대한 결과가 없습니다.` : "이 카테고리에는 아직 아카이브된 PICK이 없습니다."}
             </motion.div>
           ) : (
             <motion.div
-              key={activeCat}
+              key={`${activeCat}-${sortKey}-${query}`}
               className="card-grid"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
