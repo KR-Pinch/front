@@ -92,7 +92,7 @@ const MyPage = () => {
 
   const handleLogout = () => {
     logout();
-    toast({ title: "로그아웃되었습니다", description: "다음에 또 만나요 👋" });
+    toast({ title: "로그아웃되었습니다", description: "다음에 또 만나요." });
     navigate("/", { replace: true });
   };
 
