@@ -360,7 +360,7 @@ const Topic = () => {
                   <Lock className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold">오늘의 의견을 이미 남기셨습니다 ✅</p>
+                  <p className="flex items-center gap-1.5 text-sm font-bold">오늘의 의견을 이미 남기셨습니다 <CheckCircle2 className="h-4 w-4 text-accent" aria-hidden="true" /></p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     하루에 한 번만 PICK을 남길 수 있어요. 자정({" "}
                     <span className="font-bold text-accent tabular-nums" aria-live="polite">
