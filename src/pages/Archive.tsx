@@ -162,7 +162,7 @@ const Archive = () => {
               exit={{ opacity: 0 }}
               className="glass rounded-2xl p-8 text-center text-sm text-muted-foreground"
             >
-              이 카테고리에는 아직 아카이브된 PICK이 없습니다.
+              {query ? `"${query}"에 대한 결과가 없습니다.` : "이 카테고리에는 아직 아카이브된 PICK이 없습니다."}
             </motion.div>
           ) : (
             <motion.div
