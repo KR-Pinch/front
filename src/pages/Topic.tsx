@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Clock, MessageCircle, Send, Heart, Crown, LogIn, Lock, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, Clock, MessageCircle, Send, Heart, Crown, LogIn, Lock, Sparkles, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
