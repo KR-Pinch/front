@@ -39,7 +39,7 @@ const AppSidebar = () => {
       <SidebarHeader className={collapsed ? "px-1.5 py-3" : "px-3 py-4"}>
         <NavLink
           to="/"
-          aria-label="PICKS 홈"
+          aria-label="PINCH 홈"
           className={`flex items-center ${
             collapsed ? "justify-center" : "px-1"
           }`}
@@ -111,7 +111,7 @@ const AppSidebar = () => {
             오직 선택된 하나만 남습니다.
             <br />
             <span className="font-semibold text-foreground/70">
-              One PICK a day.
+              One PINCH a day.
             </span>
           </p>
         )}

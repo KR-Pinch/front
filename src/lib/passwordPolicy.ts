@@ -3,7 +3,7 @@
  *
  * Edit `PASSWORD_RULES` (and the constants below) here and every consumer —
  * the strength meter, the policy summary component, signup/reset forms,
- * error toasts — picks up the new rules automatically.
+ * error toasts — pinch up the new rules automatically.
  *
  * Frontend mock only. The real signup/reset API MUST re-validate with the
  * same rules server-side.

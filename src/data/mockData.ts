@@ -27,7 +27,7 @@ export type CategoryId =
 export interface Category {
   id: CategoryId;
   label: string;
-  /** Lucide icon component — PICKS uses minimal line icons instead of emoji. */
+  /** Lucide icon component — PINCH uses minimal line icons instead of emoji. */
   icon: LucideIcon;
   /** Legacy emoji fallback (kept for accessibility / sharing contexts). */
   emoji: string;
@@ -286,7 +286,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
   },
 ];
 
-// Run every seed entry through the PICK normalizer so the exported list is
+// Run every seed entry through the PINCH normalizer so the exported list is
 // guaranteed to use the branded `PickCount` type and never carries legacy
 // comment-count fields. Any future drift (e.g. raw `commentCount: 12`) will
 // be caught at compile time and warned about at runtime in dev.
@@ -339,7 +339,7 @@ export const formatRemaining = (deadline: Date, now: Date = new Date()): string 
 };
 
 // Precise live countdown — always renders HH:MM:SS so users can see the
-// exact moment the daily PICK slot reopens. Returns "00:00:00" when closed.
+// exact moment the daily PINCH slot reopens. Returns "00:00:00" when closed.
 export const formatRemainingClock = (deadline: Date, now: Date = new Date()): string => {
   const ms = Math.max(0, deadline.getTime() - now.getTime());
   const totalSec = Math.floor(ms / 1000);
@@ -526,7 +526,7 @@ export interface ArchiveItem {
   bestUser: string;
   bestPick: string;
   bestLikes: number;
-  /** 그날 PICK을 남긴 참여자 수 (하루 1인 1 PICK 기준). */
+  /** 그날 PINCH을 남긴 참여자 수 (하루 1인 1 PINCH 기준). */
   totalPicks: PickCount;
 }
 

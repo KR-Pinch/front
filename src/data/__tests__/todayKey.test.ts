@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { getKstDayStamp } from "../mockData";
 
 // localStorage key used by Topic.tsx — kept in sync with src/pages/Topic.tsx.
-// Anchored to the KST day stamp so the "1 PICK / day" lock rolls over at
+// Anchored to the KST day stamp so the "1 PINCH / day" lock rolls over at
 // 00:00 Asia/Seoul regardless of the viewer's local timezone.
 const todayKey = (now?: Date) => `hanmadi:commented:${getKstDayStamp(now)}`;
 

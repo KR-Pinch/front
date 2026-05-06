@@ -11,7 +11,7 @@ const NotFound = () => {
 
   return (
     <>
-      <Seo title="페이지를 찾을 수 없습니다 — PICKS" description="요청하신 페이지가 존재하지 않습니다." noindex />
+      <Seo title="페이지를 찾을 수 없습니다 — PINCH" description="요청하신 페이지가 존재하지 않습니다." noindex />
       <div className="flex min-h-screen items-center justify-center bg-muted">
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">404</h1>

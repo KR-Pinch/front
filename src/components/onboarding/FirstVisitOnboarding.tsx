@@ -7,7 +7,7 @@ import PicksMark from "@/components/brand/PicksMark";
 import { useAuth } from "@/hooks/useAuth";
 import { useTodayTopic } from "@/data/mockData";
 
-const STORAGE_PREFIX = "picks:onboarding-seen:";
+const STORAGE_PREFIX = "pinch:onboarding-seen:";
 
 interface Props {
   /** Force open (for previews/tests). When omitted, auto-opens on first visit. */
@@ -124,7 +124,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
                 <div className="mx-auto flex h-14 w-14 items-center justify-center">
                   <PicksMark className="h-12 w-12" />
                 </div>
-                <p className="brand-eyebrow">Welcome to PICKS</p>
+                <p className="brand-eyebrow">Welcome to PINCH</p>
                 <h2 id="onboarding-title" className="text-2xl font-black sm:text-3xl">
                   환영합니다,{" "}
                   <span className="text-gradient">
@@ -143,7 +143,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
               <div className="mx-auto flex w-fit items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5">
                 <Sparkles className="h-3 w-3 text-accent" />
                 <span className="text-[11px] font-semibold tracking-wide text-accent">
-                  하루 한 번, 단 하나의 PICK만 남길 수 있어요
+                  하루 한 번, 단 하나의 PINCH만 남길 수 있어요
                 </span>
               </div>
 
@@ -164,7 +164,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <MessageCircle className="h-3 w-3" />
-                    {topic.pickCount.toLocaleString()} PICKS
+                    {topic.pickCount.toLocaleString()} PINCH
                   </span>
                 </div>
               </div>
@@ -178,7 +178,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  PICK 남기기
+                  PINCH 남기기
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </motion.button>
                 <motion.button

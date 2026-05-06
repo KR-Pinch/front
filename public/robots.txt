@@ -1,4 +1,4 @@
-# https://hot-topic-today.lovable.app/robots.txt
+# https://usepinch.lovable.app/robots.txt
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -20,4 +20,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://hot-topic-today.lovable.app/sitemap.xml
+Sitemap: https://usepinch.lovable.app/sitemap.xml

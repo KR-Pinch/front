@@ -1,9 +1,9 @@
 export const myProfile = {
   username: "시민의식",
-  email: "citizen@picks.kr",
+  email: "citizen@pinch.kr",
   avatar: "시",
   joinedAt: "2026년 1월 14일",
-  bio: "매일의 이슈에 솔직하게 한 표. 오늘의 PICK으로 의견을 남깁니다.",
+  bio: "매일의 이슈에 솔직하게 한 표. 오늘의 PINCH으로 의견을 남깁니다.",
   rank: 1,
   badges: [
     { label: "주간 1위", tone: "gold" as const },
@@ -18,11 +18,11 @@ import { normalizeMyStats, type MyPickStats } from "./pickMetrics";
 // (PickCount fields branded) and any legacy `totalComments`/`commentCount`
 // keys would be stripped + warned about in dev.
 export const myStats: MyPickStats = normalizeMyStats({
-  totalPicks: 47,        // 지금까지 남긴 PICK 수 (1일 1 PICK)
+  totalPicks: 47,        // 지금까지 남긴 PINCH 수 (1일 1 PINCH)
   totalLikes: 1284,      // 받은 좋아요 누계
-  bestPickCount: 5,      // 오늘의 PICK으로 선정된 횟수
+  bestPickCount: 5,      // 오늘의 PINCH으로 선정된 횟수
   streak: 30,            // 연속 참여 일수
-  avgLikes: 27.3,        // PICK당 평균 좋아요
+  avgLikes: 27.3,        // PINCH당 평균 좋아요
   participationRate: 92, // 참여율 (%)
 });
 

@@ -30,7 +30,7 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: PICKS brand consistency scan
+      - name: PINCH brand consistency scan
         id: brand
         run: npm run scan:brand -- --report-dir reports
         continue-on-error: false

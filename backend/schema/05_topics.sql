@@ -1,5 +1,5 @@
 -- ============================================================================
--- 05_topics.sql — 토픽 (오늘의 PICK 대상 안건)
+-- 05_topics.sql — 토픽 (오늘의 PINCH 대상 안건)
 -- ============================================================================
 
 create table if not exists public.topics (
@@ -11,7 +11,7 @@ create table if not exists public.topics (
   news_url      text,
   news_source   text,
   source        public.topic_source not null default 'seed',
-  -- KST 기준 게재일 (해당일 00:00~24:00 동안 PICK 가능)
+  -- KST 기준 게재일 (해당일 00:00~24:00 동안 PINCH 가능)
   publish_kst_day date not null default ((now() at time zone 'Asia/Seoul')::date),
   -- 부가 신호
   heat          int  not null default 0,                       -- 인기도 가중

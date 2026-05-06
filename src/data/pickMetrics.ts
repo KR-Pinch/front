@@ -1,5 +1,5 @@
 // ============================================================================
-// PICK metric guards
+// PINCH metric guards
 // ----------------------------------------------------------------------------
 // Single source of truth for "how many PICKs?" semantics. The codebase has
 // historically mixed `commentCount`/`totalComments` (legacy) with
@@ -13,7 +13,7 @@
 //      and (in dev) warn loudly if legacy keys leak in from anywhere.
 //
 // Use these helpers whenever you ingest topic / archive / user data — even
-// from the local mock seeds — so the rename to PICK stays enforced.
+// from the local mock seeds — so the rename to PINCH stays enforced.
 // ============================================================================
 
 const isDev =
@@ -58,7 +58,7 @@ export const assertNoLegacyCommentField = <T extends object>(record: T, label: s
 
 // ----- Normalizers --------------------------------------------------------
 // Each normalizer returns a NEW object so legacy aliases are dropped, the
-// PICK field is coerced via toPickCount(), and required defaults are filled.
+// PINCH field is coerced via toPickCount(), and required defaults are filled.
 
 export interface PickCountedTopic {
   id: string;
@@ -124,6 +124,6 @@ export const normalizeMyStats = (raw: Record<string, unknown>): MyPickStats => {
   };
 };
 
-/** Format helper so every UI counter renders PICK numbers identically. */
+/** Format helper so every UI counter renders PINCH numbers identically. */
 export const formatPickCount = (n: PickCount | number): string =>
   toPickCount(n).toLocaleString();

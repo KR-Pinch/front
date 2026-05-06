@@ -1,11 +1,11 @@
 -- ============================================================================
--- 10_reports.sql — PICK 신고
--- 한 사용자가 같은 PICK 을 중복 신고할 수 없음.
+-- 10_reports.sql — PINCH 신고
+-- 한 사용자가 같은 PINCH 을 중복 신고할 수 없음.
 -- ============================================================================
 
 create table if not exists public.reports (
   id           uuid primary key default gen_random_uuid(),
-  pick_id      uuid not null references public.picks(id) on delete cascade,
+  pick_id      uuid not null references public.pinch(id) on delete cascade,
   reporter_id  uuid not null references auth.users(id)   on delete cascade,
   reasons      text[] not null default '{}',
   note         text,
@@ -31,7 +31,7 @@ create or replace view public.view_reported_picks as
            filter (where unnest_reason is not null) as reasons,
          min(r.status)     as status
     from public.reports r
-    join public.picks p on p.id = r.pick_id
+    join public.pinch p on p.id = r.pick_id
     join public.topics t on t.id = p.topic_id
     join public.profiles pr on pr.id = p.user_id
     left join lateral unnest(r.reasons) as unnest_reason on true

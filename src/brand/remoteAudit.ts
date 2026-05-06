@@ -1,6 +1,6 @@
 /**
  * 네트워크로 주입되는 문서(CMS 응답, 로컬라이즈 텍스트 번들 등)에 대해
- * 렌더링 직전/직후 자동으로 PICKS 금칙어/표기 검증을 수행하는 유틸 모음.
+ * 렌더링 직전/직후 자동으로 PINCH 금칙어/표기 검증을 수행하는 유틸 모음.
  *
  * 핵심 아이디어
  *  - 정적 스캐너는 코드/마크다운만 봅니다. 런타임에 외부에서 들어오는 문자열은
@@ -119,7 +119,7 @@ function emitFindings(findings: RemoteFinding[]): void {
 export function reportFindings(findings: RemoteFinding[]): void {
   if (findings.length === 0) return;
   const isDev = typeof import.meta !== "undefined" && (import.meta as { env?: { DEV?: boolean } }).env?.DEV;
-  const title = `🟡 PICKS brand audit · ${findings.length} violation(s) in remote content`;
+  const title = `🟡 PINCH brand audit · ${findings.length} violation(s) in remote content`;
   if (isDev && typeof console.groupCollapsed === "function") {
     console.groupCollapsed(title);
     for (const f of findings) {

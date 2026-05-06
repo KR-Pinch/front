@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PICKS 브랜드 금칙어/용어 정합성 스캐너
+ * PINCH 브랜드 금칙어/용어 정합성 스캐너
  *
  * 규칙 정의는 `src/brand/terms.mjs` 한 파일에서만 관리됩니다.
  * 이 스크립트는 그 규칙을 import 해서 코드/문서에 위반이 있는지 검사만 합니다.
@@ -95,10 +95,10 @@ function parseArgs(argv) {
 
 function buildMarkdown(findings, grouped) {
   if (findings.length === 0) {
-    return `# PICKS 브랜드 정합성 리포트\n\n✅ 위반 없음 — 코드베이스가 PICK/PICKS 표기 규칙을 준수합니다.\n`;
+    return `# PINCH 브랜드 정합성 리포트\n\n✅ 위반 없음 — 코드베이스가 PINCH/PINCH 표기 규칙을 준수합니다.\n`;
   }
   const lines = [];
-  lines.push(`# PICKS 브랜드 정합성 리포트`);
+  lines.push(`# PINCH 브랜드 정합성 리포트`);
   lines.push("");
   lines.push(`❌ **${findings.length}건의 위반**이 발견되었습니다.`);
   lines.push("");
@@ -155,7 +155,7 @@ function main() {
   }
 
   if (findings.length === 0) {
-    console.log("✅ PICKS 브랜드 스캔 통과 — 금칙어/용어 위반 없음");
+    console.log("✅ PINCH 브랜드 스캔 통과 — 금칙어/용어 위반 없음");
     process.exit(0);
   }
 
@@ -174,7 +174,7 @@ function main() {
   if (process.env.GITHUB_ACTIONS === "true") {
     for (const f of findings) {
       const msg = `${f.reason} [${f.term}]`;
-      console.log(`::error file=${f.file},line=${f.line},title=PICKS brand check::${msg}`);
+      console.log(`::error file=${f.file},line=${f.line},title=PINCH brand check::${msg}`);
     }
   }
   process.exit(1);

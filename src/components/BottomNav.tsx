@@ -7,9 +7,9 @@ const BottomNav = () => {
   return (
     <nav
       className="mobile-only fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50"
-      aria-label="PICKS 주요 내비게이션"
+      aria-label="PINCH 주요 내비게이션"
     >
-      <span className="sr-only">PICKS — 오직 선택된 하나만 남습니다.</span>
+      <span className="sr-only">PINCH — 오직 선택된 하나만 남습니다.</span>
       <div className="mx-auto flex max-w-lg items-center justify-around py-2">
         {bottomNavRoutes.map(({ to, shortLabel, icon: Icon }) => {
           const isActive = location.pathname === to;

@@ -68,7 +68,7 @@ const RightRail = () => {
         </div>
 
         <p className="px-1 text-[10px] leading-relaxed text-muted-foreground">
-          매일 하나만 PICK.
+          매일 하나만 PINCH.
           <br />
           모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다.
         </p>

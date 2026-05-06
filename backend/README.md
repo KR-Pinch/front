@@ -1,4 +1,4 @@
-# PICKS — Backend Schema (PostgreSQL / Supabase)
+# PINCH — Backend Schema (PostgreSQL / Supabase)
 
 > 프론트엔드가 100% 모킹으로 동작하는 현재 단계에서, **실제 백엔드 구축 시 그대로
 > 적용 가능한 PostgreSQL DDL/DML** 을 한 곳에 모아둔 폴더입니다.
@@ -16,11 +16,11 @@ backend/
 │   ├── 03_user_roles.sql      ← 권한 분리 테이블 + has_role() SECURITY DEFINER
 │   ├── 04_categories.sql      ← 카테고리 마스터
 │   ├── 05_topics.sql          ← 매일의 토픽 (admin draft + seed)
-│   ├── 06_picks.sql           ← 1인 1일 1 PICK (UNIQUE 제약)
-│   ├── 07_pick_likes.sql      ← PICK 좋아요
-│   ├── 08_daily_winners.sql   ← 아카이브: 카테고리/일자별 우승 PICK
+│   ├── 06_picks.sql           ← 1인 1일 1 PINCH (UNIQUE 제약)
+│   ├── 07_pick_likes.sql      ← PINCH 좋아요
+│   ├── 08_daily_winners.sql   ← 아카이브: 카테고리/일자별 우승 PINCH
 │   ├── 09_overrides.sql       ← 관리자 강제 토픽 (글로벌 / 카테고리별)
-│   ├── 10_reports.sql         ← 신고된 PICK
+│   ├── 10_reports.sql         ← 신고된 PINCH
 │   ├── 11_bans.sql            ← 사용자 정지 + 전화번호 블랙리스트
 │   ├── 12_views.sql           ← 주간/월간 랭킹 뷰
 │   ├── 13_functions.sql       ← submit_pick / close_topic_day 등
@@ -29,7 +29,7 @@ backend/
 │   ├── 01_categories.sql      ← 6개 카테고리 시드
 │   ├── 02_topics.sql          ← 오늘의 토픽 시드 (mockData.ts 기반)
 │   ├── 03_archive.sql         ← 아카이브 시드
-│   └── 04_demo_users.sql      ← 데모 사용자/PICK/좋아요
+│   └── 04_demo_users.sql      ← 데모 사용자/PINCH/좋아요
 └── migrations/
     └── 0001_init.sql          ← 위 schema/* 를 한 파일로 합친 단일 마이그레이션
 ```
@@ -49,11 +49,11 @@ psql "$DATABASE_URL" -f backend/seed/04_demo_users.sql
 
 | 규칙 | 구현 |
 |---|---|
-| 1인 1일 1 PICK | `picks (user_id, kst_day) UNIQUE` |
+| 1인 1일 1 PINCH | `pinch (user_id, kst_day) UNIQUE` |
 | KST 기준 하루 마감 (00:00 Asia/Seoul) | `kst_day := (created_at AT TIME ZONE 'Asia/Seoul')::date` 생성열 |
-| 같은 PICK 에 좋아요 1회 | `pick_likes (pick_id, user_id) UNIQUE` |
-| 자기 PICK 좋아요 금지 | `pick_likes` 트리거 |
-| 일자별 카테고리당 단 하나의 우승 PICK | `daily_winners (category_id, kst_day) UNIQUE` |
+| 같은 PINCH 에 좋아요 1회 | `pick_likes (pick_id, user_id) UNIQUE` |
+| 자기 PINCH 좋아요 금지 | `pick_likes` 트리거 |
+| 일자별 카테고리당 단 하나의 우승 PINCH | `daily_winners (category_id, kst_day) UNIQUE` |
 | 권한은 별도 테이블 | `user_roles` + `public.has_role()` SECURITY DEFINER |
 | 영구정지 사용자 = 전화번호도 차단 | `banned_phones` 별도 테이블 |
 | 글로벌/카테고리별 강제 토픽 분리 | `active_topic_global` (singleton) + `active_topic_by_category` |
@@ -63,8 +63,8 @@ psql "$DATABASE_URL" -f backend/seed/04_demo_users.sql
 | 화면 / 모킹 위치 | 백엔드 엔티티 |
 |---|---|
 | `src/data/mockData.ts > todayTopics` | `topics` |
-| `src/data/mockData.ts > todayPicks`  | `picks` + `pick_likes` |
-| `src/data/mockData.ts > archiveData` | `daily_winners` (+ `topics`, `picks`) |
+| `src/data/mockData.ts > todayPicks`  | `pinch` + `pick_likes` |
+| `src/data/mockData.ts > archiveData` | `daily_winners` (+ `topics`, `pinch`) |
 | `src/data/mockData.ts > weeklyRanking / monthlyRanking` | `view_weekly_ranking`, `view_monthly_ranking` |
 | `src/data/adminData.ts > users / bans / bannedPhones` | `profiles` + `bans` + `banned_phones` |
 | `src/data/adminData.ts > reports` | `reports` |

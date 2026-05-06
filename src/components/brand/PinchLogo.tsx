@@ -1,7 +1,7 @@
 import PicksMark from "./PicksMark";
 
 /**
- * Canonical PICKS logo lockup: PicksMark + wordmark.
+ * Canonical PINCH logo lockup: PicksMark + wordmark.
  *
  * Use this anywhere the full brand should appear (sidebar header, footer,
  * auth screen, hero). For icon-only contexts use <PicksMark /> directly.
@@ -36,7 +36,7 @@ const PicksLogo = ({
       {!markOnly && (
         <span className="flex flex-col leading-none">
           <span className={`brand-wordmark ${s.word}`}>
-            <span className="text-gradient">PICKS</span>
+            <span className="text-gradient">PINCH</span>
           </span>
           {withTagline && (
             <span className="mt-1 text-[10px] font-medium tracking-[0.18em] text-muted-foreground">

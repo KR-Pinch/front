@@ -109,7 +109,7 @@ export const BrandAuditOverlay = () => {
         <header className="flex items-center justify-between gap-2 border-b border-amber-500/30 px-3 py-2">
           <div className="flex items-center gap-2 text-xs font-bold">
             <span className="inline-block h-2 w-2 rounded-full bg-amber-500" />
-            <span>PICKS brand audit</span>
+            <span>PINCH brand audit</span>
             <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-mono text-amber-600 dark:text-amber-400">
               {hasFilter ? `${filtered.length}/${findings.length}` : findings.length}
             </span>
