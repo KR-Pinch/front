@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, Settings, LogOut, ChevronDown, Brain, Heart } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import FirstVisitOnboarding from "@/components/onboarding/FirstVisitOnboarding";
