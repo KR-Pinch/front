@@ -13,12 +13,12 @@ export const myProfile = {
 };
 
 export const myStats = {
-  totalComments: 47,
-  totalLikes: 1284,
-  bestCount: 5, // 베스트 댓글 선정 횟수
-  streak: 30,  // 연속 참여 일수
-  avgLikes: 27.3,
-  participationRate: 92, // %
+  totalPicks: 47,        // 지금까지 남긴 PICK 수 (1일 1 PICK)
+  totalLikes: 1284,      // 받은 좋아요 누계
+  bestPickCount: 5,      // 오늘의 PICK으로 선정된 횟수
+  streak: 30,            // 연속 참여 일수
+  avgLikes: 27.3,        // PICK당 평균 좋아요
+  participationRate: 92, // 참여율 (%)
 };
 
 export const myComments = [
