@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
+import Seo from "@/components/Seo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
