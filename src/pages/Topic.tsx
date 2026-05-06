@@ -326,7 +326,7 @@ const Topic = () => {
 
         <div className="h-px bg-border" />
 
-        {/* Comment Input */}
+        {/* PICK Input */}
         <AnimatePresence mode="wait">
           {closed ? (
             <motion.div
