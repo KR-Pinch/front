@@ -1,7 +1,7 @@
 // ============================================================================
 // PINCH metric guards
 // ----------------------------------------------------------------------------
-// Single source of truth for "how many PICKs?" semantics. The codebase has
+// Single source of truth for "how many PINCHes?" semantics. The codebase has
 // historically mixed `commentCount`/`totalComments` (legacy) with
 // `pinchCount`/`totalPinches` (current). This module:
 //

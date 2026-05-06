@@ -18,4 +18,4 @@ create table if not exists public.pinch (
 
 create index if not exists pinches_topic_idx on public.pinch (topic_id, created_at desc);
 create index if not exists pinches_user_idx  on public.pinch (user_id, created_at desc);
-create index if not exists picks_day_idx   on public.pinch (kst_day);
+create index if not exists pinch_day_idx   on public.pinch (kst_day);

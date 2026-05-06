@@ -19,7 +19,7 @@ create table if not exists public.reports (
 create index if not exists reports_status_idx on public.reports (status, created_at desc);
 
 -- 집계 뷰: 관리자 화면이 사용하는 신고 수 + 가장 최근 신고 시각
-create or replace view public.view_reported_picks as
+create or replace view public.view_reported_pinches as
   select p.id              as pick_id,
          p.topic_id,
          t.title           as topic_title,

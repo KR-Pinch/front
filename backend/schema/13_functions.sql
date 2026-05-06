@@ -66,7 +66,7 @@ begin
              partition by t.category_id
              order by coalesce(ps.like_count, 0) desc, p.created_at asc
            ) as rn,
-           count(*) over (partition by t.category_id) as total_picks_in_cat
+           count(*) over (partition by t.category_id) as total_pinches_in_cat
       from public.pinch p
       join public.topics t on t.id = p.topic_id
       left join public.view_pick_stats ps on ps.pick_id = p.id
@@ -74,8 +74,8 @@ begin
        and p.is_hidden = false
   )
   insert into public.daily_winners
-        (kst_day, category_id, topic_id, pick_id, total_picks, best_likes)
-  select v_day, category_id, topic_id, pick_id, total_picks_in_cat, likes
+        (kst_day, category_id, topic_id, pick_id, total_pinches, best_likes)
+  select v_day, category_id, topic_id, pick_id, total_pinches_in_cat, likes
     from ranked
    where rn = 1
   on conflict (kst_day, category_id) do nothing;

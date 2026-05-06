@@ -930,7 +930,7 @@ const Admin = () => {
     [bans]
   );
   const pendingReports = reports.filter((r) => r.status === "pending").length;
-  // Mock DAU & today's PICKs derived from users.
+  // Mock DAU & today's PINCHes derived from users.
   const dau = Math.round(users.length * 7.4);
   const todayPinches = users.reduce((acc, u) => acc + Math.min(u.totalPinches, 1), 0) + 12;
 

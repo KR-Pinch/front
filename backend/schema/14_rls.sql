@@ -48,13 +48,13 @@ create policy "topics_admin_write" on public.topics
   for all to authenticated using (public.is_admin(auth.uid())) with check (public.is_admin(auth.uid()));
 
 -- ----- pinch -------------------------------------------------------------
-create policy "picks_read_visible" on public.pinch
+create policy "pinch_read_visible" on public.pinch
   for select to anon, authenticated using (is_hidden = false or public.is_admin(auth.uid()));
-create policy "picks_insert_self" on public.pinch
+create policy "pinch_insert_self" on public.pinch
   for insert to authenticated with check (user_id = auth.uid() and not public.is_user_banned(auth.uid()));
-create policy "picks_update_self" on public.pinch
+create policy "pinch_update_self" on public.pinch
   for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
-create policy "picks_admin_all" on public.pinch
+create policy "pinch_admin_all" on public.pinch
   for all to authenticated using (public.is_admin(auth.uid())) with check (public.is_admin(auth.uid()));
 
 -- ----- pick_likes --------------------------------------------------------

@@ -61,7 +61,7 @@ create or replace view public.view_monthly_ranking as
 create or replace view public.view_my_stats as
   select pr.id                              as user_id,
          pr.username,
-         count(distinct p.id)               as total_picks,
+         count(distinct p.id)               as total_pinches,
          coalesce(sum(ps.like_count), 0)    as total_likes,
          count(distinct dw.id)              as best_pick_count,
          case when count(distinct p.id) = 0 then 0
