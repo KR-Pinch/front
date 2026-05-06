@@ -127,7 +127,14 @@ src/
 ├── brand/              # 브랜드 용어 시스템 (terms.mjs · BrandText · 스캐너 연동)
 ├── hooks/              # useAuth, useAdminAuth, use-toast, use-mobile
 └── index.css           # HSL 디자인 토큰 + 시맨틱 유틸리티
+
+backend/                # 백엔드 연동을 위한 PostgreSQL DDL/DML (Supabase 기준)
+├── schema/             # 00_extensions ~ 14_rls (enums · tables · views · functions · RLS)
+├── seed/               # 카테고리 · 오늘의 토픽 · 아카이브 · 데모 사용자 시드
+└── migrations/0001_init.sql  # schema/* 를 합친 단일 초기 마이그레이션
 ```
+
+> `backend/` 는 프론트엔드와 분리된 **DB 스키마 패키지** 입니다. 1인 1일 1 PINCH UNIQUE 제약, `submit_pinch` / `close_topic_day` 함수, 모든 테이블 RLS 정책이 포함되어 있어 Supabase SQL editor 에 그대로 적용 가능합니다. 자세한 내용은 [`backend/README.md`](backend/README.md) 참고.
 
 ---
 
