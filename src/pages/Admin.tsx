@@ -191,9 +191,9 @@ const UsersTab = () => {
                 </p>
                 <p
                   className="flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground"
-                  title={`누적 PICK ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
+                  title={`누적 PINCH ${u.totalPinches}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
                 >
-                  <span>PICK {u.totalPicks}</span>
+                  <span>PINCH {u.totalPinches}</span>
                   <span aria-hidden="true">·</span>
                   <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
                   <span>{u.totalLikes.toLocaleString()}</span>
@@ -838,7 +838,7 @@ const ReportsTab = () => {
   return (
     <div className="space-y-2">
       <p className="px-1 text-[10px] text-muted-foreground">
-        ※ 여기서 말하는 <strong className="text-foreground">댓글(신고 대상)</strong>은 일반 PICK과 별개로,
+        ※ 여기서 말하는 <strong className="text-foreground">댓글(신고 대상)</strong>은 일반 PINCH과 별개로,
         신고 접수되어 모더레이션이 필요한 게시물입니다.
       </p>
       {reports.length === 0 && (
@@ -930,9 +930,9 @@ const Admin = () => {
     [bans]
   );
   const pendingReports = reports.filter((r) => r.status === "pending").length;
-  // Mock DAU & today's PICKs derived from users.
+  // Mock DAU & today's PINCHes derived from users.
   const dau = Math.round(users.length * 7.4);
-  const todayPicks = users.reduce((acc, u) => acc + Math.min(u.totalPicks, 1), 0) + 12;
+  const todayPinches = users.reduce((acc, u) => acc + Math.min(u.totalPinches, 1), 0) + 12;
 
   const handleLogout = () => {
     logout();
@@ -986,9 +986,9 @@ const Admin = () => {
             />
             <StatCard
               icon={MessageSquare}
-              label="오늘 PICK"
-              value={todayPicks}
-              hint={`오늘 작성된 PICK 수 · 1인 1일 1 PICK (예: ${todayPicks}개 = ${todayPicks}명 참여)`}
+              label="오늘 PINCH"
+              value={todayPinches}
+              hint={`오늘 작성된 PINCH 수 · 1인 1일 1 PINCH (예: ${todayPinches}개 = ${todayPinches}명 참여)`}
             />
             <StatCard
               icon={Ban}

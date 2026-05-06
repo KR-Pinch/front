@@ -76,11 +76,11 @@ const AppShell = () => {
             <SidebarTrigger />
             <a
               href="/"
-              aria-label="PICKS 홈"
+              aria-label="PINCH 홈"
               className="flex items-center gap-2"
             >
               <span className="brand-wordmark text-sm">
-                <span className="text-gradient">PICKS</span>
+                <span className="text-gradient">PINCH</span>
               </span>
               <span
                 aria-hidden="true"

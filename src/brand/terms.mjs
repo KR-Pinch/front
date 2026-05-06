@@ -1,5 +1,5 @@
 /**
- * PICKS 브랜드 용어 사전 — 단일 진실 공급원 (Single Source of Truth)
+ * PINCH 브랜드 용어 사전 — 단일 진실 공급원 (Single Source of Truth)
  *
  * 이 파일은 다음 두 곳에서 함께 사용됩니다.
  *  1) 정적 스캐너 (`scripts/scan-brand-terms.mjs`) — Node가 직접 import
@@ -9,7 +9,7 @@
  *
  * 규칙 종류
  *  - forbidden : 사용자 노출 영역에서 절대 등장 금지. 권장 표현으로 자동 치환.
- *  - case      : 브랜드 대소문자 정합성. 'Pick'/'pick'/'Picks'/'picks' → 'PICK'/'PICKS'.
+ *  - case      : 브랜드 대소문자 정합성. 'Pinch'/'pinch'/'Pinch'/'pinch' → 'PINCH'/'PINCH'.
  *
  * 좌우 경계: 영문/숫자/하이픈/점/콜론/슬래시/@/언더스코어가 인접하면
  * 식별자·URL·이메일·파일명으로 보고 제외 (TS의 `Pick<T>` 유틸리티 포함).
@@ -22,14 +22,14 @@ export const FORBIDDEN_RULES = [
   {
     kind: "forbidden",
     pattern: /한마디/g,
-    replacement: "PICKS",
-    reason: "레거시 서비스명. 'PICKS'로 대체하세요.",
+    replacement: "PINCH",
+    reason: "레거시 서비스명. 'PINCH'로 대체하세요.",
   },
   {
     kind: "forbidden",
     pattern: /박제/g,
-    replacement: "오늘의 PICK",
-    reason: "레거시 메타포. 문맥에 따라 '오늘의 PICK' 또는 '선택된 PICKS'로 대체하세요.",
+    replacement: "오늘의 PINCH",
+    reason: "레거시 메타포. 문맥에 따라 '오늘의 PINCH' 또는 '선택된 PINCH'로 대체하세요.",
   },
 ];
 
@@ -37,27 +37,15 @@ export const FORBIDDEN_RULES = [
 export const BRAND_CASE_RULES = [
   {
     kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])Picks(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PICKS",
-    reason: "브랜드 표기는 항상 대문자 'PICKS' 입니다.",
+    pattern: /(?<![A-Za-z0-9\-./:@_])Pinch(?![A-Za-z0-9\-./:@_<])/g,
+    replacement: "PINCH",
+    reason: "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
   },
   {
     kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])picks(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PICKS",
-    reason: "브랜드 표기는 항상 대문자 'PICKS' 입니다.",
-  },
-  {
-    kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])Pick(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PICK",
-    reason: "브랜드 표기는 항상 대문자 'PICK' 입니다.",
-  },
-  {
-    kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])pick(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PICK",
-    reason: "브랜드 표기는 항상 대문자 'PICK' 입니다.",
+    pattern: /(?<![A-Za-z0-9\-./:@_])pinch(?![A-Za-z0-9\-./:@_<])/g,
+    replacement: "PINCH",
+    reason: "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
   },
 ];
 

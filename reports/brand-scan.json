@@ -11,32 +11,32 @@
       "file": "src/__brand_demo__/sample.tsx",
       "line": 1,
       "term": "한마디",
-      "reason": "레거시 서비스명. 'PICKS'로 대체하세요.",
-      "text": "한마디 Picks pick 박제"
+      "reason": "레거시 서비스명. 'PINCH'로 대체하세요.",
+      "text": "한마디 Pinch pinch 박제"
     },
     {
       "kind": "forbidden",
       "file": "src/__brand_demo__/sample.tsx",
       "line": 1,
       "term": "박제",
-      "reason": "레거시 메타포. 문맥에 따라 '오늘의 PICK' 또는 '선택된 PICKS'로 대체하세요.",
-      "text": "한마디 Picks pick 박제"
+      "reason": "레거시 메타포. 문맥에 따라 '오늘의 PINCH' 또는 '선택된 PINCH'로 대체하세요.",
+      "text": "한마디 Pinch pinch 박제"
     },
     {
       "kind": "case",
       "file": "src/__brand_demo__/sample.tsx",
       "line": 1,
-      "term": "Picks",
-      "reason": "브랜드 표기는 항상 대문자 'PICKS' 입니다.",
-      "text": "한마디 Picks pick 박제"
+      "term": "Pinch",
+      "reason": "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
+      "text": "한마디 Pinch pinch 박제"
     },
     {
       "kind": "case",
       "file": "src/__brand_demo__/sample.tsx",
       "line": 1,
-      "term": "pick",
-      "reason": "브랜드 표기는 항상 대문자 'PICK' 입니다.",
-      "text": "한마디 Picks pick 박제"
+      "term": "pinch",
+      "reason": "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
+      "text": "한마디 Pinch pinch 박제"
     }
   ]
 }

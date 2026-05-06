@@ -147,7 +147,7 @@ const Settings = () => {
 
   return (
     <PageTransition>
-      <Seo title="설정 — PICKS" description="알림, 테마, 계정 설정을 관리하세요." path="/settings" noindex />
+      <Seo title="설정 — PINCH" description="알림, 테마, 계정 설정을 관리하세요." path="/settings" noindex />
       <div className="min-h-screen bg-background pb-24 noise">
         {/* Header */}
         <header className="page-sticky-header">
@@ -216,8 +216,8 @@ const Settings = () => {
               {[
                 {
                   key: "pick-reactions",
-                  label: "내 PICK 반응",
-                  desc: "내 PICK에 좋아요가 눌렸을 때",
+                  label: "내 PINCH 반응",
+                  desc: "내 PINCH에 좋아요가 눌렸을 때",
                   value: notifyPickReactions,
                   set: setNotifyPickReactions,
                 },
@@ -285,9 +285,9 @@ const Settings = () => {
           >
             <div className="space-y-1">
               {[
-                { label: "서비스 이용약관", desc: "PICKS 서비스 이용 규칙", to: "/terms", version: "v1.2 · 2026.03.01" },
+                { label: "서비스 이용약관", desc: "PINCH 서비스 이용 규칙", to: "/terms", version: "v1.2 · 2026.03.01" },
                 { label: "개인정보 처리방침", desc: "수집·이용·보관 정책", to: "/privacy", version: "v1.1 · 2026.02.15" },
-                { label: "운영 정책", desc: "PICK·신고·제재 기준", to: "/legal/community", version: "v1.0 · 2026.01.10" },
+                { label: "운영 정책", desc: "PINCH·신고·제재 기준", to: "/legal/community", version: "v1.0 · 2026.01.10" },
               ].map((row) => (
                 <Link
                   key={row.label}
@@ -327,7 +327,7 @@ const Settings = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>정말 계정을 삭제하시겠습니까?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    삭제된 계정은 복구할 수 없으며, 작성한 모든 PICK과 활동 기록이
+                    삭제된 계정은 복구할 수 없으며, 작성한 모든 PINCH과 활동 기록이
                     함께 삭제됩니다.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
@@ -345,7 +345,7 @@ const Settings = () => {
           </SectionCard>
 
           <p className="pt-2 text-center text-[11px] text-muted-foreground">
-            PICKS · v0.1.0
+            PINCH · v0.1.0
           </p>
         </motion.main>
 

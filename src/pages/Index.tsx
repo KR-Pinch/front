@@ -291,19 +291,19 @@ const Index = () => {
   return (
     <PageTransition>
     <Seo
-      title="PICKS — 매일 하나의 선택된 의견 | 오늘의 PICK"
-      description="PICKS는 매일 하나의 핫토픽에 1인 1 PICK으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다."
+      title="PINCH — 매일 하나의 선택된 의견 | 오늘의 PINCH"
+      description="PINCH는 매일 하나의 핫토픽에 1인 1 PINCH으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다."
       path="/"
       jsonLd={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "PICKS",
+        name: "PINCH",
         applicationCategory: "SocialNetworkingApplication",
         operatingSystem: "Web",
-        url: "https://hot-topic-today.lovable.app/",
+        url: "https://usepinch.lovable.app/",
         inLanguage: "ko-KR",
         description:
-          "매일 하나의 주제, 1인 1 PICK. 가장 공감받은 의견 하나만 아카이브에 남습니다.",
+          "매일 하나의 주제, 1인 1 PINCH. 가장 공감받은 의견 하나만 아카이브에 남습니다.",
       }}
     />
     <div className="min-h-screen bg-background pb-24">
@@ -380,7 +380,7 @@ const Index = () => {
           <h1 className="text-gradient-white text-4xl font-black leading-tight tracking-tight md:text-5xl lg:text-6xl">
             오늘의
             <br />
-            <span className="brand-wordmark text-gradient">PICKS</span>
+            <span className="brand-wordmark text-gradient">PINCH</span>
           </h1>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
             매일 하나의 주제, 단 하나의 의견.<br />
@@ -483,9 +483,9 @@ const Index = () => {
                           <Clock className="h-3.5 w-3.5 text-accent/70" />
                           {displayTopic.remainingTime}
                         </span>
-                        <span className="flex items-center gap-1" title="이 토픽의 누적 PICK 수">
+                        <span className="flex items-center gap-1" title="이 토픽의 누적 PINCH 수">
                           <MessageCircle className="h-3.5 w-3.5 text-accent/70" />
-                          PICK {displayTopic.pickCount.toLocaleString()}
+                          PINCH {displayTopic.pinchCount.toLocaleString()}
                         </span>
                       </div>
                       <span className="flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1.5 text-xs font-semibold text-accent transition-transform group-hover:translate-x-1">
@@ -517,7 +517,7 @@ const Index = () => {
                 <Archive className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-colors" />
                 <div>
                   <p className="text-lg font-bold">아카이브</p>
-                  <p className="text-xs text-muted-foreground">지난 주제 · 선택된 PICKS</p>
+                  <p className="text-xs text-muted-foreground">지난 주제 · 선택된 PINCH</p>
                 </div>
               </motion.div>
             </Link>

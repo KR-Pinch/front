@@ -24,8 +24,8 @@ const Ranking = () => {
   return (
     <PageTransition>
     <Seo
-      title="PICKS 랭킹 — 이번 주의 똑똑이"
-      description="PICKS에서 가장 공감받은 PICK을 남긴 유저들의 주간·월간 랭킹을 확인하세요."
+      title="PINCH 랭킹 — 이번 주의 똑똑이"
+      description="PINCH에서 가장 공감받은 PINCH을 남긴 유저들의 주간·월간 랭킹을 확인하세요."
       path="/ranking"
     />
     <div className="min-h-screen bg-background pb-24">

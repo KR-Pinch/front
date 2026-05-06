@@ -46,7 +46,7 @@ const DevPreview = () => {
             to="/"
             className="text-sm font-black"
           >
-            <span className="text-gradient">PICKS</span>
+            <span className="text-gradient">PINCH</span>
             <span className="ml-2 text-xs font-medium text-muted-foreground">
               · Dev Preview
             </span>

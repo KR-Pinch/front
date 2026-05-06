@@ -119,8 +119,8 @@ const Archive = () => {
     e?.stopPropagation();
     const url = buildShareUrl(getArchiveItemId(item));
     const shareData = {
-      title: `PICKS 아카이브 · ${item.title}`,
-      text: `"${item.bestPick}" — @${item.bestUser}`,
+      title: `PINCH 아카이브 · ${item.title}`,
+      text: `"${item.bestPinch}" — @${item.bestUser}`,
       url,
     };
     try {
@@ -163,11 +163,11 @@ const Archive = () => {
   return (
     <PageTransition>
     <Seo
-      title={selected ? `${selected.title} — PICKS 아카이브` : "PICKS 아카이브 — 지난 주제와 선택된 PICK"}
+      title={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브 — 지난 주제와 선택된 PINCH"}
       description={
         selected
-          ? `${selected.title} — ${selected.bestPick.slice(0, 110)}`
-          : "PICKS 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PICK을 다시 만나보세요."
+          ? `${selected.title} — ${selected.bestPinch.slice(0, 110)}`
+          : "PINCH 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PINCH을 다시 만나보세요."
       }
       path={selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive"}
     />
@@ -197,7 +197,7 @@ const Archive = () => {
               </h1>
             );
           })()}
-          <p className="mt-1 text-sm text-muted-foreground">지난 주제와 선택된 PICKS</p>
+          <p className="mt-1 text-sm text-muted-foreground">지난 주제와 선택된 PINCH</p>
         </div>
 
         {/* Ad Banner */}
@@ -296,7 +296,7 @@ const Archive = () => {
               exit={{ opacity: 0 }}
               className="glass rounded-2xl p-8 text-center text-sm text-muted-foreground"
             >
-              {query ? `"${query}"에 대한 결과가 없습니다.` : "이 카테고리에는 아직 아카이브된 PICK이 없습니다."}
+              {query ? `"${query}"에 대한 결과가 없습니다.` : "이 카테고리에는 아직 아카이브된 PINCH이 없습니다."}
             </motion.div>
           ) : (
             <motion.div
@@ -333,11 +333,11 @@ const Archive = () => {
                       <span className="text-muted-foreground">{item.date}</span>
                       <span
                         className="flex items-center gap-1 text-muted-foreground"
-                        title={`이 주제에 PICK을 남긴 참여자 수 (1인 1 PICK · 예: ${item.totalPicks.toLocaleString()}명 참여)`}
-                        aria-label={`참여자 ${item.totalPicks.toLocaleString()}명 (1인 1 PICK)`}
+                        title={`이 주제에 PINCH을 남긴 참여자 수 (1인 1 PINCH · 예: ${item.totalPinches.toLocaleString()}명 참여)`}
+                        aria-label={`참여자 ${item.totalPinches.toLocaleString()}명 (1인 1 PINCH)`}
                       >
                         <Users className="h-3 w-3" />
-                        {item.totalPicks.toLocaleString()}명 참여
+                        {item.totalPinches.toLocaleString()}명 참여
                       </span>
                       <span
                         role="button"
@@ -365,16 +365,16 @@ const Archive = () => {
                       출처 · {item.newsSource}
                     </p>
 
-                    {/* Winning PICK */}
+                    {/* Winning PINCH */}
                     <div className="rounded-xl bg-accent/5 border border-accent/15 p-4">
                       <div className="mb-2 flex items-center gap-2">
                         <span className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
-                          <Crown className="h-3 w-3" /> 오늘의 PICK
+                          <Crown className="h-3 w-3" /> 오늘의 PINCH
                         </span>
                         <span className="text-sm font-semibold">{item.bestUser}</span>
                       </div>
                       <p className="text-sm leading-relaxed text-foreground/70">
-                        "{item.bestPick}"
+                        "{item.bestPinch}"
                       </p>
                       <div className="mt-2 flex items-center gap-1 text-xs text-accent">
                         <Heart className="h-3 w-3 fill-current" />
@@ -422,17 +422,17 @@ const Archive = () => {
               <div className="mt-2 rounded-xl bg-accent/5 border border-accent/15 p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <span className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
-                    <Crown className="h-3 w-3" /> 오늘의 PICK
+                    <Crown className="h-3 w-3" /> 오늘의 PINCH
                   </span>
                   <span className="text-sm font-semibold">{selected.bestUser}</span>
                 </div>
                 <p className="text-sm leading-relaxed text-foreground/80">
-                  "{selected.bestPick}"
+                  "{selected.bestPinch}"
                 </p>
                 <div className="mt-2 flex items-center gap-3 text-xs">
                   <span
                     className="flex items-center gap-1 text-accent"
-                    title={`우승 PICK이 받은 좋아요 (${selected.bestLikes.toLocaleString()}개)`}
+                    title={`우승 PINCH이 받은 좋아요 (${selected.bestLikes.toLocaleString()}개)`}
                     aria-label={`좋아요 ${selected.bestLikes.toLocaleString()}개`}
                   >
                     <Heart className="h-3 w-3 fill-current" />
@@ -440,15 +440,15 @@ const Archive = () => {
                   </span>
                   <span
                     className="flex items-center gap-1 text-muted-foreground"
-                    title={`이 주제에 PICK을 남긴 참여자 수 (1인 1 PICK · 그중 1개만 아카이브)`}
-                    aria-label={`참여자 ${selected.totalPicks.toLocaleString()}명`}
+                    title={`이 주제에 PINCH을 남긴 참여자 수 (1인 1 PINCH · 그중 1개만 아카이브)`}
+                    aria-label={`참여자 ${selected.totalPinches.toLocaleString()}명`}
                   >
                     <Users className="h-3 w-3" />
-                    {selected.totalPicks.toLocaleString()}명 참여
+                    {selected.totalPinches.toLocaleString()}명 참여
                   </span>
                 </div>
                 <p className="mt-2 text-[10px] leading-snug text-muted-foreground/70">
-                  ※ {selected.totalPicks.toLocaleString()}개의 PICK 중 가장 많은 좋아요를 받은 1개만 아카이브에 남습니다.
+                  ※ {selected.totalPinches.toLocaleString()}개의 PINCH 중 가장 많은 좋아요를 받은 1개만 아카이브에 남습니다.
                 </p>
               </div>
 

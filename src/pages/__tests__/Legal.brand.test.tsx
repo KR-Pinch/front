@@ -9,7 +9,7 @@ import { legalDocs } from "@/data/legalContent";
 
 /**
  * 약관/개인정보/운영정책 문서를 실제 페이지로 렌더링한 뒤,
- * 본문(<article>) 영역 텍스트에 PICKS 금칙어/잘못된 브랜드 표기가 없는지 검증한다.
+ * 본문(<article>) 영역 텍스트에 PINCH 금칙어/잘못된 브랜드 표기가 없는지 검증한다.
  *
  * 단순히 위반 유무만 보지 않고, 각 위반이 "어떤 DOM 노드/문맥"에서 발생했는지
  * 사람이 빠르게 추적할 수 있도록 보기 좋은 리포트를 출력하고
@@ -116,7 +116,7 @@ const allViolations: NodeViolation[] = [];
 
 function formatReport(violations: NodeViolation[]): string {
   if (violations.length === 0) {
-    return "# Legal pages 브랜드 정합성 리포트\n\n✅ 모든 문서가 PICKS 표기 규칙을 준수합니다.\n";
+    return "# Legal pages 브랜드 정합성 리포트\n\n✅ 모든 문서가 PINCH 표기 규칙을 준수합니다.\n";
   }
   const bySlug = violations.reduce<Record<string, NodeViolation[]>>((acc, v) => {
     (acc[v.slug] ??= []).push(v);
@@ -187,10 +187,10 @@ describe("Legal pages — 본문 금칙어/브랜드 표기 검증", () => {
     });
   }
 
-  it("커뮤니티 본문에 'PICKS' 키워드가 등장한다 (브랜드 일관성 sanity)", () => {
+  it("커뮤니티 본문에 'PINCH' 키워드가 등장한다 (브랜드 일관성 sanity)", () => {
     const { container } = renderLegal("/legal/community");
     const article = container.querySelector("article")!;
-    expect(within(article as HTMLElement).getByText(/PICKS/)).toBeInTheDocument();
+    expect(within(article as HTMLElement).getByText(/PINCH/)).toBeInTheDocument();
   });
 
   afterAll(() => {

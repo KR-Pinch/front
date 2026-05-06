@@ -25,8 +25,8 @@ const Legal = () => {
   return (
     <PageTransition>
       <Seo
-        title={`${doc.title} — PICKS`}
-        description={`PICKS의 ${doc.title} 문서입니다.`}
+        title={`${doc.title} — PINCH`}
+        description={`PINCH의 ${doc.title} 문서입니다.`}
         path={pathname}
       />
       <div className="min-h-screen bg-background pb-24 noise">
@@ -151,7 +151,7 @@ const Legal = () => {
           </article>
 
           <p className="py-6 text-center text-[11px] text-muted-foreground">
-            문의: support@picks.kr
+            문의: support@pinch.kr
           </p>
         </motion.main>
 

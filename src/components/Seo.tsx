@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const SITE_URL = "https://hot-topic-today.lovable.app";
+const SITE_URL = "https://usepinch.lovable.app";
 const DEFAULT_OG = `${SITE_URL}/og-cover.png`;
 
 interface SeoProps {
@@ -65,7 +65,7 @@ const Seo = ({ title, description, path, ogImage, noindex, jsonLd }: SeoProps) =
     upsertMeta('meta[property="og:image"]', { property: "og:image", content: image });
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: "website" });
     upsertMeta('meta[property="og:locale"]', { property: "og:locale", content: "ko_KR" });
-    upsertMeta('meta[property="og:site_name"]', { property: "og:site_name", content: "PICKS" });
+    upsertMeta('meta[property="og:site_name"]', { property: "og:site_name", content: "PINCH" });
 
     upsertMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
     upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });

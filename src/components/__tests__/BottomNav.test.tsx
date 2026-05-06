@@ -61,7 +61,7 @@ describe("BottomNav — shell positioning regression", () => {
 
   it.each([
     ["/", "홈"],
-    ["/topic", "PICK"],
+    ["/topic", "PINCH"],
     ["/archive", "아카이브"],
     ["/ranking", "랭킹"],
     ["/mypage", "MY"],

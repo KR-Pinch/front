@@ -98,7 +98,7 @@ const MyPage = () => {
 
   return (
     <PageTransition>
-      <Seo title="마이페이지 — PICKS" description="내 PICK과 받은 좋아요, 활동 기록을 확인하세요." path="/mypage" noindex />
+      <Seo title="마이페이지 — PINCH" description="내 PINCH과 받은 좋아요, 활동 기록을 확인하세요." path="/mypage" noindex />
       <div className="min-h-screen bg-background pb-24">
         {/* Header */}
         <div className="page-sticky-header">
@@ -201,22 +201,22 @@ const MyPage = () => {
             >
               <StatCard
                 icon={MessageSquare}
-                label="총 PICK"
-                value={myStats.totalPicks}
+                label="총 PINCH"
+                value={myStats.totalPinches}
                 suffix="개"
-                hint="내가 남긴 PICK 누계 (예: 47일 참여 = 47개)"
+                hint="내가 남긴 PINCH 누계 (예: 47일 참여 = 47개)"
               />
               <StatCard
                 icon={Heart}
                 label="받은 좋아요"
                 value={myStats.totalLikes.toLocaleString()}
                 highlight
-                hint="내 PICK이 받은 좋아요 총합"
+                hint="내 PINCH이 받은 좋아요 총합"
               />
               <StatCard
                 icon={Award}
-                label="오늘의 PICK 선정"
-                value={myStats.bestPickCount}
+                label="오늘의 PINCH 선정"
+                value={myStats.bestPinchCount}
                 suffix="회"
                 hint="하루 1개로 뽑힌 횟수 (예: 5회 = 5일 우승)"
               />
@@ -226,20 +226,20 @@ const MyPage = () => {
                 value={myStats.streak}
                 suffix="일"
                 highlight
-                hint="끊김 없이 PICK을 남긴 일수"
+                hint="끊김 없이 PINCH을 남긴 일수"
               />
               <StatCard
                 icon={TrendingUp}
                 label="평균 좋아요"
                 value={myStats.avgLikes}
-                hint="PICK 1개당 평균 좋아요 수"
+                hint="PINCH 1개당 평균 좋아요 수"
               />
               <StatCard
                 icon={Trophy}
                 label="참여율"
                 value={myStats.participationRate}
                 suffix="%"
-                hint="가입 후 가능 일수 대비 PICK을 남긴 비율"
+                hint="가입 후 가능 일수 대비 PINCH을 남긴 비율"
               />
             </motion.div>
           </section>
@@ -283,7 +283,7 @@ const MyPage = () => {
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-black flex items-center gap-1.5">
-                <MessageSquare className="h-4 w-4 text-accent" />내 PICK
+                <MessageSquare className="h-4 w-4 text-accent" />내 PINCH
               </h3>
               <span className="text-[10px] font-medium text-muted-foreground">
                 {myComments.length}개

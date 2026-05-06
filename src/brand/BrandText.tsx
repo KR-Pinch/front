@@ -10,7 +10,7 @@ import { applyBrandTerms } from "./terms";
  *   <BrandText>
  *     <p>오늘의 한마디입니다.</p>
  *   </BrandText>
- *   // → "오늘의 PICKS입니다."
+ *   // → "오늘의 PINCH입니다."
  *
  * 의미 보존이 중요한 카피는 작성 단계에서 직접 교정을 권장합니다.
  * 이 컴포넌트는 안전망(런타임 가드)입니다.

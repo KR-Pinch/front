@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import PicksLogo from "@/components/brand/PicksLogo";
+import PinchLogo from "@/components/brand/PinchLogo";
 
 /**
  * Brand footer rendered inside AppShell on tablet+ screens.
  *
- * Reinforces the PICKS naming concept:
+ * Reinforces the PINCH naming concept:
  *   "모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다."
  *
  * Hidden on mobile because BottomNav already occupies the bottom edge
@@ -24,14 +24,14 @@ const SiteFooter = () => {
           <div className="flex max-w-md flex-col gap-3">
             <Link
               to="/"
-              aria-label="PICKS 홈"
+              aria-label="PINCH 홈"
               aria-labelledby="site-footer-brand"
               className="inline-flex"
             >
               <span id="site-footer-brand" className="sr-only">
-                PICKS
+                PINCH
               </span>
-              <PicksLogo size="md" withTagline />
+              <PinchLogo size="md" withTagline />
             </Link>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
@@ -43,9 +43,9 @@ const SiteFooter = () => {
             </p>
 
             <p className="text-xs text-muted-foreground/80">
-              <span className="font-semibold text-foreground/70">PICK</span>은
+              <span className="font-semibold text-foreground/70">PINCH</span>은
               당신의 한 표,{" "}
-              <span className="font-semibold text-foreground/70">PICKS</span>는
+              <span className="font-semibold text-foreground/70">PINCH</span>는
               매일 선택된 의견의 모음입니다.
             </p>
           </div>
@@ -63,7 +63,7 @@ const SiteFooter = () => {
                 to="/topic"
                 className="text-foreground/80 transition-colors hover:text-accent"
               >
-                오늘의 PICK
+                오늘의 PINCH
               </Link>
               <Link
                 to="/archive"
@@ -118,7 +118,7 @@ const SiteFooter = () => {
         </div>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-border/40 pt-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} PICKS. All rights reserved.</p>
+          <p>© {year} PINCH. All rights reserved.</p>
           <p className="font-medium tracking-wide text-muted-foreground/80">
             One topic. Many voices.{" "}
             <span className="text-accent">Only one remains.</span>

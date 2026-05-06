@@ -36,7 +36,7 @@ export interface NavRouteMeta {
 
 export const navRoutes: Record<NavRouteKey, NavRouteMeta> = {
   home:     { key: "home",     to: "/",         shortLabel: "홈",       label: "홈",          icon: Brain },
-  topic:    { key: "topic",    to: "/topic",    shortLabel: "PICK",     label: "오늘의 PICK", icon: MessageCircle },
+  topic:    { key: "topic",    to: "/topic",    shortLabel: "PINCH",     label: "오늘의 PINCH", icon: MessageCircle },
   archive:  { key: "archive",  to: "/archive",  shortLabel: "아카이브", label: "아카이브",    icon: Archive },
   ranking:  { key: "ranking",  to: "/ranking",  shortLabel: "랭킹",     label: "똑똑이 랭킹", icon: Trophy },
   mypage:   { key: "mypage",   to: "/mypage",   shortLabel: "MY",       label: "마이페이지",  icon: User },

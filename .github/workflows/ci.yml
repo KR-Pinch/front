@@ -30,7 +30,7 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: PICKS brand consistency scan
+      - name: PINCH brand consistency scan
         id: brand
         run: npm run scan:brand -- --report-dir reports
         continue-on-error: false
@@ -59,7 +59,7 @@ jobs:
             const path = 'reports/brand-scan.md';
             if (!fs.existsSync(path)) return;
             const body = fs.readFileSync(path, 'utf8');
-            const marker = '<!-- picks-brand-scan -->';
+            const marker = '<!-- pinch-brand-scan -->';
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
             if (!issue_number) return;

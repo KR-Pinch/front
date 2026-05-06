@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import PicksMark from "@/components/brand/PicksMark";
+import PinchMark from "@/components/brand/PinchMark";
 
 interface Props {
   open: boolean;
@@ -78,12 +78,12 @@ const WelcomeModal = ({
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ delay: 0.1, type: "spring", stiffness: 260, damping: 18 }}
                 >
-                  <PicksMark className="h-14 w-14" />
+                  <PinchMark className="h-14 w-14" />
                 </motion.div>
 
                 {/* Title */}
                 <div className="space-y-1.5">
-                  <p className="brand-eyebrow">Welcome to PICKS</p>
+                  <p className="brand-eyebrow">Welcome to PINCH</p>
                   <h2 className="text-2xl font-black">
                     환영합니다,{" "}
                     <span className="text-gradient">{username || "회원"}</span>님!
@@ -91,7 +91,7 @@ const WelcomeModal = ({
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     회원가입이 완료되었습니다.
                     <br />
-                    오늘의 주제에 당신의 PICK을 남겨보세요.
+                    오늘의 주제에 당신의 PINCH을 남겨보세요.
                   </p>
                 </div>
 
