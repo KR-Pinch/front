@@ -461,11 +461,14 @@ const Index = () => {
                           <Flame className="h-3 w-3" /> HOT #1
                         </motion.span>
                       )}
-                      {displayCat && (
-                        <span className={`flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold ${displayCat.accent}`}>
-                          <span>{displayCat.emoji}</span> {displayCat.label}
-                        </span>
-                      )}
+                      {displayCat && (() => {
+                        const DisplayCatIcon = displayCat.icon;
+                        return (
+                          <span className={`flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold ${displayCat.accent}`}>
+                            <DisplayCatIcon className="h-3 w-3" aria-hidden="true" /> {displayCat.label}
+                          </span>
+                        );
+                      })()}
                       <span className="ml-auto text-[11px] text-muted-foreground">{displayTopic.date}</span>
                     </div>
                     <h2 className="mb-3 text-2xl font-black leading-tight tracking-tight md:text-4xl">
