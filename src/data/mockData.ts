@@ -27,18 +27,25 @@ export type CategoryId =
 export interface Category {
   id: CategoryId;
   label: string;
+  /** Lucide icon component — PICKS uses minimal line icons instead of emoji. */
+  icon: LucideIcon;
+  /** Legacy emoji fallback (kept for accessibility / sharing contexts). */
   emoji: string;
   accent: string; // tailwind text color class for chips
 }
 
 export const categories: Category[] = [
-  { id: "politics", label: "정치", emoji: "🏛️", accent: "text-rose-400" },
-  { id: "tech", label: "개발/테크", emoji: "💻", accent: "text-sky-400" },
-  { id: "society", label: "사회", emoji: "🏙️", accent: "text-amber-400" },
-  { id: "culture", label: "문화", emoji: "🎬", accent: "text-violet-400" },
-  { id: "economy", label: "경제", emoji: "📈", accent: "text-emerald-400" },
-  { id: "sports", label: "스포츠", emoji: "⚽", accent: "text-orange-400" },
+  { id: "politics", label: "정치",     icon: Landmark,     emoji: "🏛️", accent: "text-rose-400" },
+  { id: "tech",     label: "개발/테크", icon: Cpu,          emoji: "💻", accent: "text-sky-400" },
+  { id: "society",  label: "사회",     icon: Building2,    emoji: "🏙️", accent: "text-amber-400" },
+  { id: "culture",  label: "문화",     icon: Clapperboard, emoji: "🎬", accent: "text-violet-400" },
+  { id: "economy",  label: "경제",     icon: TrendingUp,   emoji: "📈", accent: "text-emerald-400" },
+  { id: "sports",   label: "스포츠",    icon: Trophy,       emoji: "⚽", accent: "text-orange-400" },
 ];
+
+/** Pseudo-categories used only as chip filters (not real CategoryId values). */
+export const allCategoryChip = { id: "all", label: "전체", icon: Layers, emoji: "🗂️", accent: "text-accent" } as const;
+export const hotCategoryChip = { id: "all", label: "전체", icon: Flame,  emoji: "🔥", accent: "text-accent" } as const;
 
 export interface TodayTopic {
   id: string;
