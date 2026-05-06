@@ -322,10 +322,11 @@ const Archive = () => {
                       <span className="text-muted-foreground">{item.date}</span>
                       <span
                         className="flex items-center gap-1 text-muted-foreground"
-                        title="이 주제에 PICK을 남긴 참여자 수"
+                        title={`이 주제에 PICK을 남긴 참여자 수 (1인 1 PICK · 예: ${item.totalPicks.toLocaleString()}명 참여)`}
+                        aria-label={`참여자 ${item.totalPicks.toLocaleString()}명 (1인 1 PICK)`}
                       >
                         <Users className="h-3 w-3" />
-                        {item.totalPicks.toLocaleString()}명
+                        {item.totalPicks.toLocaleString()}명 참여
                       </span>
                       <span
                         role="button"
