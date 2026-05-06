@@ -147,6 +147,7 @@ const Settings = () => {
 
   return (
     <PageTransition>
+      <Seo title="설정 — PICKS" description="알림, 테마, 계정 설정을 관리하세요." path="/settings" noindex />
       <div className="min-h-screen bg-background pb-24 noise">
         {/* Header */}
         <header className="page-sticky-header">
