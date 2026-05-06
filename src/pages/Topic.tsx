@@ -201,7 +201,7 @@ const Topic = () => {
     setHasCommented(true);
     setNewCommentId(id);
     toast.success("의견이 등록되었어요", {
-      description: "오늘의 PICK 후보에 올랐습니다 ✨",
+      description: "오늘의 PICK 후보에 올랐습니다.",
     });
     requestAnimationFrame(() => {
       picksRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
