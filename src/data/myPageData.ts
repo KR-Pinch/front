@@ -12,14 +12,19 @@ export const myProfile = {
   ],
 };
 
-export const myStats = {
+import { normalizeMyStats, type MyPickStats } from "./pickMetrics";
+
+// Run through `normalizeMyStats` so the exported object is type-safe
+// (PickCount fields branded) and any legacy `totalComments`/`commentCount`
+// keys would be stripped + warned about in dev.
+export const myStats: MyPickStats = normalizeMyStats({
   totalPicks: 47,        // 지금까지 남긴 PICK 수 (1일 1 PICK)
   totalLikes: 1284,      // 받은 좋아요 누계
   bestPickCount: 5,      // 오늘의 PICK으로 선정된 횟수
   streak: 30,            // 연속 참여 일수
   avgLikes: 27.3,        // PICK당 평균 좋아요
   participationRate: 92, // 참여율 (%)
-};
+});
 
 export const myComments = [
   {
