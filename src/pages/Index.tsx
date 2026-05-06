@@ -544,8 +544,8 @@ const Index = () => {
         {/* Weekly Top 3 Preview */}
         <motion.div variants={item} className="glass noise rounded-2xl p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
-              🧠 이번 주 똑똑이
+            <h3 className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              <Brain className="h-4 w-4 text-accent" aria-hidden="true" /> 이번 주 똑똑이
             </h3>
             <Link to="/ranking" className="text-xs text-accent hover:underline">
               전체 보기
