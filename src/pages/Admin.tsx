@@ -810,21 +810,28 @@ const ReportsTab = () => {
   const handleAction = (id: string, action: "delete" | "dismiss") => {
     adminStore.resolveReport(id, action);
     toast({
-      title: action === "delete" ? "댓글 강제 삭제" : "신고 무시 처리",
+      title: action === "delete" ? "댓글(신고 대상) 강제 삭제" : "신고 무시 처리",
     });
   };
 
   return (
     <div className="space-y-2">
+      <p className="px-1 text-[10px] text-muted-foreground">
+        ※ 여기서 말하는 <strong className="text-foreground">댓글(신고 대상)</strong>은 일반 PICK과 별개로,
+        신고 접수되어 모더레이션이 필요한 게시물입니다.
+      </p>
       {reports.length === 0 && (
         <div className="glass noise rounded-2xl p-6 text-center text-sm text-muted-foreground">
-          신고된 댓글이 없습니다.
+          신고된 댓글(신고 대상)이 없습니다.
         </div>
       )}
       {reports.map((r) => (
         <div key={r.id} className="glass noise rounded-2xl p-4 space-y-2">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-wrap">
+              <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
+                댓글(신고 대상)
+              </Badge>
               <Badge variant="outline" className="text-[10px]">
                 <Flag className="h-3 w-3" /> {r.reportCount}건
               </Badge>
@@ -967,7 +974,7 @@ const Admin = () => {
               icon={AlertTriangle}
               label="신고 대기"
               value={pendingReports}
-              hint={`총 ${reports.length}건`}
+              hint={`댓글(신고 대상) · 총 ${reports.length}건`}
             />
           </div>
 
@@ -986,7 +993,7 @@ const Admin = () => {
                 <FileText className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline ml-1">토픽 ({topics.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="reports" className="text-xs">
+              <TabsTrigger value="reports" className="text-xs" title="댓글(신고 대상) 모더레이션">
                 <Flag className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline ml-1">신고 ({pendingReports})</span>
               </TabsTrigger>
