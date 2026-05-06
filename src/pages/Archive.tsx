@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Crown, Heart, Link2, MessageCircle, Search, Share2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
@@ -40,6 +40,7 @@ const buildShareUrl = (id: string) => {
 };
 
 const Archive = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const validCatIds = useMemo(() => new Set(["all", ...categories.map((c) => c.id)]), []);
   const catParam = searchParams.get("cat");
@@ -80,13 +81,32 @@ const Archive = () => {
     }
   }, [itemId, selected, searchParams, setSearchParams]);
 
+  // Track history entries we pushed for opened items so close == back.
+  const pushedDepthRef = useRef(0);
+
+  // Browser back removes ?item= without calling closeItem — keep depth in sync.
+  useEffect(() => {
+    if (!itemId && pushedDepthRef.current > 0) {
+      pushedDepthRef.current = 0;
+    }
+  }, [itemId]);
+
   const openItem = (item: ArchiveItem) => {
     const next = new URLSearchParams(searchParams);
     next.set("item", getArchiveItemId(item));
+    // Push so the browser back button naturally closes the dialog.
     setSearchParams(next);
+    pushedDepthRef.current += 1;
   };
 
   const closeItem = () => {
+    // If we pushed a history entry to open, pop it so URL + history stay aligned.
+    if (pushedDepthRef.current > 0) {
+      pushedDepthRef.current -= 1;
+      navigate(-1);
+      return;
+    }
+    // Direct deep-link visit (no prior push) — strip param without history churn.
     const next = new URLSearchParams(searchParams);
     next.delete("item");
     setSearchParams(next, { replace: true });
