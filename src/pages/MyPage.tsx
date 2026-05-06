@@ -232,7 +232,7 @@ const MyPage = () => {
                 icon={TrendingUp}
                 label="평균 좋아요"
                 value={myStats.avgLikes}
-                hint="PICK 1개당 평균 ❤️ 수"
+                hint="PICK 1개당 평균 좋아요 수"
               />
               <StatCard
                 icon={Trophy}
