@@ -189,7 +189,7 @@ const Archive = () => {
         transition={{ duration: 0.25 }}
       >
         <div className="mb-6">
-          <h1 className="page-heading flex items-center gap-2"><ArchiveIcon className="h-7 w-7 text-accent" aria-hidden="true" /> 아카이브</h1>
+          <h1 className="page-heading flex items-center gap-2"><navRoutes.archive.icon className="h-7 w-7 text-accent" aria-hidden="true" /> {navRoutes.archive.shortLabel}</h1>
           <p className="mt-1 text-sm text-muted-foreground">지난 주제와 선택된 PICKS</p>
         </div>
 
