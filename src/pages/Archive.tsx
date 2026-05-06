@@ -166,7 +166,7 @@ const Archive = () => {
             </motion.div>
           ) : (
             <motion.div
-              key={activeCat}
+              key={`${activeCat}-${sortKey}-${query}`}
               className="card-grid"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
