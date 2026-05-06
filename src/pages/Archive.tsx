@@ -1,6 +1,7 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Crown, Heart, MessageCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
@@ -8,6 +9,16 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { archiveData, categories } from "@/data/mockData";
 
 const Archive = () => {
+  const [activeCat, setActiveCat] = useState<string>("all");
+
+  const filtered = useMemo(
+    () =>
+      activeCat === "all"
+        ? archiveData
+        : archiveData.filter((item) => item.category === activeCat),
+    [activeCat]
+  );
+
   return (
     <PageTransition>
     <div className="min-h-screen bg-background pb-24">
