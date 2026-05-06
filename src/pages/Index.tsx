@@ -478,9 +478,9 @@ const Index = () => {
                           <Clock className="h-3.5 w-3.5 text-accent/70" />
                           {displayTopic.remainingTime}
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1" title="이 토픽의 누적 PICK 수">
                           <MessageCircle className="h-3.5 w-3.5 text-accent/70" />
-                          {displayTopic.pickCount.toLocaleString()}개
+                          PICK {displayTopic.pickCount.toLocaleString()}
                         </span>
                       </div>
                       <span className="flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1.5 text-xs font-semibold text-accent transition-transform group-hover:translate-x-1">
