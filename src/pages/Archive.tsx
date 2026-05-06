@@ -388,12 +388,15 @@ const Archive = () => {
             <>
               <DialogHeader>
                 <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                  {selectedCat && (
-                    <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${selectedCat.accent}`}>
-                      <span>{selectedCat.emoji}</span>
-                      <span>{selectedCat.label}</span>
-                    </span>
-                  )}
+                  {selectedCat && (() => {
+                    const SelectedCatIcon = selectedCat.icon;
+                    return (
+                      <span className={`flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-semibold ${selectedCat.accent}`}>
+                        <SelectedCatIcon className="h-3 w-3" aria-hidden="true" />
+                        <span>{selectedCat.label}</span>
+                      </span>
+                    );
+                  })()}
                   <span className="text-muted-foreground">{selected.date}</span>
                 </div>
                 <DialogTitle className="text-left text-lg leading-snug">
