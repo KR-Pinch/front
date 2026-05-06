@@ -10,7 +10,7 @@ import Seo from "@/components/Seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
-  todayComments as initialComments,
+  todayPicks as initialPicks,
   categories,
   useTodayTopic,
   useMergedTopics,
@@ -39,8 +39,8 @@ import {
 // user in Seoul share the same daily slot).
 const todayKey = () => `hanmadi:commented:${getKstDayStamp()}`;
 
-const notifyAlreadyCommented = () =>
-  toast("오늘은 댓글을 이미 작성했어요", {
+const notifyAlreadyPicked = () =>
+  toast("오늘은 PICK을 이미 남겼어요", {
     description: "내일 새로운 주제로 다시 만나요 ✍️",
   });
 
@@ -50,15 +50,15 @@ const notifyClosed = () =>
   });
 
 const Topic = () => {
-  const [comments, setComments] = useState(initialComments);
-  const [hasCommented, setHasCommented] = useState(false);
+  const [picks, setPicks] = useState(initialPicks);
+  const [hasPicked, setHasCommented] = useState(false);
   const submittingRef = useRef(false);
   const [text, setText] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [burstId, setBurstId] = useState<string | null>(null);
   const [bumpId, setBumpId] = useState<string | null>(null);
-  const [newCommentId, setNewCommentId] = useState<string | null>(null);
-  const commentsRef = useRef<HTMLDivElement>(null);
+  const [newPickId, setNewCommentId] = useState<string | null>(null);
+  const picksRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -117,7 +117,7 @@ const Topic = () => {
     }
   }, [dayStamp]);
 
-  // Cross-tab sync — if another tab/window submits today's comment, lock this
+  // Cross-tab sync — if another tab/window submits today's pick, lock this
   // tab immediately via the `storage` event so the 1-per-day rule holds even
   // with simultaneous submissions across multiple tabs/browsers on the same
   // origin+profile.
@@ -155,8 +155,8 @@ const Topic = () => {
       setShowLoginModal(true);
       return;
     }
-    if (hasCommented) {
-      notifyAlreadyCommented();
+    if (hasPicked) {
+      notifyAlreadyPicked();
     }
   };
 
@@ -169,8 +169,8 @@ const Topic = () => {
       setShowLoginModal(true);
       return;
     }
-    if (hasCommented) {
-      notifyAlreadyCommented();
+    if (hasPicked) {
+      notifyAlreadyPicked();
       return;
     }
     if (!text.trim()) return;
@@ -184,7 +184,7 @@ const Topic = () => {
       if (localStorage.getItem(todayKey()) === "1") {
         setHasCommented(true);
         submittingRef.current = false;
-        notifyAlreadyCommented();
+        notifyAlreadyPicked();
         return;
       }
       localStorage.setItem(todayKey(), "1");
@@ -193,9 +193,9 @@ const Topic = () => {
     }
 
     const id = String(Date.now());
-    setComments([
+    setPicks([
       { id, username: user?.username || "나", text: text.trim(), likes: 0, isLiked: false },
-      ...comments,
+      ...picks,
     ]);
     setText("");
     setHasCommented(true);
@@ -204,7 +204,7 @@ const Topic = () => {
       description: "오늘의 PICK 후보에 올랐습니다 ✨",
     });
     requestAnimationFrame(() => {
-      commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      picksRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     window.setTimeout(() => setNewCommentId(null), 1800);
     submittingRef.current = false;
@@ -224,10 +224,10 @@ const Topic = () => {
       setShowLoginModal(true);
       return;
     }
-    const target = comments.find((c) => c.id === id);
+    const target = picks.find((c) => c.id === id);
     const willLike = target ? !target.isLiked : false;
-    setComments(
-      comments.map((c) =>
+    setPicks(
+      picks.map((c) =>
         c.id === id
           ? { ...c, likes: c.isLiked ? c.likes - 1 : c.likes + 1, isLiked: !c.isLiked }
           : c
@@ -248,7 +248,7 @@ const Topic = () => {
     }
   };
 
-  const sorted = [...comments].sort((a, b) => b.likes - a.likes);
+  const sorted = [...picks].sort((a, b) => b.likes - a.likes);
 
   return (
     <PageTransition>
@@ -326,7 +326,7 @@ const Topic = () => {
 
         <div className="h-px bg-border" />
 
-        {/* Comment Input */}
+        {/* PICK Input */}
         <AnimatePresence mode="wait">
           {closed ? (
             <motion.div
@@ -341,7 +341,7 @@ const Topic = () => {
                 오늘의 토픽은 매일 자정에 종료됩니다. 내일 새로운 주제로 다시 만나요.
               </p>
             </motion.div>
-          ) : hasCommented ? (
+          ) : hasPicked ? (
             <motion.div
               key="submitted"
               className="space-y-3"
@@ -445,23 +445,23 @@ const Topic = () => {
         {/* Ad Banner */}
         <AdFitBanner className="w-full" />
 
-        {/* Comments */}
-        <div ref={commentsRef}>
+        {/* PICKS list */}
+        <div ref={picksRef}>
           <div className="mb-4 flex items-center gap-2">
             <MessageCircle className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-bold">
-              의견 <span className="text-muted-foreground font-normal">{comments.length}개</span>
+              PICKS <span className="text-muted-foreground font-normal">{picks.length}개</span>
             </h2>
           </div>
 
           <div className="space-y-3">
-            {sorted.map((comment, idx) => {
-              const isNew = comment.id === newCommentId;
+            {sorted.map((pick, idx) => {
+              const isNew = pick.id === newPickId;
               return (
               <motion.div
-                key={comment.id}
+                key={pick.id}
                 className={`glass rounded-xl p-4 transition-all ${
-                  idx === 0 && comment.likes > 0 ? "border border-accent/30 glow-accent" : ""
+                  idx === 0 && pick.likes > 0 ? "border border-accent/30 glow-accent" : ""
                 } ${isNew ? "ring-2 ring-accent/60" : ""}`}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -473,9 +473,9 @@ const Topic = () => {
                     {idx + 1}
                   </span>
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-xs font-bold">
-                    {comment.username.charAt(0)}
+                    {pick.username.charAt(0)}
                   </div>
-                  <span className="text-sm font-semibold">{comment.username}</span>
+                  <span className="text-sm font-semibold">{pick.username}</span>
                   {isNew && (
                     <motion.span
                       className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent"
@@ -487,7 +487,7 @@ const Topic = () => {
                       <Sparkles className="h-3 w-3" /> 방금
                     </motion.span>
                   )}
-                  {idx === 0 && comment.likes > 0 && (
+                  {idx === 0 && pick.likes > 0 && (
                     <motion.span
                       className="flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent"
                       initial={{ scale: 0 }}
@@ -498,15 +498,15 @@ const Topic = () => {
                     </motion.span>
                   )}
                 </div>
-                <p className="mb-3 text-sm leading-relaxed text-foreground/80">{comment.text}</p>
+                <p className="mb-3 text-sm leading-relaxed text-foreground/80">{pick.text}</p>
                 <div className="relative inline-block">
-                  <HeartBurst show={burstId === comment.id} />
+                  <HeartBurst show={burstId === pick.id} />
                   <motion.button
-                    onClick={() => handleLike(comment.id)}
-                    aria-pressed={comment.isLiked}
-                    aria-label={`${comment.username}님 의견 좋아요 ${comment.likes}개`}
+                    onClick={() => handleLike(pick.id)}
+                    aria-pressed={pick.isLiked}
+                    aria-label={`${pick.username}님 의견 좋아요 ${pick.likes}개`}
                     className={`relative flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all ${
-                      comment.isLiked
+                      pick.isLiked
                         ? "bg-accent/15 text-accent"
                         : "bg-secondary text-muted-foreground hover:text-accent hover:bg-accent/10"
                     }`}
@@ -515,23 +515,23 @@ const Topic = () => {
                   >
                     <motion.span
                       animate={
-                        comment.isLiked
+                        pick.isLiked
                           ? { scale: [1, 1.4, 1], rotate: [0, -12, 0] }
                           : { scale: 1, rotate: 0 }
                       }
                       transition={{ duration: 0.35 }}
                       className="inline-flex"
                     >
-                      <Heart className={`h-3 w-3 ${comment.isLiked ? "fill-current" : ""}`} />
+                      <Heart className={`h-3 w-3 ${pick.isLiked ? "fill-current" : ""}`} />
                     </motion.span>
                     <motion.span
-                      key={comment.likes}
-                      initial={{ y: bumpId === comment.id ? -6 : 0, opacity: bumpId === comment.id ? 0 : 1 }}
+                      key={pick.likes}
+                      initial={{ y: bumpId === pick.id ? -6 : 0, opacity: bumpId === pick.id ? 0 : 1 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.18 }}
                       className="tabular-nums"
                     >
-                      {comment.likes}
+                      {pick.likes}
                     </motion.span>
                   </motion.button>
                 </div>

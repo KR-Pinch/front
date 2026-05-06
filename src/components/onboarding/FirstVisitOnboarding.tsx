@@ -164,7 +164,7 @@ const FirstVisitOnboarding = ({ forceOpen, onClose }: Props) => {
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <MessageCircle className="h-3 w-3" />
-                    {topic.commentCount.toLocaleString()} PICKS
+                    {topic.pickCount.toLocaleString()} PICKS
                   </span>
                 </div>
               </div>

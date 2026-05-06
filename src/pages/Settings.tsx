@@ -84,7 +84,7 @@ const Settings = () => {
   const { user, login, logout } = useAuth();
 
   const [nickname, setNickname] = useState(user?.username ?? "");
-  const [notifyComments, setNotifyComments] = useState(true);
+  const [notifyPickReactions, setNotifyPickReactions] = useState(true);
   const [notifyRanking, setNotifyRanking] = useState(true);
   const [notifyDaily, setNotifyDaily] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
@@ -215,11 +215,11 @@ const Settings = () => {
             <div className="space-y-1">
               {[
                 {
-                  key: "comments",
-                  label: "내 댓글 반응",
-                  desc: "내 의견에 좋아요나 답글이 달릴 때",
-                  value: notifyComments,
-                  set: setNotifyComments,
+                  key: "pick-reactions",
+                  label: "내 PICK 반응",
+                  desc: "내 PICK에 좋아요가 눌렸을 때",
+                  value: notifyPickReactions,
+                  set: setNotifyPickReactions,
                 },
                 {
                   key: "ranking",
@@ -287,7 +287,7 @@ const Settings = () => {
               {[
                 { label: "서비스 이용약관", desc: "PICKS 서비스 이용 규칙", to: "/terms", version: "v1.2 · 2026.03.01" },
                 { label: "개인정보 처리방침", desc: "수집·이용·보관 정책", to: "/privacy", version: "v1.1 · 2026.02.15" },
-                { label: "운영 정책", desc: "댓글·신고·제재 기준", to: "/legal/community", version: "v1.0 · 2026.01.10" },
+                { label: "운영 정책", desc: "PICK·신고·제재 기준", to: "/legal/community", version: "v1.0 · 2026.01.10" },
               ].map((row) => (
                 <Link
                   key={row.label}
@@ -327,7 +327,7 @@ const Settings = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>정말 계정을 삭제하시겠습니까?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    삭제된 계정은 복구할 수 없으며, 작성한 모든 댓글과 활동 기록이
+                    삭제된 계정은 복구할 수 없으며, 작성한 모든 PICK과 활동 기록이
                     함께 삭제됩니다.
                   </AlertDialogDescription>
                 </AlertDialogHeader>

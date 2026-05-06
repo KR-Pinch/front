@@ -118,7 +118,7 @@ const Archive = () => {
     const url = buildShareUrl(getArchiveItemId(item));
     const shareData = {
       title: `PICKS 아카이브 · ${item.title}`,
-      text: `"${item.bestComment}" — @${item.bestUser}`,
+      text: `"${item.bestPick}" — @${item.bestUser}`,
       url,
     };
     try {
@@ -164,7 +164,7 @@ const Archive = () => {
       title={selected ? `${selected.title} — PICKS 아카이브` : "PICKS 아카이브 — 지난 주제와 선택된 PICK"}
       description={
         selected
-          ? `${selected.title} — ${selected.bestComment.slice(0, 110)}`
+          ? `${selected.title} — ${selected.bestPick.slice(0, 110)}`
           : "PICKS 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PICK을 다시 만나보세요."
       }
       path={selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive"}
@@ -362,7 +362,7 @@ const Archive = () => {
                         <span className="text-sm font-semibold">{item.bestUser}</span>
                       </div>
                       <p className="text-sm leading-relaxed text-foreground/70">
-                        "{item.bestComment}"
+                        "{item.bestPick}"
                       </p>
                       <div className="mt-2 flex items-center gap-1 text-xs text-accent">
                         <Heart className="h-3 w-3 fill-current" />
@@ -412,7 +412,7 @@ const Archive = () => {
                   <span className="text-sm font-semibold">{selected.bestUser}</span>
                 </div>
                 <p className="text-sm leading-relaxed text-foreground/80">
-                  "{selected.bestComment}"
+                  "{selected.bestPick}"
                 </p>
                 <div className="mt-2 flex items-center gap-3 text-xs">
                   <span className="flex items-center gap-1 text-accent">
