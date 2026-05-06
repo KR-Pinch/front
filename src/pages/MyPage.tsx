@@ -211,7 +211,7 @@ const MyPage = () => {
                 label="받은 좋아요"
                 value={myStats.totalLikes.toLocaleString()}
                 highlight
-                hint="내 PICK이 받은 ❤️ 총합"
+                hint="내 PICK이 받은 좋아요 총합"
               />
               <StatCard
                 icon={Award}
