@@ -107,8 +107,8 @@ const Ranking = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="truncate font-bold">{user.username}</p>
-                      <p className="text-xs text-muted-foreground">
-                        🏆 {user.wins}회 선정 · ❤️ {user.totalLikes}
+                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Trophy className="h-3 w-3 text-accent" aria-hidden="true" /> {user.wins}회 선정 · <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" /> {user.totalLikes}
                       </p>
                     </div>
                     {style.icon && (
