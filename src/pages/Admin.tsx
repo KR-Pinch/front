@@ -191,9 +191,9 @@ const UsersTab = () => {
                 </p>
                 <p
                   className="flex flex-wrap items-center gap-1 text-[10px] text-muted-foreground"
-                  title={`누적 PINCH ${u.totalPicks}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
+                  title={`누적 PINCH ${u.totalPinches}개 (참여일 수와 동일) · 받은 좋아요 ${u.totalLikes.toLocaleString()}개 · 가입일 ${u.joinedAt}`}
                 >
-                  <span>PINCH {u.totalPicks}</span>
+                  <span>PINCH {u.totalPinches}</span>
                   <span aria-hidden="true">·</span>
                   <Heart className="h-3 w-3 text-rose-400" aria-hidden="true" />
                   <span>{u.totalLikes.toLocaleString()}</span>
@@ -932,7 +932,7 @@ const Admin = () => {
   const pendingReports = reports.filter((r) => r.status === "pending").length;
   // Mock DAU & today's PICKs derived from users.
   const dau = Math.round(users.length * 7.4);
-  const todayPicks = users.reduce((acc, u) => acc + Math.min(u.totalPicks, 1), 0) + 12;
+  const todayPinches = users.reduce((acc, u) => acc + Math.min(u.totalPinches, 1), 0) + 12;
 
   const handleLogout = () => {
     logout();
@@ -987,8 +987,8 @@ const Admin = () => {
             <StatCard
               icon={MessageSquare}
               label="오늘 PINCH"
-              value={todayPicks}
-              hint={`오늘 작성된 PINCH 수 · 1인 1일 1 PINCH (예: ${todayPicks}개 = ${todayPicks}명 참여)`}
+              value={todayPinches}
+              hint={`오늘 작성된 PINCH 수 · 1인 1일 1 PINCH (예: ${todayPinches}개 = ${todayPinches}명 참여)`}
             />
             <StatCard
               icon={Ban}

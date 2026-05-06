@@ -123,7 +123,7 @@ src/
 │   └── ui/             # shadcn primitives
 ├── config/
 │   └── navIcons.ts     # 모든 네비 아이콘 단일 매핑
-├── data/               # mockData, adminData, myPageData, pickMetrics (브랜디드 타입 가드)
+├── data/               # mockData, adminData, myPageData, pinchMetrics (브랜디드 타입 가드)
 ├── brand/              # 브랜드 용어 시스템 (terms.mjs · BrandText · 스캐너 연동)
 ├── hooks/              # useAuth, useAdminAuth, use-toast, use-mobile
 └── index.css           # HSL 디자인 토큰 + 시맨틱 유틸리티

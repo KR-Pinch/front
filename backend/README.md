@@ -16,8 +16,8 @@ backend/
 │   ├── 03_user_roles.sql      ← 권한 분리 테이블 + has_role() SECURITY DEFINER
 │   ├── 04_categories.sql      ← 카테고리 마스터
 │   ├── 05_topics.sql          ← 매일의 토픽 (admin draft + seed)
-│   ├── 06_picks.sql           ← 1인 1일 1 PINCH (UNIQUE 제약)
-│   ├── 07_pick_likes.sql      ← PINCH 좋아요
+│   ├── 06_pinches.sql           ← 1인 1일 1 PINCH (UNIQUE 제약)
+│   ├── 07_pinch_likes.sql      ← PINCH 좋아요
 │   ├── 08_daily_winners.sql   ← 아카이브: 카테고리/일자별 우승 PINCH
 │   ├── 09_overrides.sql       ← 관리자 강제 토픽 (글로벌 / 카테고리별)
 │   ├── 10_reports.sql         ← 신고된 PINCH
@@ -63,7 +63,7 @@ psql "$DATABASE_URL" -f backend/seed/04_demo_users.sql
 | 화면 / 모킹 위치 | 백엔드 엔티티 |
 |---|---|
 | `src/data/mockData.ts > todayTopics` | `topics` |
-| `src/data/mockData.ts > todayPicks`  | `pinch` + `pick_likes` |
+| `src/data/mockData.ts > todayPinches`  | `pinch` + `pick_likes` |
 | `src/data/mockData.ts > archiveData` | `daily_winners` (+ `topics`, `pinch`) |
 | `src/data/mockData.ts > weeklyRanking / monthlyRanking` | `view_weekly_ranking`, `view_monthly_ranking` |
 | `src/data/adminData.ts > users / bans / bannedPhones` | `profiles` + `bans` + `banned_phones` |

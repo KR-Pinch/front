@@ -10,8 +10,8 @@
 \i ../schema/03_user_roles.sql
 \i ../schema/04_categories.sql
 \i ../schema/05_topics.sql
-\i ../schema/06_picks.sql
-\i ../schema/07_pick_likes.sql
+\i ../schema/06_pinches.sql
+\i ../schema/07_pinch_likes.sql
 \i ../schema/08_daily_winners.sql
 \i ../schema/09_overrides.sql
 \i ../schema/10_reports.sql

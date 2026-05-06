@@ -10,7 +10,7 @@ import Seo from "@/components/Seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
-  todayPicks as initialPicks,
+  todayPinches as initialPinches,
   categories,
   useTodayTopic,
   useMergedTopics,
@@ -50,7 +50,7 @@ const notifyClosed = () =>
   });
 
 const Topic = () => {
-  const [pinch, setPicks] = useState(initialPicks);
+  const [pinch, setPinches] = useState(initialPinches);
   const [hasPicked, setHasCommented] = useState(false);
   const submittingRef = useRef(false);
   const [text, setText] = useState("");
@@ -58,7 +58,7 @@ const Topic = () => {
   const [burstId, setBurstId] = useState<string | null>(null);
   const [bumpId, setBumpId] = useState<string | null>(null);
   const [newPickId, setNewCommentId] = useState<string | null>(null);
-  const picksRef = useRef<HTMLDivElement>(null);
+  const pinchesRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -242,7 +242,7 @@ const Topic = () => {
     }
 
     const id = String(Date.now());
-    setPicks([
+    setPinches([
       { id, username: user?.username || "나", text: text.trim(), likes: 0, isLiked: false },
       ...pinch,
     ]);
@@ -253,7 +253,7 @@ const Topic = () => {
       description: "오늘의 PINCH 후보에 올랐습니다.",
     });
     requestAnimationFrame(() => {
-      picksRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      pinchesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     window.setTimeout(() => setNewCommentId(null), 1800);
     submittingRef.current = false;
@@ -275,7 +275,7 @@ const Topic = () => {
     }
     const target = pinch.find((c) => c.id === id);
     const willLike = target ? !target.isLiked : false;
-    setPicks(
+    setPinches(
       pinch.map((c) =>
         c.id === id
           ? { ...c, likes: c.isLiked ? c.likes - 1 : c.likes + 1, isLiked: !c.isLiked }
@@ -501,7 +501,7 @@ const Topic = () => {
         <AdFitBanner className="w-full" />
 
         {/* PINCH list */}
-        <div ref={picksRef}>
+        <div ref={pinchesRef}>
           <div className="mb-4 flex items-center gap-2">
             <MessageCircle className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-bold">

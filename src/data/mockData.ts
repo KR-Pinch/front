@@ -10,11 +10,11 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import {
-  type PickCount,
-  toPickCount,
-  normalizeTopicPickCount,
-  normalizeArchivePickCount,
-} from "./pickMetrics";
+  type PinchCount,
+  toPinchCount,
+  normalizeTopicPinchCount,
+  normalizeArchivePinchCount,
+} from "./pinchMetrics";
 
 export type CategoryId =
   | "politics"
@@ -55,12 +55,12 @@ export interface TodayTopic {
   newsUrl: string;
   newsSource: string;
   date: string;
-  pickCount: PickCount;
+  pinchCount: PinchCount;
   remainingTime: string;
   heat: number;
 }
 
-const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number }> = [
+const todayTopicsSeed: Array<Omit<TodayTopic, "pinchCount"> & { pinchCount: number }> = [
   {
     id: "society-1",
     category: "society",
@@ -70,7 +70,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/12345",
     newsSource: "한겨레",
     date: "2026년 3월 21일",
-    pickCount: 247,
+    pinchCount: 247,
     remainingTime: "6시간 32분",
     heat: 982,
   },
@@ -83,7 +83,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/22221",
     newsSource: "연합뉴스",
     date: "2026년 3월 21일",
-    pickCount: 184,
+    pinchCount: 184,
     remainingTime: "6시간 32분",
     heat: 743,
   },
@@ -96,7 +96,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/33331",
     newsSource: "ZDNet Korea",
     date: "2026년 3월 21일",
-    pickCount: 156,
+    pinchCount: 156,
     remainingTime: "6시간 32분",
     heat: 612,
   },
@@ -109,7 +109,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/44441",
     newsSource: "매일경제",
     date: "2026년 3월 21일",
-    pickCount: 132,
+    pinchCount: 132,
     remainingTime: "6시간 32분",
     heat: 488,
   },
@@ -122,7 +122,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/55551",
     newsSource: "씨네21",
     date: "2026년 3월 21일",
-    pickCount: 94,
+    pinchCount: 94,
     remainingTime: "6시간 32분",
     heat: 321,
   },
@@ -135,7 +135,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/66661",
     newsSource: "스포츠동아",
     date: "2026년 3월 21일",
-    pickCount: 78,
+    pinchCount: 78,
     remainingTime: "6시간 32분",
     heat: 256,
   },
@@ -148,7 +148,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/12346",
     newsSource: "한겨레",
     date: "2026년 3월 21일",
-    pickCount: 142,
+    pinchCount: 142,
     remainingTime: "6시간 32분",
     heat: 540,
   },
@@ -160,7 +160,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/12347",
     newsSource: "경향신문",
     date: "2026년 3월 21일",
-    pickCount: 118,
+    pinchCount: 118,
     remainingTime: "6시간 32분",
     heat: 410,
   },
@@ -172,7 +172,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/22222",
     newsSource: "연합뉴스",
     date: "2026년 3월 21일",
-    pickCount: 121,
+    pinchCount: 121,
     remainingTime: "6시간 32분",
     heat: 520,
   },
@@ -184,7 +184,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/22223",
     newsSource: "한겨레",
     date: "2026년 3월 21일",
-    pickCount: 86,
+    pinchCount: 86,
     remainingTime: "6시간 32분",
     heat: 280,
   },
@@ -196,7 +196,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/33332",
     newsSource: "ZDNet Korea",
     date: "2026년 3월 21일",
-    pickCount: 134,
+    pinchCount: 134,
     remainingTime: "6시간 32분",
     heat: 470,
   },
@@ -208,7 +208,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/33333",
     newsSource: "전자신문",
     date: "2026년 3월 21일",
-    pickCount: 109,
+    pinchCount: 109,
     remainingTime: "6시간 32분",
     heat: 360,
   },
@@ -220,7 +220,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/44442",
     newsSource: "매일경제",
     date: "2026년 3월 21일",
-    pickCount: 88,
+    pinchCount: 88,
     remainingTime: "6시간 32분",
     heat: 300,
   },
@@ -232,7 +232,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/44443",
     newsSource: "한국경제",
     date: "2026년 3월 21일",
-    pickCount: 71,
+    pinchCount: 71,
     remainingTime: "6시간 32분",
     heat: 220,
   },
@@ -244,7 +244,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/55552",
     newsSource: "씨네21",
     date: "2026년 3월 21일",
-    pickCount: 76,
+    pinchCount: 76,
     remainingTime: "6시간 32분",
     heat: 240,
   },
@@ -256,7 +256,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/55553",
     newsSource: "조선일보",
     date: "2026년 3월 21일",
-    pickCount: 64,
+    pinchCount: 64,
     remainingTime: "6시간 32분",
     heat: 195,
   },
@@ -268,7 +268,7 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/66662",
     newsSource: "스포츠동아",
     date: "2026년 3월 21일",
-    pickCount: 58,
+    pinchCount: 58,
     remainingTime: "6시간 32분",
     heat: 180,
   },
@@ -280,17 +280,17 @@ const todayTopicsSeed: Array<Omit<TodayTopic, "pickCount"> & { pickCount: number
     newsUrl: "https://news.example.com/article/66663",
     newsSource: "OSEN",
     date: "2026년 3월 21일",
-    pickCount: 49,
+    pinchCount: 49,
     remainingTime: "6시간 32분",
     heat: 145,
   },
 ];
 
 // Run every seed entry through the PINCH normalizer so the exported list is
-// guaranteed to use the branded `PickCount` type and never carries legacy
+// guaranteed to use the branded `PinchCount` type and never carries legacy
 // comment-count fields. Any future drift (e.g. raw `commentCount: 12`) will
 // be caught at compile time and warned about at runtime in dev.
-export const todayTopics: TodayTopic[] = todayTopicsSeed.map(normalizeTopicPickCount);
+export const todayTopics: TodayTopic[] = todayTopicsSeed.map(normalizeTopicPinchCount);
 
 // ===== Topic deadline helpers =====
 // All topics close at the next KST midnight (00:00 Asia/Seoul, UTC+9, no DST).
@@ -351,11 +351,11 @@ export const formatRemainingClock = (deadline: Date, now: Date = new Date()): st
 };
 
 // Deterministic tie-break for ranking topics:
-// 1) heat desc  2) pickCount desc  3) id asc (lexicographic, stable fallback)
+// 1) heat desc  2) pinchCount desc  3) id asc (lexicographic, stable fallback)
 // Guarantees a single, reproducible "#1" even when popularity scores tie.
 export const compareTopics = (a: TodayTopic, b: TodayTopic) => {
   if (b.heat !== a.heat) return b.heat - a.heat;
-  if (b.pickCount !== a.pickCount) return b.pickCount - a.pickCount;
+  if (b.pinchCount !== a.pinchCount) return b.pinchCount - a.pinchCount;
   return a.id.localeCompare(b.id);
 };
 
@@ -386,7 +386,7 @@ const adminDraftToTopic = (d: AdminTopicDraft): TodayTopic => ({
   date: d.date,
   // Admin-pushed topics start cold but are pinned via override; give them a
   // small heat so they still rank reasonably if not explicitly forced.
-  pickCount: toPickCount(0),
+  pinchCount: toPinchCount(0),
   remainingTime: "",
   heat: 0,
 });
@@ -486,7 +486,7 @@ export const useActiveTopicByCategoryMap = (): Record<string, string> => {
 
 
 
-export const todayPicks = [
+export const todayPinches = [
   {
     id: "1",
     username: "시민의식",
@@ -524,13 +524,13 @@ export interface ArchiveItem {
   description: string;
   newsSource: string;
   bestUser: string;
-  bestPick: string;
+  bestPinch: string;
   bestLikes: number;
   /** 그날 PINCH을 남긴 참여자 수 (하루 1인 1 PINCH 기준). */
-  totalPicks: PickCount;
+  totalPinches: PinchCount;
 }
 
-const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number }> = [
+const archiveSeed: Array<Omit<ArchiveItem, "totalPinches"> & { totalPinches: number }> = [
   {
     date: "2026년 3월 20일",
     category: "tech",
@@ -539,10 +539,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "주요 대기업이 AI 1차 면접 도입을 확대하면서, 공정성·편향·투명성에 대한 사회적 논의가 본격화됐습니다.",
     newsSource: "ZDNet Korea",
     bestUser: "테크윤리",
-    bestPick:
+    bestPinch:
       "AI 면접은 편향을 줄일 수 있지만, 학습 데이터 자체에 편향이 있다면 오히려 차별을 고착화할 수 있습니다. 투명한 알고리즘 공개가 선행되어야 합니다.",
     bestLikes: 203,
-    totalPicks: 89,
+    totalPinches: 89,
   },
   {
     date: "2026년 3월 19일",
@@ -552,10 +552,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "정부가 주 4일제 시범사업 확대안을 발표하면서 생산성과 인건비 부담 사이의 균형이 다시 쟁점이 됐습니다.",
     newsSource: "매일경제",
     bestUser: "워라밸마스터",
-    bestPick:
+    bestPinch:
       "아이슬란드의 실험 결과를 보면 생산성이 오히려 올랐습니다. 한국도 단계적으로 도입할 수 있다고 봅니다. 다만 중소기업 지원책이 병행되어야 해요.",
     bestLikes: 176,
-    totalPicks: 112,
+    totalPinches: 112,
   },
   {
     date: "2026년 3월 18일",
@@ -565,10 +565,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "교육부가 초·중학교 수업 중 스마트폰 사용 제한 가이드라인을 공개하면서 가정·학교의 역할 논쟁이 커졌습니다.",
     newsSource: "한겨레",
     bestUser: "교육전문가",
-    bestPick:
+    bestPinch:
       "전면 금지보다는 수업 시간 사용 제한이 현실적입니다. 디지털 리터러시 교육을 통해 올바른 사용 습관을 길러주는 게 장기적으로 더 효과적이에요.",
     bestLikes: 154,
-    totalPicks: 76,
+    totalPinches: 76,
   },
   {
     date: "2026년 3월 17일",
@@ -578,10 +578,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "유기동물 증가와 함께 반려동물 등록제 의무화 강화 법안이 발의되며 찬반 여론이 팽팽하게 갈리고 있습니다.",
     newsSource: "경향신문",
     bestUser: "동물복지연대",
-    bestPick:
+    bestPinch:
       "유기동물 문제의 근본 해결을 위해 반드시 필요합니다. 다만 등록 절차를 간소화하고, 저소득층에 대한 비용 지원이 함께 이루어져야 실효성이 있습니다.",
     bestLikes: 189,
-    totalPicks: 93,
+    totalPinches: 93,
   },
   {
     date: "2026년 3월 16일",
@@ -591,10 +591,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "사전투표 기간 확대안이 국회에 제출되면서 투표율 제고와 행정 비용 사이의 절충점이 논의되고 있습니다.",
     newsSource: "연합뉴스",
     bestUser: "정치읽기",
-    bestPick:
+    bestPinch:
       "참여 장벽을 낮추는 방향은 맞습니다. 다만 사전투표함 보관·이송 검증을 동시에 강화해야 신뢰가 따라옵니다.",
     bestLikes: 142,
-    totalPicks: 81,
+    totalPinches: 81,
   },
   {
     date: "2026년 3월 15일",
@@ -604,10 +604,10 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "글로벌 OTT의 AI 더빙 도입이 가속화되면서 성우 업계의 처우와 창작 윤리가 새 쟁점으로 떠올랐습니다.",
     newsSource: "씨네21",
     bestUser: "보이스아카이브",
-    bestPick:
+    bestPinch:
       "효율은 분명하지만 감정 연기의 결은 아직 사람만이 만듭니다. 사용 표기 의무화와 수익 배분 체계가 선결돼야 합니다.",
     bestLikes: 131,
-    totalPicks: 64,
+    totalPinches: 64,
   },
   {
     date: "2026년 3월 14일",
@@ -617,17 +617,17 @@ const archiveSeed: Array<Omit<ArchiveItem, "totalPicks"> & { totalPicks: number 
       "KBO가 피치클락 도입 한 달 만에 평균 경기시간 18분 단축을 발표하며 정착 여부가 관심을 모으고 있습니다.",
     newsSource: "스포츠동아",
     bestUser: "야구의정석",
-    bestPick:
+    bestPinch:
       "템포 빨라진 건 환영합니다. 다만 투수 부상 리스크 데이터가 한 시즌은 누적돼야 진짜 평가가 가능할 것 같아요.",
     bestLikes: 118,
-    totalPicks: 57,
+    totalPinches: 57,
   },
 ];
 
 // Same guarantee as `todayTopics`: every archive entry is normalized so
-// `totalPicks` is a branded `PickCount` and any legacy comment fields would
+// `totalPinches` is a branded `PinchCount` and any legacy comment fields would
 // be stripped/warned about.
-export const archiveData: ArchiveItem[] = archiveSeed.map(normalizeArchivePickCount);
+export const archiveData: ArchiveItem[] = archiveSeed.map(normalizeArchivePinchCount);
 // string. Used for deep-link sharing (e.g. /archive?item=2026-03-20).
 export const getArchiveItemId = (item: ArchiveItem): string => {
   const m = item.date.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);

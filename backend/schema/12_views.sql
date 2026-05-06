@@ -2,7 +2,7 @@
 -- 12_views.sql — 집계 뷰 (랭킹 / 마이페이지 통계)
 -- ============================================================================
 
--- 토픽별 PINCH 수 (UI 의 pickCount)
+-- 토픽별 PINCH 수 (UI 의 pinchCount)
 create or replace view public.view_topic_stats as
   select t.id as topic_id,
          count(p.*) as pick_count,

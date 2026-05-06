@@ -12,15 +12,15 @@ export const myProfile = {
   ],
 };
 
-import { normalizeMyStats, type MyPickStats } from "./pickMetrics";
+import { normalizeMyStats, type MyPinchStats } from "./pinchMetrics";
 
 // Run through `normalizeMyStats` so the exported object is type-safe
-// (PickCount fields branded) and any legacy `totalComments`/`commentCount`
+// (PinchCount fields branded) and any legacy `totalComments`/`commentCount`
 // keys would be stripped + warned about in dev.
-export const myStats: MyPickStats = normalizeMyStats({
-  totalPicks: 47,        // 지금까지 남긴 PINCH 수 (1일 1 PINCH)
+export const myStats: MyPinchStats = normalizeMyStats({
+  totalPinches: 47,        // 지금까지 남긴 PINCH 수 (1일 1 PINCH)
   totalLikes: 1284,      // 받은 좋아요 누계
-  bestPickCount: 5,      // 오늘의 PINCH으로 선정된 횟수
+  bestPinchCount: 5,      // 오늘의 PINCH으로 선정된 횟수
   streak: 30,            // 연속 참여 일수
   avgLikes: 27.3,        // PINCH당 평균 좋아요
   participationRate: 92, // 참여율 (%)

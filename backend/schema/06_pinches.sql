@@ -1,5 +1,5 @@
 -- ============================================================================
--- 06_picks.sql — 1인 1일 1 PINCH
+-- 06_pinches.sql — 1인 1일 1 PINCH
 -- (user_id, kst_day) UNIQUE 로 DB 레벨에서 강제.
 -- ============================================================================
 
@@ -16,6 +16,6 @@ create table if not exists public.pinch (
   unique (user_id, kst_day)                              -- 1일 1 PINCH
 );
 
-create index if not exists picks_topic_idx on public.pinch (topic_id, created_at desc);
-create index if not exists picks_user_idx  on public.pinch (user_id, created_at desc);
+create index if not exists pinches_topic_idx on public.pinch (topic_id, created_at desc);
+create index if not exists pinches_user_idx  on public.pinch (user_id, created_at desc);
 create index if not exists picks_day_idx   on public.pinch (kst_day);

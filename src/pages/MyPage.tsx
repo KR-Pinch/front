@@ -202,7 +202,7 @@ const MyPage = () => {
               <StatCard
                 icon={MessageSquare}
                 label="총 PINCH"
-                value={myStats.totalPicks}
+                value={myStats.totalPinches}
                 suffix="개"
                 hint="내가 남긴 PINCH 누계 (예: 47일 참여 = 47개)"
               />
@@ -216,7 +216,7 @@ const MyPage = () => {
               <StatCard
                 icon={Award}
                 label="오늘의 PINCH 선정"
-                value={myStats.bestPickCount}
+                value={myStats.bestPinchCount}
                 suffix="회"
                 hint="하루 1개로 뽑힌 횟수 (예: 5회 = 5일 우승)"
               />

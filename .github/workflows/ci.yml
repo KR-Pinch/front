@@ -59,7 +59,7 @@ jobs:
             const path = 'reports/brand-scan.md';
             if (!fs.existsSync(path)) return;
             const body = fs.readFileSync(path, 'utf8');
-            const marker = '<!-- picks-brand-scan -->';
+            const marker = '<!-- pinch-brand-scan -->';
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
             if (!issue_number) return;
