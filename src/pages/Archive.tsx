@@ -80,13 +80,25 @@ const Archive = () => {
     }
   }, [itemId, selected, searchParams, setSearchParams]);
 
+  // Track history entries we pushed for opened items so close == back.
+  const pushedDepthRef = useRef(0);
+
   const openItem = (item: ArchiveItem) => {
     const next = new URLSearchParams(searchParams);
     next.set("item", getArchiveItemId(item));
+    // Push so the browser back button naturally closes the dialog.
     setSearchParams(next);
+    pushedDepthRef.current += 1;
   };
 
   const closeItem = () => {
+    // If we pushed a history entry to open, pop it so URL + history stay aligned.
+    if (pushedDepthRef.current > 0) {
+      pushedDepthRef.current -= 1;
+      navigate(-1);
+      return;
+    }
+    // Direct deep-link visit (no prior push) — strip param without history churn.
     const next = new URLSearchParams(searchParams);
     next.delete("item");
     setSearchParams(next, { replace: true });
