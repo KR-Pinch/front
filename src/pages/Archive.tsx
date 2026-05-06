@@ -310,9 +310,12 @@ const Archive = () => {
                         </span>
                       )}
                       <span className="text-muted-foreground">{item.date}</span>
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <MessageCircle className="h-3 w-3" />
-                        {item.totalComments}
+                      <span
+                        className="flex items-center gap-1 text-muted-foreground"
+                        title="이 주제에 PICK을 남긴 참여자 수"
+                      >
+                        <Users className="h-3 w-3" />
+                        {item.totalPicks.toLocaleString()}명
                       </span>
                       <span
                         role="button"
