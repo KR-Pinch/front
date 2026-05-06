@@ -61,8 +61,6 @@ export interface AdminTopicDraft {
 
 // ----- Initial mock seed --------------------------------------------------
 
-const seedUsers: AdminMockUser[] = [
-  { id: "u1", username: "시민의식", phone: "010-1111-2222", email: "citizen@example.com", joinedAt: "2025-09-12", totalPicks: 142, totalLikes: 2310, avatar: "시" },
 // Raw seed values use plain numbers; we normalize them to branded PickCount
 // below so any consumer of `seedUsers` gets the safe type.
 const rawSeedUsers = [
@@ -79,6 +77,7 @@ const rawSeedUsers = [
 ];
 const seedUsers: AdminMockUser[] = rawSeedUsers.map(normalizeAdminUserPickCount);
 
+const seedReports: ReportedComment[] = [
   {
     id: "r1",
     topicId: "society-1",
