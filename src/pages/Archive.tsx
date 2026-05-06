@@ -1,6 +1,7 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Crown, Heart, MessageCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
@@ -8,6 +9,16 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { archiveData, categories } from "@/data/mockData";
 
 const Archive = () => {
+  const [activeCat, setActiveCat] = useState<string>("all");
+
+  const filtered = useMemo(
+    () =>
+      activeCat === "all"
+        ? archiveData
+        : archiveData.filter((item) => item.category === activeCat),
+    [activeCat]
+  );
+
   return (
     <PageTransition>
     <div className="min-h-screen bg-background pb-24">
@@ -35,8 +46,59 @@ const Archive = () => {
         {/* Ad Banner */}
         <AdFitBanner className="w-full mb-3" />
 
-        <div className="card-grid">
-          {archiveData.map((item, idx) => {
+        {/* Category filter chips */}
+        <div className="mb-4">
+          <div className="mb-2 flex items-center justify-between px-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              카테고리
+            </h3>
+            <span className="text-[10px] text-muted-foreground">
+              {filtered.length}개
+            </span>
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
+            {[{ id: "all", label: "전체", emoji: "🗂️" }, ...categories].map((cat) => {
+              const active = activeCat === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCat(cat.id)}
+                  className={`shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                    active
+                      ? "bg-accent text-accent-foreground shadow-[0_0_20px_hsl(var(--accent)/0.4)]"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
+                  }`}
+                >
+                  <span>{cat.emoji}</span>
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {filtered.length === 0 ? (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="glass rounded-2xl p-8 text-center text-sm text-muted-foreground"
+            >
+              이 카테고리에는 아직 아카이브된 PICK이 없습니다.
+            </motion.div>
+          ) : (
+            <motion.div
+              key={activeCat}
+              className="card-grid"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              {filtered.map((item, idx) => {
+
             const cat = categories.find((c) => c.id === item.category);
             return (
               <motion.div
@@ -88,7 +150,9 @@ const Archive = () => {
               </motion.div>
             );
           })}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       <BottomNav />
