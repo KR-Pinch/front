@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
+import Seo from "@/components/Seo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -146,6 +147,7 @@ const Settings = () => {
 
   return (
     <PageTransition>
+      <Seo title="설정 — PICKS" description="알림, 테마, 계정 설정을 관리하세요." path="/settings" noindex />
       <div className="min-h-screen bg-background pb-24 noise">
         {/* Header */}
         <header className="page-sticky-header">

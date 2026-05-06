@@ -7,6 +7,7 @@ import BottomNav from "@/components/BottomNav";
 import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
+import Seo from "@/components/Seo";
 import {
   Dialog,
   DialogContent,
@@ -159,6 +160,15 @@ const Archive = () => {
 
   return (
     <PageTransition>
+    <Seo
+      title={selected ? `${selected.title} — PICKS 아카이브` : "PICKS 아카이브 — 지난 주제와 선택된 PICK"}
+      description={
+        selected
+          ? `${selected.title} — ${selected.bestComment.slice(0, 110)}`
+          : "PICKS 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PICK을 다시 만나보세요."
+      }
+      path={selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive"}
+    />
     <div className="min-h-screen bg-background pb-24">
       <div className="page-sticky-header">
         <div className="container flex h-14 items-center gap-3">

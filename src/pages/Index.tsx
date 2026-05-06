@@ -8,6 +8,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
+import Seo from "@/components/Seo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -288,6 +289,22 @@ const Index = () => {
 
   return (
     <PageTransition>
+    <Seo
+      title="PICKS — 매일 하나의 선택된 의견 | 오늘의 PICK"
+      description="PICKS는 매일 하나의 핫토픽에 1인 1 PICK으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다."
+      path="/"
+      jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "PICKS",
+        applicationCategory: "SocialNetworkingApplication",
+        operatingSystem: "Web",
+        url: "https://hot-topic-today.lovable.app/",
+        inLanguage: "ko-KR",
+        description:
+          "매일 하나의 주제, 1인 1 PICK. 가장 공감받은 의견 하나만 아카이브에 남습니다.",
+      }}
+    />
     <div className="min-h-screen bg-background pb-24">
       <div className="relative overflow-hidden">
         <ParticleField />

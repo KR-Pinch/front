@@ -1,5 +1,15 @@
+# https://hot-topic-today.lovable.app/robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /_dev/
+Disallow: /auth
+
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /_dev/
 
 User-agent: Bingbot
 Allow: /
@@ -10,5 +20,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Sitemap: https://hot-topic-today.lovable.app/sitemap.xml
