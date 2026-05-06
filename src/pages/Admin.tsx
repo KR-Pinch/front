@@ -974,7 +974,7 @@ const Admin = () => {
               icon={AlertTriangle}
               label="신고 대기"
               value={pendingReports}
-              hint={`총 ${reports.length}건`}
+              hint={`댓글(신고 대상) · 총 ${reports.length}건`}
             />
           </div>
 
