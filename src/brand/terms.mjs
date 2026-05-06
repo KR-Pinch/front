@@ -47,18 +47,6 @@ export const BRAND_CASE_RULES = [
     replacement: "PINCH",
     reason: "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
   },
-  {
-    kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])Pinch(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PINCH",
-    reason: "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
-  },
-  {
-    kind: "case",
-    pattern: /(?<![A-Za-z0-9\-./:@_])pinch(?![A-Za-z0-9\-./:@_<])/g,
-    replacement: "PINCH",
-    reason: "브랜드 표기는 항상 대문자 'PINCH' 입니다.",
-  },
 ];
 
 export const ALL_RULES = [...FORBIDDEN_RULES, ...BRAND_CASE_RULES];
