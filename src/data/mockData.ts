@@ -45,7 +45,7 @@ export const categories: Category[] = [
 
 /** Pseudo-categories used only as chip filters (not real CategoryId values). */
 export const allCategoryChip = { id: "all", label: "전체", icon: Layers, emoji: "🗂️", accent: "text-accent" } as const;
-export const hotCategoryChip = { id: "all", label: "전체", icon: Flame,  emoji: "🔥", accent: "text-accent" } as const;
+export const hotCategoryChip = { id: "all", label: "인기", icon: Flame,  emoji: "🔥", accent: "text-accent" } as const;
 
 export interface TodayTopic {
   id: string;
