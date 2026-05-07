@@ -391,9 +391,102 @@ export const adminStore = {
     write(KEYS.topics, topics);
   },
 
-  updateTopic(id: string, patch: Partial<Omit<AdminTopicDraft, "id" | "createdAt">>) {
-    const topics = this.getTopics().map((t) => (t.id === id ? { ...t, ...patch } : t));
-    write(KEYS.topics, topics);
+  /**
+   * 토픽 수정. options.mode 에 따라 부수효과가 갈립니다.
+   *  - "minor"  : 필드만 패치. 기존 PINCH 그대로. revision 만 기록.
+   *  - "replace": 필드 패치 + 기존 active PINCH 전부 archived_invalid 로 전환,
+   *               작성자에게 알림 큐 적재, revision 에 영향 수치 + 사유 기록.
+   *               PINCH 는 절대 물리 삭제하지 않음.
+   */
+  updateTopic(
+    id: string,
+    patch: Partial<Omit<AdminTopicDraft, "id" | "createdAt">>,
+    options: { mode?: "minor" | "replace"; reason?: string; changedBy?: string } = {}
+  ): { invalidatedCount: number; affectedLikeCount: number } {
+    const mode = options.mode ?? "minor";
+    const reason = (options.reason ?? "").trim();
+    const changedBy = options.changedBy ?? "admin";
+
+    const topics = this.getTopics();
+    const before = topics.find((t) => t.id === id);
+    if (!before) return { invalidatedCount: 0, affectedLikeCount: 0 };
+
+    const after: AdminTopicDraft = { ...before, ...patch };
+    write(KEYS.topics, topics.map((t) => (t.id === id ? after : t)));
+
+    let invalidatedCount = 0;
+    let affectedLikeCount = 0;
+
+    if (mode === "replace") {
+      // 1) 영향받는 PINCH 무효화 (보존 + 숨김 처리)
+      const pinchesAll = read<Record<string, PinchSnapshot[]>>(KEYS.pinchesByTopic, {});
+      const list = this.getPinchesForTopic(id);
+      const now = new Date().toISOString();
+      const nextList = list.map((p) => {
+        if (p.status !== "active") return p;
+        invalidatedCount += 1;
+        affectedLikeCount += p.likes;
+        return {
+          ...p,
+          status: "archived_invalid" as const,
+          invalidatedAt: now,
+          invalidatedReason: reason || "어드민 토픽 교체",
+        };
+      });
+      pinchesAll[id] = nextList;
+      write(KEYS.pinchesByTopic, pinchesAll);
+
+      // 2) 작성자 알림 큐 적재 (1인 1 PINCH 카운터 리셋 의도 — 백엔드 연결 시
+      //    submit_pinch 가 archived_invalid 는 카운트하지 않도록 처리)
+      const notifs = read<UserNotification[]>(KEYS.notifications, []);
+      const users = this.getUsers();
+      for (const p of nextList.filter((x) => x.invalidatedAt === now)) {
+        const user = users.find((u) => u.username === p.username);
+        if (!user) continue;
+        notifs.push({
+          id: `n-${id}-${p.id}`,
+          userId: user.id,
+          type: "pinch_invalidated",
+          topicId: id,
+          pinchId: p.id,
+          message: `오늘 토픽이 변경되어 PINCH가 무효화되었습니다. 새 토픽에 다시 작성할 수 있습니다.`,
+          reason: reason || "어드민 토픽 교체",
+          createdAt: now,
+          read: false,
+        });
+      }
+      write(KEYS.notifications, notifs);
+    }
+
+    // 3) audit log
+    const revisions = read<TopicRevision[]>(KEYS.topicRevisions, []);
+    revisions.unshift({
+      id: `rev-${id}-${Date.now()}`,
+      topicId: id,
+      mode,
+      before: {
+        category: before.category,
+        title: before.title,
+        description: before.description,
+        newsUrl: before.newsUrl,
+        newsSource: before.newsSource,
+      },
+      after: {
+        category: after.category,
+        title: after.title,
+        description: after.description,
+        newsUrl: after.newsUrl,
+        newsSource: after.newsSource,
+      },
+      reason: mode === "replace" ? reason || "어드민 토픽 교체" : reason,
+      affectedPinchCount: invalidatedCount,
+      affectedLikeCount,
+      changedAt: new Date().toISOString(),
+      changedBy,
+    });
+    write(KEYS.topicRevisions, revisions);
+
+    return { invalidatedCount, affectedLikeCount };
   },
 
   deleteTopic(id: string) {
