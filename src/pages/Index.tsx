@@ -26,7 +26,7 @@ import {
   useTodayTopic,
   useMergedTopics,
   getMergedTopicsByCategory,
-  weeklyRanking,
+  useRanking,
   type CategoryId,
   type TodayTopic,
 } from "@/data/mockData";
