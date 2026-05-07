@@ -414,6 +414,41 @@ const TopicsTab = () => {
   const [editReason, setEditReason] = useState("");
   const [confirmReplace, setConfirmReplace] = useState<{ applyAsToday: boolean } | null>(null);
 
+  // Google News RSS — 카테고리에 맞는 인기 뉴스 추천
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [newsLoading, setNewsLoading] = useState(false);
+  const [newsError, setNewsError] = useState<string | null>(null);
+
+  const loadNews = async (category: string) => {
+    setNewsLoading(true);
+    setNewsError(null);
+    try {
+      const items = await fetchTopNewsByCategory(category as CategoryId, 5);
+      setNews(items);
+    } catch (e) {
+      setNewsError(e instanceof Error ? e.message : "뉴스를 가져오지 못했습니다.");
+      setNews([]);
+    } finally {
+      setNewsLoading(false);
+    }
+  };
+
+  // 다이얼로그가 열리거나 카테고리가 바뀔 때 자동 로드
+  useEffect(() => {
+    if (!open) return;
+    loadNews(form.category);
+  }, [open, form.category]);
+
+  const applyNews = (item: NewsItem) => {
+    setForm((f) => ({
+      ...f,
+      title: f.title || item.title,
+      newsUrl: item.link,
+      newsSource: item.source || f.newsSource,
+    }));
+    toast({ title: "뉴스 적용됨", description: item.title });
+  };
+
   // editingId가 가리키는 토픽에 달린 active PINCH 수 / 좋아요 합 — 실제 store 에서 조회
   const editingImpact = useMemo(() => {
     if (!editingId) return { pinchCount: 0, likeCount: 0 };
