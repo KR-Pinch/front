@@ -247,6 +247,63 @@ export const adminStore = {
     return read<AdminTopicDraft[]>(KEYS.topics, []);
   },
 
+  // ----- 토픽별 PINCH 스냅샷 ------------------------------------------------
+  // 백엔드 연결 전 mock: 토픽이 처음 조회될 때 결정론적 시드로 PINCH를 생성해
+  // localStorage 에 한 번만 적재한다. 이후 invalidate / like 변경은 모두 여기서
+  // 일어나며 Topic / Archive / Ranking / MyPage 가 같은 소스를 본다.
+  getPinchesForTopic(topicId: string): PinchSnapshot[] {
+    ensureSeeded();
+    const all = read<Record<string, PinchSnapshot[]>>(KEYS.pinchesByTopic, {});
+    if (all[topicId]) return all[topicId];
+
+    const topic = this.getTopics().find((t) => t.id === topicId);
+    const seedTitle = topic?.title ?? "오늘의 PINCH";
+    const seedCount = 6 + (topicId.length % 5);
+    const seedUsersList = this.getUsers().slice(0, seedCount);
+    const sampleTexts = [
+      "이 주제는 단순히 찬반으로 나누기 어렵습니다. 맥락이 더 중요합니다.",
+      "법·제도가 따라가지 못하는 사이 피해는 늘어나고 있어요.",
+      "현실적으로 단속 인력부터 확보하지 않으면 의미가 없다고 봅니다.",
+      "기술적 해결책과 제도적 해결책은 함께 가야 합니다.",
+      "당사자의 목소리를 더 들어볼 필요가 있어 보입니다.",
+      "장기적으로 봤을 때 교육이 가장 큰 지렛대라고 생각합니다.",
+    ];
+    const seeded: PinchSnapshot[] = seedUsersList.map((u, i) => ({
+      id: `${topicId}-p${i + 1}`,
+      topicId,
+      originalTopicTitle: seedTitle,
+      username: u.username,
+      text: sampleTexts[i % sampleTexts.length],
+      likes: 30 + ((topicId.charCodeAt(0) + i * 17) % 220),
+      status: "active",
+      createdAt: new Date(Date.now() - (i + 1) * 3600_000).toISOString(),
+    }));
+    all[topicId] = seeded;
+    write(KEYS.pinchesByTopic, all);
+    return seeded;
+  },
+
+  /** 영향 미리보기에 쓰는 active PINCH 수 / 좋아요 합 */
+  getPinchImpactForTopic(topicId: string): { pinchCount: number; likeCount: number } {
+    const list = this.getPinchesForTopic(topicId).filter((p) => p.status === "active");
+    return {
+      pinchCount: list.length,
+      likeCount: list.reduce((sum, p) => sum + p.likes, 0),
+    };
+  },
+
+  getTopicRevisions(topicId?: string): TopicRevision[] {
+    ensureSeeded();
+    const all = read<TopicRevision[]>(KEYS.topicRevisions, []);
+    return topicId ? all.filter((r) => r.topicId === topicId) : all;
+  },
+
+  getNotificationsForUser(userId: string): UserNotification[] {
+    ensureSeeded();
+    return read<UserNotification[]>(KEYS.notifications, []).filter((n) => n.userId === userId);
+  },
+
+
   banUser(userId: string, duration: BanDuration, reason: string) {
     const users = this.getUsers();
     const user = users.find((u) => u.id === userId);
