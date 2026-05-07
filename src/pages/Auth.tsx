@@ -71,7 +71,7 @@ const Auth = () => {
 
         <div className="flex-1 flex items-start sm:items-center justify-center px-4 pt-6 pb-10 sm:py-10">
           <motion.div
-            className="w-full max-w-sm space-y-8"
+            className="w-full max-w-sm space-y-5 sm:space-y-8"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25 }}
