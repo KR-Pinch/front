@@ -1,4 +1,4 @@
-// Google News RSS fetcher (frontend-only, via CORS proxy).
+// Google News RSS fetcher (frontend-only, via CORS proxy with fallbacks).
 // 데모/목업용. 실서비스에서는 백엔드 프록시 권장.
 
 import type { CategoryId } from "@/data/mockData";
@@ -10,30 +10,51 @@ export interface NewsItem {
   pubDate: string;
 }
 
-// 카테고리별 Google News 검색 키워드.
 const CATEGORY_QUERY: Record<CategoryId, string> = {
   politics: "정치",
-  tech: "IT OR 테크 OR 개발",
+  tech: "IT 테크",
   society: "사회",
-  culture: "문화 OR 연예",
+  culture: "문화 연예",
   economy: "경제",
   sports: "스포츠",
 };
 
-const PROXY = "https://api.allorigins.win/raw?url=";
+// 여러 공개 CORS 프록시 — 하나 실패하면 다음 시도
+const PROXIES: Array<(u: string) => string> = [
+  (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  (u) => `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(u)}`,
+  (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+];
 
-/** 구글 뉴스 RSS 검색 → 상위 N개 기사. CORS 회피 위해 allorigins 프록시 경유. */
+async function fetchWithFallback(targetUrl: string): Promise<string> {
+  let lastErr: unknown = null;
+  for (const wrap of PROXIES) {
+    try {
+      const res = await fetch(wrap(targetUrl), {
+        headers: { Accept: "application/rss+xml, application/xml, text/xml, */*" },
+      });
+      if (!res.ok) {
+        lastErr = new Error(`HTTP ${res.status}`);
+        continue;
+      }
+      const text = await res.text();
+      if (text && text.trim().length > 0) return text;
+      lastErr = new Error("빈 응답");
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error("모든 프록시 실패");
+}
+
 export async function fetchTopNewsByCategory(
   category: CategoryId,
   limit = 5,
 ): Promise<NewsItem[]> {
   const q = encodeURIComponent(CATEGORY_QUERY[category]);
-  const rssUrl = `https://news.google.com/rss/search?q=${q}+when:1d&hl=ko&gl=KR&ceid=KR:ko`;
-  const url = PROXY + encodeURIComponent(rssUrl);
+  const rssUrl = `https://news.google.com/rss/search?q=${q}&hl=ko&gl=KR&ceid=KR:ko`;
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`뉴스 가져오기 실패 (${res.status})`);
-  const xml = await res.text();
+  const xml = await fetchWithFallback(rssUrl);
 
   const doc = new DOMParser().parseFromString(xml, "text/xml");
   if (doc.querySelector("parsererror")) throw new Error("RSS 파싱 실패");
@@ -45,7 +66,6 @@ export async function fetchTopNewsByCategory(
     const pubDate = item.querySelector("pubDate")?.textContent ?? "";
     const source =
       item.querySelector("source")?.textContent ??
-      // Google News title 형식: "기사 제목 - 출처"
       rawTitle.split(" - ").slice(-1)[0] ??
       "";
     const title = rawTitle.replace(new RegExp(` - ${source}$`), "").trim();
