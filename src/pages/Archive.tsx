@@ -200,9 +200,6 @@ const Archive = () => {
           <p className="mt-1 text-sm text-muted-foreground">지난 주제와 선택된 PINCH</p>
         </div>
 
-        {/* Ad Banner */}
-        <AdFitBanner className="w-full mb-3" />
-
         {/* Search */}
         <div className="mb-3">
           <div className="relative">
