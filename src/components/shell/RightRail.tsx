@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Trophy, Flame, ArrowRight } from "lucide-react";
-import { weeklyRanking } from "@/data/mockData";
+import { useRanking } from "@/data/mockData";
 import AdFitBanner from "@/components/AdFitBanner";
 
 /**
@@ -8,7 +8,7 @@ import AdFitBanner from "@/components/AdFitBanner";
  * Hidden on mobile/tablet to keep their existing flow intact.
  */
 const RightRail = () => {
-  const top5 = weeklyRanking.slice(0, 5);
+  const top5 = useRanking("weekly").slice(0, 5);
 
   return (
     <aside className="wide-up-flex w-[300px] shrink-0 flex-col gap-4 px-4 py-6 border-l border-border/50">
