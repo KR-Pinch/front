@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -6,19 +6,25 @@ import {
   BarChart3,
   Ban,
   CheckCircle2,
+  ExternalLink,
   FileText,
   Flag,
   Heart,
+  Loader2,
   LogOut,
   MessageSquare,
+  Newspaper,
   Pin,
   PinOff,
   Plus,
+  RefreshCw,
   Search,
   Shield,
   Trash2,
   Users,
 } from "lucide-react";
+import { fetchTopNewsByCategory, type NewsItem } from "@/lib/googleNews";
+import type { CategoryId } from "@/data/mockData";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -407,6 +413,41 @@ const TopicsTab = () => {
   const [editMode, setEditMode] = useState<"minor" | "replace">("minor");
   const [editReason, setEditReason] = useState("");
   const [confirmReplace, setConfirmReplace] = useState<{ applyAsToday: boolean } | null>(null);
+
+  // Google News RSS — 카테고리에 맞는 인기 뉴스 추천
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [newsLoading, setNewsLoading] = useState(false);
+  const [newsError, setNewsError] = useState<string | null>(null);
+
+  const loadNews = async (category: string) => {
+    setNewsLoading(true);
+    setNewsError(null);
+    try {
+      const items = await fetchTopNewsByCategory(category as CategoryId, 5);
+      setNews(items);
+    } catch (e) {
+      setNewsError(e instanceof Error ? e.message : "뉴스를 가져오지 못했습니다.");
+      setNews([]);
+    } finally {
+      setNewsLoading(false);
+    }
+  };
+
+  // 다이얼로그가 열리거나 카테고리가 바뀔 때 자동 로드
+  useEffect(() => {
+    if (!open) return;
+    loadNews(form.category);
+  }, [open, form.category]);
+
+  const applyNews = (item: NewsItem) => {
+    setForm((f) => ({
+      ...f,
+      title: f.title || item.title,
+      newsUrl: item.link,
+      newsSource: item.source || f.newsSource,
+    }));
+    toast({ title: "뉴스 적용됨", description: item.title });
+  };
 
   // editingId가 가리키는 토픽에 달린 active PINCH 수 / 좋아요 합 — 실제 store 에서 조회
   const editingImpact = useMemo(() => {
@@ -847,6 +888,71 @@ const TopicsTab = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* 카테고리에 맞는 인기 뉴스 추천 (Google News RSS) */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs inline-flex items-center gap-1.5">
+                  <Newspaper className="h-3.5 w-3.5" />
+                  추천 뉴스 · 최근 24시간
+                </Label>
+                <button
+                  type="button"
+                  onClick={() => loadNews(form.category)}
+                  disabled={newsLoading}
+                  className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3 w-3 ${newsLoading ? "animate-spin" : ""}`} />
+                  새로고침
+                </button>
+              </div>
+              <div className="rounded-lg border border-border bg-muted/20 p-2 max-h-48 overflow-y-auto scrollbar-none">
+                {newsLoading ? (
+                  <div className="flex items-center justify-center gap-2 py-6 text-[11px] text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" /> 뉴스 가져오는 중...
+                  </div>
+                ) : newsError ? (
+                  <div className="py-4 text-center text-[11px] text-destructive">
+                    {newsError}
+                  </div>
+                ) : news.length === 0 ? (
+                  <div className="py-4 text-center text-[11px] text-muted-foreground">
+                    추천 뉴스가 없습니다.
+                  </div>
+                ) : (
+                  <ul className="space-y-1">
+                    {news.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 rounded p-1.5 hover:bg-accent/10 transition">
+                        <button
+                          type="button"
+                          onClick={() => applyNews(item)}
+                          className="flex-1 text-left"
+                        >
+                          <div className="text-[11px] font-semibold leading-snug line-clamp-2">
+                            {item.title}
+                          </div>
+                          <div className="mt-0.5 text-[10px] text-muted-foreground">
+                            {item.source}
+                          </div>
+                        </button>
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 p-1 text-muted-foreground hover:text-foreground"
+                          title="원문 열기"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <p className="text-[10px] text-muted-foreground">
+                항목을 클릭하면 제목 · 출처 · URL이 자동 채워집니다.
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">제목</Label>
