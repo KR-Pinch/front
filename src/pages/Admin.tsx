@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -6,19 +6,25 @@ import {
   BarChart3,
   Ban,
   CheckCircle2,
+  ExternalLink,
   FileText,
   Flag,
   Heart,
+  Loader2,
   LogOut,
   MessageSquare,
+  Newspaper,
   Pin,
   PinOff,
   Plus,
+  RefreshCw,
   Search,
   Shield,
   Trash2,
   Users,
 } from "lucide-react";
+import { fetchTopNewsByCategory, type NewsItem } from "@/lib/googleNews";
+import type { CategoryId } from "@/data/mockData";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
