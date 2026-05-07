@@ -298,6 +298,15 @@
   .card-pad {
     @apply p-4 md:p-5 xl:p-6;
   }
+
+  /* Hide native scrollbar while keeping scroll behavior. */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 

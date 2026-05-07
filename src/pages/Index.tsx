@@ -500,11 +500,6 @@ const Index = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Ad Banner */}
-        <motion.div variants={item}>
-          <AdFitBanner className="w-full" />
-        </motion.div>
-
         {/* Bento Grid */}
         <div className="grid grid-cols-2 gap-3 md:gap-4">
           <motion.div variants={item}>
@@ -534,13 +529,18 @@ const Index = () => {
               >
                 <Trophy className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-colors" />
                 <div>
-                  <p className="text-lg font-bold">똑똑이 랭킹</p>
+                  <p className="text-lg font-bold">PINCH 랭킹</p>
                   <p className="text-xs text-muted-foreground">주간 · 월간</p>
                 </div>
               </motion.div>
             </Link>
           </motion.div>
         </div>
+
+        {/* Ad Banner — placed after primary content so first paint shows topic + nav cards */}
+        <motion.div variants={item}>
+          <AdFitBanner className="w-full" />
+        </motion.div>
 
         {/* Weekly Top 3 Preview */}
         <motion.div variants={item} className="glass noise rounded-2xl p-5">
