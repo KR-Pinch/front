@@ -384,6 +384,9 @@ const Archive = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Ad Banner */}
+        <AdFitBanner className="w-full mt-6" />
       </motion.div>
 
       {/* Deep-link detail dialog — driven by ?item=<id> so refresh + share work */}
