@@ -19,7 +19,7 @@ const getRankStyle = (rank: number) => {
 
 const Ranking = () => {
   const [period, setPeriod] = useState<"weekly" | "monthly">("weekly");
-  const data = period === "weekly" ? weeklyRanking : monthlyRanking;
+  const data = useRanking(period);
 
   return (
     <PageTransition>
