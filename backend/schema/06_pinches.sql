@@ -13,6 +13,11 @@ create table if not exists public.pinch (
   kst_day     date generated always as
               (((created_at at time zone 'Asia/Seoul'))::date) stored,
   is_hidden   boolean not null default false,            -- 신고로 숨김 처리
+  -- 어드민이 토픽 "교체" 시 active → archived_invalid 로 전환.
+  -- 본인 마이페이지에서는 항상 노출되지만 랭킹/아카이브 집계에서는 제외된다.
+  status      public.pinch_status not null default 'active',
+  invalidated_at     timestamptz,
+  invalidated_reason text,
   unique (user_id, kst_day)                              -- 1일 1 PINCH
 );
 

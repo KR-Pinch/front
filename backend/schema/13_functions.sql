@@ -72,6 +72,7 @@ begin
       left join public.view_pinch_stats ps on ps.pinch_id = p.id
      where p.kst_day = v_day
        and p.is_hidden = false
+       and p.status = 'active'   -- archived_invalid 는 우승 후보에서 제외
   )
   insert into public.daily_winners
         (kst_day, category_id, topic_id, pinch_id, total_pinches, best_likes)

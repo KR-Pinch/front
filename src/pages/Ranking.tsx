@@ -7,7 +7,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
-import { weeklyRanking, monthlyRanking } from "@/data/mockData";
+import { useRanking } from "@/data/mockData";
 import { navRoutes } from "@/config/navIcons";
 
 const getRankStyle = (rank: number) => {
@@ -19,7 +19,7 @@ const getRankStyle = (rank: number) => {
 
 const Ranking = () => {
   const [period, setPeriod] = useState<"weekly" | "monthly">("weekly");
-  const data = period === "weekly" ? weeklyRanking : monthlyRanking;
+  const data = useRanking(period);
 
   return (
     <PageTransition>

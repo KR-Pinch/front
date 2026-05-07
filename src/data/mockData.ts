@@ -641,7 +641,15 @@ export const getArchiveItemId = (item: ArchiveItem): string => {
 export const findArchiveItemById = (id: string): ArchiveItem | undefined =>
   archiveData.find((it) => getArchiveItemId(it) === id);
 
-export const weeklyRanking = [
+// Static seed for ranking. UI MUST go through `useRanking()` /
+// `getWeeklyRanking()` so PINCH 가 archived_invalid 로 전환되면 그 PINCH 가
+// 받았던 좋아요 / 우승 횟수가 자동으로 빠진다.
+//
+// Backend mapping:
+//   getWeeklyRanking()  → public.view_weekly_ranking
+//   getMonthlyRanking() → public.view_monthly_ranking
+// (둘 다 backend/schema/12_views.sql 에서 status='active' 만 집계)
+const weeklyRankingSeed: RankingEntry[] = [
   { rank: 1, username: "시민의식", wins: 3, totalLikes: 412 },
   { rank: 2, username: "테크윤리", wins: 2, totalLikes: 356 },
   { rank: 3, username: "워라밸마스터", wins: 2, totalLikes: 298 },
@@ -649,10 +657,88 @@ export const weeklyRanking = [
   { rank: 5, username: "교육전문가", wins: 1, totalLikes: 198 },
 ];
 
-export const monthlyRanking = [
+const monthlyRankingSeed: RankingEntry[] = [
   { rank: 1, username: "테크윤리", wins: 8, totalLikes: 1520 },
   { rank: 2, username: "시민의식", wins: 7, totalLikes: 1389 },
   { rank: 3, username: "동물복지연대", wins: 5, totalLikes: 1102 },
   { rank: 4, username: "워라밸마스터", wins: 4, totalLikes: 987 },
   { rank: 5, username: "법학도", wins: 3, totalLikes: 756 },
 ];
+
+export interface RankingEntry {
+  rank: number;
+  username: string;
+  wins: number;
+  totalLikes: number;
+}
+
+// Aggregate "likes lost to invalidation" per username across every topic the
+// admin has touched. Mirrors backend filter `status = 'active'` on
+// view_pinch_stats — invalidated PINCHes keep their like rows for audit but
+// contribute 0 to ranking score.
+const computeInvalidationPenalty = (): Map<string, { likes: number; lost: number }> => {
+  const penalty = new Map<string, { likes: number; lost: number }>();
+  for (const topic of adminStore.getTopics()) {
+    for (const p of adminStore.getPinchesForTopic(topic.id)) {
+      if (p.status !== "archived_invalid") continue;
+      const cur = penalty.get(p.username) ?? { likes: 0, lost: 0 };
+      cur.likes += p.likes;
+      cur.lost += 1;
+      penalty.set(p.username, cur);
+    }
+  }
+  return penalty;
+};
+
+const applyPenalty = (seed: RankingEntry[]): RankingEntry[] => {
+  const penalty = computeInvalidationPenalty();
+  if (penalty.size === 0) return seed;
+  const adjusted = seed.map((row) => {
+    const pen = penalty.get(row.username);
+    if (!pen) return row;
+    return {
+      ...row,
+      // archived_invalid PINCH 의 좋아요는 랭킹 점수에서 제외.
+      totalLikes: Math.max(0, row.totalLikes - pen.likes),
+      // 무효화된 PINCH 가 그날의 우승이었다면 wins 도 1씩 차감.
+      wins: Math.max(0, row.wins - pen.lost),
+    };
+  });
+  // Re-rank deterministically: wins desc, totalLikes desc, username asc.
+  adjusted.sort((a, b) => {
+    if (b.wins !== a.wins) return b.wins - a.wins;
+    if (b.totalLikes !== a.totalLikes) return b.totalLikes - a.totalLikes;
+    return a.username.localeCompare(b.username);
+  });
+  return adjusted.map((row, i) => ({ ...row, rank: i + 1 }));
+};
+
+export const getWeeklyRanking = (): RankingEntry[] => applyPenalty(weeklyRankingSeed);
+export const getMonthlyRanking = (): RankingEntry[] => applyPenalty(monthlyRankingSeed);
+
+/**
+ * Reactive hook — recomputes when admin store changes (e.g. topic replace).
+ * Components MUST use this instead of importing the raw seed arrays.
+ */
+export const useRanking = (period: "weekly" | "monthly"): RankingEntry[] => {
+  const [data, setData] = useState<RankingEntry[]>(() =>
+    period === "weekly" ? getWeeklyRanking() : getMonthlyRanking(),
+  );
+  useEffect(() => {
+    const sync = () =>
+      setData(period === "weekly" ? getWeeklyRanking() : getMonthlyRanking());
+    sync();
+    window.addEventListener(adminEvent, sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener(adminEvent, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, [period]);
+  return data;
+};
+
+// Back-compat — legacy exports retained for any non-migrated reader.
+// New code must use `useRanking` / `getWeeklyRanking()` so penalties apply.
+export const weeklyRanking = weeklyRankingSeed;
+export const monthlyRanking = monthlyRankingSeed;
