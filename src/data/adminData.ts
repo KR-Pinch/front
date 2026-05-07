@@ -59,6 +59,66 @@ export interface AdminTopicDraft {
   createdAt: string;
 }
 
+// ----- 토픽 교체 시 영향받는 PINCH / audit log / 알림 ------------------------
+// 백엔드 연결 시 각 인터페이스는 그대로 테이블 스키마로 매핑됩니다.
+//   pinches.status, topic_revisions, user_notifications
+
+/**
+ * PINCH 상태:
+ * - "active": 정상. 토픽에 노출 / 좋아요 가능 / 랭킹·아카이브 후보.
+ * - "archived_invalid": 어드민이 토픽을 "교체"하면서 맥락이 깨져 무효화됨.
+ *     · 물리 삭제(DELETE) 절대 금지 — 본인 마이페이지에서는 항상 조회 가능.
+ *     · 토픽 화면 / 아카이브 / 랭킹 집계에서는 숨김.
+ *     · 좋아요 수치는 보존되되 랭킹 점수 산정에서 제외.
+ */
+export type PinchStatus = "active" | "archived_invalid";
+
+export interface PinchSnapshot {
+  id: string;
+  topicId: string;
+  /** 작성 당시 토픽 제목 — 토픽이 교체되어도 본인이 "어떤 논점에 썼었는지" 추적 */
+  originalTopicTitle: string;
+  username: string;
+  text: string;
+  likes: number;
+  status: PinchStatus;
+  /** archived_invalid 로 전환된 시점 (ISO) */
+  invalidatedAt?: string;
+  /** 어드민이 입력한 교체 사유 (audit + 사용자 공지에 표시) */
+  invalidatedReason?: string;
+  createdAt: string;
+}
+
+export interface TopicRevision {
+  id: string;
+  topicId: string;
+  /** "minor" = 오타·문구 다듬기 (PINCH 영향 없음) / "replace" = 토픽 교체 */
+  mode: "minor" | "replace";
+  /** snapshot of fields BEFORE the change */
+  before: Pick<AdminTopicDraft, "category" | "title" | "description" | "newsUrl" | "newsSource">;
+  /** snapshot of fields AFTER the change */
+  after: Pick<AdminTopicDraft, "category" | "title" | "description" | "newsUrl" | "newsSource">;
+  reason: string;
+  /** "replace" 일 때만 채워짐: 영향받은 PINCH 수 / 좋아요 합 */
+  affectedPinchCount: number;
+  affectedLikeCount: number;
+  changedAt: string;
+  changedBy: string; // admin user id (mock: "admin")
+}
+
+export interface UserNotification {
+  id: string;
+  userId: string;
+  type: "pinch_invalidated";
+  topicId: string;
+  /** 무효화된 본인 PINCH id */
+  pinchId: string;
+  message: string;
+  reason: string;
+  createdAt: string;
+  read: boolean;
+}
+
 // ----- Initial mock seed --------------------------------------------------
 
 // Raw seed values use plain numbers; we normalize them to branded PinchCount
