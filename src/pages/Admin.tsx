@@ -889,6 +889,71 @@ const TopicsTab = () => {
                 </SelectContent>
               </Select>
             </div>
+
+            {/* 카테고리에 맞는 인기 뉴스 추천 (Google News RSS) */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs inline-flex items-center gap-1.5">
+                  <Newspaper className="h-3.5 w-3.5" />
+                  추천 뉴스 · 최근 24시간
+                </Label>
+                <button
+                  type="button"
+                  onClick={() => loadNews(form.category)}
+                  disabled={newsLoading}
+                  className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3 w-3 ${newsLoading ? "animate-spin" : ""}`} />
+                  새로고침
+                </button>
+              </div>
+              <div className="rounded-lg border border-border bg-muted/20 p-2 max-h-48 overflow-y-auto scrollbar-none">
+                {newsLoading ? (
+                  <div className="flex items-center justify-center gap-2 py-6 text-[11px] text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" /> 뉴스 가져오는 중...
+                  </div>
+                ) : newsError ? (
+                  <div className="py-4 text-center text-[11px] text-destructive">
+                    {newsError}
+                  </div>
+                ) : news.length === 0 ? (
+                  <div className="py-4 text-center text-[11px] text-muted-foreground">
+                    추천 뉴스가 없습니다.
+                  </div>
+                ) : (
+                  <ul className="space-y-1">
+                    {news.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 rounded p-1.5 hover:bg-accent/10 transition">
+                        <button
+                          type="button"
+                          onClick={() => applyNews(item)}
+                          className="flex-1 text-left"
+                        >
+                          <div className="text-[11px] font-semibold leading-snug line-clamp-2">
+                            {item.title}
+                          </div>
+                          <div className="mt-0.5 text-[10px] text-muted-foreground">
+                            {item.source}
+                          </div>
+                        </button>
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 p-1 text-muted-foreground hover:text-foreground"
+                          title="원문 열기"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <p className="text-[10px] text-muted-foreground">
+                항목을 클릭하면 제목 · 출처 · URL이 자동 채워집니다.
+              </p>
+            </div>
             <div className="space-y-1.5">
               <Label className="text-xs">제목</Label>
               <Input
