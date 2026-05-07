@@ -50,6 +50,7 @@ const Index = () => {
 
   // "all" = 글로벌 HOT, otherwise = 해당 카테고리 HOT
   const [activeCat, setActiveCat] = useState<string>(focusCategory ?? "all");
+  const weeklyRanking = useRanking("weekly");
   const [highlight, setHighlight] = useState(false);
   const highlightTimer = useRef<number | null>(null);
 
