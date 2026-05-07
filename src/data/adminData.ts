@@ -185,6 +185,13 @@ const KEYS = {
   // Per-category forced topic overrides: { [categoryId]: topicId }
   // Independent of the global override; both can coexist.
   activeByCategory: "hanmadi:admin:activeTopicByCategory",
+  // 토픽별 PINCH 스냅샷 (백엔드 연결 전 mock).
+  // 키: topicId, 값: PinchSnapshot[] — adminStore.getPinchesForTopic 로 접근.
+  pinchesByTopic: "hanmadi:admin:pinchesByTopic",
+  // 토픽 변경 이력 (audit log).
+  topicRevisions: "hanmadi:admin:topicRevisions",
+  // 사용자에게 발송된 알림 큐.
+  notifications: "hanmadi:admin:notifications",
 } as const;
 
 const EVENT = "hanmadi:admin-change";
