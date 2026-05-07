@@ -57,9 +57,6 @@ const Ranking = () => {
           <p className="mt-1 text-sm text-muted-foreground">가장 많은 공감을 받은 의견 작성자</p>
         </div>
 
-        {/* Ad Banner */}
-        <AdFitBanner className="w-full mb-6" />
-
         {/* Period Toggle */}
         <div className="mb-6 flex gap-1 rounded-xl bg-secondary p-1">
           {[
@@ -128,6 +125,9 @@ const Ranking = () => {
             })}
           </motion.div>
         </AnimatePresence>
+
+        {/* Ad Banner */}
+        <AdFitBanner className="w-full mt-6" />
       </motion.div>
 
       <BottomNav />

@@ -497,9 +497,6 @@ const Topic = () => {
 
         <div className="h-px bg-border" />
 
-        {/* Ad Banner */}
-        <AdFitBanner className="w-full" />
-
         {/* PINCH list */}
         <div ref={pinchesRef}>
           <div className="mb-4 flex items-center gap-2">
