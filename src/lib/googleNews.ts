@@ -1,4 +1,4 @@
-// Google News RSS fetcher (frontend-only, via CORS proxy with fallbacks).
+// Google News RSS fetcher via rss2json (JSON, CORS-friendly).
 // 데모/목업용. 실서비스에서는 백엔드 프록시 권장.
 
 import type { CategoryId } from "@/data/mockData";
@@ -19,32 +19,18 @@ const CATEGORY_QUERY: Record<CategoryId, string> = {
   sports: "스포츠",
 };
 
-// 여러 공개 CORS 프록시 — 하나 실패하면 다음 시도
-const PROXIES: Array<(u: string) => string> = [
-  (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-  (u) => `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(u)}`,
-  (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-];
+interface Rss2JsonItem {
+  title: string;
+  link: string;
+  pubDate: string;
+  author?: string;
+  description?: string;
+}
 
-async function fetchWithFallback(targetUrl: string): Promise<string> {
-  let lastErr: unknown = null;
-  for (const wrap of PROXIES) {
-    try {
-      const res = await fetch(wrap(targetUrl), {
-        headers: { Accept: "application/rss+xml, application/xml, text/xml, */*" },
-      });
-      if (!res.ok) {
-        lastErr = new Error(`HTTP ${res.status}`);
-        continue;
-      }
-      const text = await res.text();
-      if (text && text.trim().length > 0) return text;
-      lastErr = new Error("빈 응답");
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  throw lastErr instanceof Error ? lastErr : new Error("모든 프록시 실패");
+interface Rss2JsonResponse {
+  status: string;
+  message?: string;
+  items?: Rss2JsonItem[];
 }
 
 export async function fetchTopNewsByCategory(
@@ -53,22 +39,26 @@ export async function fetchTopNewsByCategory(
 ): Promise<NewsItem[]> {
   const q = encodeURIComponent(CATEGORY_QUERY[category]);
   const rssUrl = `https://news.google.com/rss/search?q=${q}&hl=ko&gl=KR&ceid=KR:ko`;
+  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=${limit}`;
 
-  const xml = await fetchWithFallback(rssUrl);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`뉴스 가져오기 실패 (${res.status})`);
+  const data: Rss2JsonResponse = await res.json();
+  if (data.status !== "ok" || !data.items) {
+    throw new Error(data.message ?? "뉴스 응답이 올바르지 않습니다");
+  }
 
-  const doc = new DOMParser().parseFromString(xml, "text/xml");
-  if (doc.querySelector("parsererror")) throw new Error("RSS 파싱 실패");
-
-  const items = Array.from(doc.querySelectorAll("item")).slice(0, limit);
-  return items.map((item) => {
-    const rawTitle = item.querySelector("title")?.textContent ?? "";
-    const link = item.querySelector("link")?.textContent ?? "";
-    const pubDate = item.querySelector("pubDate")?.textContent ?? "";
-    const source =
-      item.querySelector("source")?.textContent ??
-      rawTitle.split(" - ").slice(-1)[0] ??
-      "";
-    const title = rawTitle.replace(new RegExp(` - ${source}$`), "").trim();
-    return { title, link, source, pubDate };
+  return data.items.slice(0, limit).map((item) => {
+    const rawTitle = item.title ?? "";
+    // Google News title 형식: "기사 제목 - 출처"
+    const dashIdx = rawTitle.lastIndexOf(" - ");
+    const source = dashIdx > 0 ? rawTitle.slice(dashIdx + 3) : "";
+    const title = dashIdx > 0 ? rawTitle.slice(0, dashIdx).trim() : rawTitle;
+    return {
+      title,
+      link: item.link,
+      source,
+      pubDate: item.pubDate,
+    };
   });
 }
