@@ -2,7 +2,7 @@
 
 <br />
 
-<img src="screenshots/home.png" alt="PINCH" width="100%" />
+<img src="screenshots/banner.png" alt="PINCH — One PINCH a day." width="100%" />
 
 <br />
 <br />
