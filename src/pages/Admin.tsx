@@ -747,7 +747,87 @@ const TopicsTab = () => {
         <DialogContent className="glass max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingId ? "토픽 수정" : "새 토픽 등록"}</DialogTitle>
+            {editingId ? (
+              <DialogDescription className="text-xs">
+                기존 PINCH의 맥락에 영향을 줄 수 있으므로 변경 강도를 먼저 선택해주세요.
+              </DialogDescription>
+            ) : null}
           </DialogHeader>
+
+          {editingId ? (
+            <div className="space-y-2 rounded-xl border border-border bg-card/40 p-3">
+              <Label className="text-xs font-semibold">변경 강도</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditMode("minor")}
+                  className={`text-left rounded-lg border p-3 transition ${
+                    editMode === "minor"
+                      ? "border-accent bg-accent/10"
+                      : "border-border hover:border-muted-foreground/40"
+                  }`}
+                >
+                  <div className="text-xs font-bold mb-1">단순 수정</div>
+                  <div className="text-[10px] leading-snug text-muted-foreground">
+                    오타·문구 다듬기.<br />기존 PINCH 그대로 유지.
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditMode("replace")}
+                  className={`text-left rounded-lg border p-3 transition ${
+                    editMode === "replace"
+                      ? "border-destructive bg-destructive/10"
+                      : "border-border hover:border-muted-foreground/40"
+                  }`}
+                >
+                  <div className="text-xs font-bold mb-1 inline-flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" /> 토픽 교체
+                  </div>
+                  <div className="text-[10px] leading-snug text-muted-foreground">
+                    논점 자체 변경.<br />기존 PINCH는 보존되되 숨김 처리.
+                  </div>
+                </button>
+              </div>
+
+              {editMode === "replace" ? (
+                <>
+                  <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-2.5 text-[11px]">
+                    <div className="flex items-center gap-1.5 font-semibold text-destructive">
+                      <AlertTriangle className="h-3 w-3" />
+                      영향 미리보기
+                    </div>
+                    <div className="mt-1 text-muted-foreground">
+                      이 토픽에는 현재{" "}
+                      <span className="font-bold text-foreground">
+                        PINCH {editingImpact.pinchCount}개
+                      </span>
+                      ,{" "}
+                      <span className="font-bold text-foreground">
+                        좋아요 {editingImpact.likeCount.toLocaleString()}개
+                      </span>
+                      가 달려 있습니다. 교체 시 새 토픽 맥락에서 숨김 처리되며,
+                      참여자에게 재작성 알림이 발송됩니다.
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">교체 사유 (필수)</Label>
+                    <Textarea
+                      value={editReason}
+                      onChange={(e) => setEditReason(e.target.value)}
+                      maxLength={200}
+                      rows={2}
+                      placeholder="예) 잘못된 출처로 발행되어 논점 자체를 교체"
+                      className="text-xs"
+                    />
+                    <div className="text-[10px] text-muted-foreground text-right">
+                      audit log + 사용자 공지에 노출됩니다 · {editReason.length}/200
+                    </div>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          ) : null}
 
           <div className="space-y-3">
             <div className="space-y-1.5">
