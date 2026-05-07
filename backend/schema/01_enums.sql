@@ -28,3 +28,12 @@ exception when duplicate_object then null; end $$;
 do $$ begin
   create type public.topic_source as enum ('seed', 'admin');
 exception when duplicate_object then null; end $$;
+
+-- PINCH 상태:
+--   active           = 정상 (랭킹/아카이브 후보)
+--   archived_invalid = 어드민이 토픽을 "교체"하면서 맥락이 깨져 무효화됨.
+--                      물리 삭제 금지. 본인 마이페이지에서는 보임.
+--                      토픽/아카이브/랭킹 집계에서는 제외 (좋아요 수치는 보존).
+do $$ begin
+  create type public.pinch_status as enum ('active', 'archived_invalid');
+exception when duplicate_object then null; end $$;
