@@ -403,6 +403,21 @@ const TopicsTab = () => {
     date: new Date().toISOString().slice(0, 10),
   });
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  // 토픽 수정 강도: "minor" = 오타·문구 다듬기 / "replace" = 토픽 자체 교체(기존 PINCH 영향)
+  const [editMode, setEditMode] = useState<"minor" | "replace">("minor");
+  const [editReason, setEditReason] = useState("");
+  const [confirmReplace, setConfirmReplace] = useState<{ applyAsToday: boolean } | null>(null);
+
+  // editingId가 가리키는 토픽에 달린 PINCH 수 / 좋아요 합 — 백엔드 연결 전까지는 mock
+  const editingImpact = useMemo(() => {
+    if (!editingId) return { pinchCount: 0, likeCount: 0 };
+    // 결정론적 mock: id 해시 기반
+    const seed = editingId.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+    return {
+      pinchCount: 40 + (seed % 180),
+      likeCount: 200 + (seed * 17) % 4200,
+    };
+  }, [editingId]);
 
   const resetForm = () => {
     setForm({
@@ -414,6 +429,8 @@ const TopicsTab = () => {
       date: new Date().toISOString().slice(0, 10),
     });
     setEditingId(null);
+    setEditMode("minor");
+    setEditReason("");
   };
 
   const handleSubmit = (applyAsToday = false) => {
@@ -421,11 +438,32 @@ const TopicsTab = () => {
       toast({ title: "제목과 설명을 입력해주세요", variant: "destructive" });
       return;
     }
+    // 토픽 교체 모드는 더블 컨펌 + 사유 필수
+    if (editingId && editMode === "replace" && !confirmReplace) {
+      if (!editReason.trim()) {
+        toast({
+          title: "토픽 교체 사유를 입력해주세요",
+          description: "기존 PINCH가 영향을 받기 때문에 사유 기록이 필요합니다.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setConfirmReplace({ applyAsToday });
+      return;
+    }
     if (editingId) {
       adminStore.updateTopic(editingId, form);
       if (applyAsToday) adminStore.setActiveTopicId(editingId);
+      const replaced = editMode === "replace";
       toast({
-        title: applyAsToday ? "토픽 수정 + 오늘 적용" : "토픽 수정 완료",
+        title: replaced
+          ? "토픽 교체 완료 — 기존 PINCH 무효화"
+          : applyAsToday
+          ? "토픽 수정 + 오늘 적용"
+          : "토픽 수정 완료",
+        description: replaced
+          ? `${editingImpact.pinchCount}개 PINCH가 보존되되 새 토픽 맥락에서 숨김 처리됩니다.`
+          : undefined,
       });
     } else {
       // addTopic uses unshift internally; the new id will be at index 0.
@@ -439,6 +477,7 @@ const TopicsTab = () => {
       });
     }
     setOpen(false);
+    setConfirmReplace(null);
     resetForm();
   };
 
@@ -454,6 +493,8 @@ const TopicsTab = () => {
       newsSource: t.newsSource,
       date: t.date,
     });
+    setEditMode("minor");
+    setEditReason("");
     setOpen(true);
   };
 
@@ -706,7 +747,87 @@ const TopicsTab = () => {
         <DialogContent className="glass max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingId ? "토픽 수정" : "새 토픽 등록"}</DialogTitle>
+            {editingId ? (
+              <DialogDescription className="text-xs">
+                기존 PINCH의 맥락에 영향을 줄 수 있으므로 변경 강도를 먼저 선택해주세요.
+              </DialogDescription>
+            ) : null}
           </DialogHeader>
+
+          {editingId ? (
+            <div className="space-y-2 rounded-xl border border-border bg-card/40 p-3">
+              <Label className="text-xs font-semibold">변경 강도</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditMode("minor")}
+                  className={`text-left rounded-lg border p-3 transition ${
+                    editMode === "minor"
+                      ? "border-accent bg-accent/10"
+                      : "border-border hover:border-muted-foreground/40"
+                  }`}
+                >
+                  <div className="text-xs font-bold mb-1">단순 수정</div>
+                  <div className="text-[10px] leading-snug text-muted-foreground">
+                    오타·문구 다듬기.<br />기존 PINCH 그대로 유지.
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditMode("replace")}
+                  className={`text-left rounded-lg border p-3 transition ${
+                    editMode === "replace"
+                      ? "border-destructive bg-destructive/10"
+                      : "border-border hover:border-muted-foreground/40"
+                  }`}
+                >
+                  <div className="text-xs font-bold mb-1 inline-flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" /> 토픽 교체
+                  </div>
+                  <div className="text-[10px] leading-snug text-muted-foreground">
+                    논점 자체 변경.<br />기존 PINCH는 보존되되 숨김 처리.
+                  </div>
+                </button>
+              </div>
+
+              {editMode === "replace" ? (
+                <>
+                  <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-2.5 text-[11px]">
+                    <div className="flex items-center gap-1.5 font-semibold text-destructive">
+                      <AlertTriangle className="h-3 w-3" />
+                      영향 미리보기
+                    </div>
+                    <div className="mt-1 text-muted-foreground">
+                      이 토픽에는 현재{" "}
+                      <span className="font-bold text-foreground">
+                        PINCH {editingImpact.pinchCount}개
+                      </span>
+                      ,{" "}
+                      <span className="font-bold text-foreground">
+                        좋아요 {editingImpact.likeCount.toLocaleString()}개
+                      </span>
+                      가 달려 있습니다. 교체 시 새 토픽 맥락에서 숨김 처리되며,
+                      참여자에게 재작성 알림이 발송됩니다.
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">교체 사유 (필수)</Label>
+                    <Textarea
+                      value={editReason}
+                      onChange={(e) => setEditReason(e.target.value)}
+                      maxLength={200}
+                      rows={2}
+                      placeholder="예) 잘못된 출처로 발행되어 논점 자체를 교체"
+                      className="text-xs"
+                    />
+                    <div className="text-[10px] text-muted-foreground text-right">
+                      audit log + 사용자 공지에 노출됩니다 · {editReason.length}/200
+                    </div>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          ) : null}
 
           <div className="space-y-3">
             <div className="space-y-1.5">
@@ -782,16 +903,87 @@ const TopicsTab = () => {
             <Button variant="outline" onClick={() => { setOpen(false); resetForm(); }}>
               취소
             </Button>
-            <Button variant="secondary" onClick={() => handleSubmit(false)}>
-              {editingId ? "저장" : "등록만"}
+            <Button
+              variant={editingId && editMode === "replace" ? "destructive" : "secondary"}
+              onClick={() => handleSubmit(false)}
+            >
+              {editingId
+                ? editMode === "replace"
+                  ? "토픽 교체"
+                  : "저장"
+                : "등록만"}
             </Button>
-            <Button onClick={() => handleSubmit(true)}>
+            <Button
+              variant={editingId && editMode === "replace" ? "destructive" : "default"}
+              onClick={() => handleSubmit(true)}
+            >
               <Pin className="h-3.5 w-3.5" />
-              {editingId ? "저장 + 오늘 적용" : "등록 + 오늘 적용"}
+              {editingId
+                ? editMode === "replace"
+                  ? "교체 + 오늘 적용"
+                  : "저장 + 오늘 적용"
+                : "등록 + 오늘 적용"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* 토픽 교체 더블 컨펌 — 사용자 PINCH가 영향받는 작업이므로 한 번 더 확인 */}
+      <AlertDialog
+        open={!!confirmReplace}
+        onOpenChange={(o) => !o && setConfirmReplace(null)}
+      >
+        <AlertDialogContent className="glass">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="inline-flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-destructive" />
+              정말 토픽을 교체하시겠습니까?
+            </AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2 text-xs">
+                <div>
+                  현재 이 토픽에 달린{" "}
+                  <span className="font-bold text-foreground">
+                    PINCH {editingImpact.pinchCount}개
+                  </span>
+                  와{" "}
+                  <span className="font-bold text-foreground">
+                    좋아요 {editingImpact.likeCount.toLocaleString()}개
+                  </span>
+                  가 새 토픽 맥락에서 숨김 처리됩니다.
+                </div>
+                <div className="rounded-md border border-border bg-muted/30 p-2">
+                  <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">
+                    교체 사유
+                  </div>
+                  <div className="text-foreground">{editReason}</div>
+                </div>
+                <ul className="list-disc pl-4 text-[11px] text-muted-foreground space-y-0.5">
+                  <li>기존 PINCH는 물리 삭제되지 않으며 마이페이지에서 조회 가능합니다.</li>
+                  <li>참여자에게 재작성 알림이 발송됩니다(1일 1 PINCH 카운터 리셋).</li>
+                  <li>변경 이력은 audit log 에 영구 보존됩니다.</li>
+                </ul>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setConfirmReplace(null)}>
+              취소
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                const apply = confirmReplace?.applyAsToday ?? false;
+                setConfirmReplace(null);
+                // confirmReplace 가 null 이 된 상태에서 다시 호출 → 정상 흐름
+                handleSubmit(apply);
+              }}
+            >
+              교체 진행
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={!!confirmDelete} onOpenChange={(o) => !o && setConfirmDelete(null)}>
         <AlertDialogContent className="glass">
