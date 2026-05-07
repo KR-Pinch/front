@@ -903,16 +903,87 @@ const TopicsTab = () => {
             <Button variant="outline" onClick={() => { setOpen(false); resetForm(); }}>
               취소
             </Button>
-            <Button variant="secondary" onClick={() => handleSubmit(false)}>
-              {editingId ? "저장" : "등록만"}
+            <Button
+              variant={editingId && editMode === "replace" ? "destructive" : "secondary"}
+              onClick={() => handleSubmit(false)}
+            >
+              {editingId
+                ? editMode === "replace"
+                  ? "토픽 교체"
+                  : "저장"
+                : "등록만"}
             </Button>
-            <Button onClick={() => handleSubmit(true)}>
+            <Button
+              variant={editingId && editMode === "replace" ? "destructive" : "default"}
+              onClick={() => handleSubmit(true)}
+            >
               <Pin className="h-3.5 w-3.5" />
-              {editingId ? "저장 + 오늘 적용" : "등록 + 오늘 적용"}
+              {editingId
+                ? editMode === "replace"
+                  ? "교체 + 오늘 적용"
+                  : "저장 + 오늘 적용"
+                : "등록 + 오늘 적용"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* 토픽 교체 더블 컨펌 — 사용자 PINCH가 영향받는 작업이므로 한 번 더 확인 */}
+      <AlertDialog
+        open={!!confirmReplace}
+        onOpenChange={(o) => !o && setConfirmReplace(null)}
+      >
+        <AlertDialogContent className="glass">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="inline-flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-destructive" />
+              정말 토픽을 교체하시겠습니까?
+            </AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2 text-xs">
+                <div>
+                  현재 이 토픽에 달린{" "}
+                  <span className="font-bold text-foreground">
+                    PINCH {editingImpact.pinchCount}개
+                  </span>
+                  와{" "}
+                  <span className="font-bold text-foreground">
+                    좋아요 {editingImpact.likeCount.toLocaleString()}개
+                  </span>
+                  가 새 토픽 맥락에서 숨김 처리됩니다.
+                </div>
+                <div className="rounded-md border border-border bg-muted/30 p-2">
+                  <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">
+                    교체 사유
+                  </div>
+                  <div className="text-foreground">{editReason}</div>
+                </div>
+                <ul className="list-disc pl-4 text-[11px] text-muted-foreground space-y-0.5">
+                  <li>기존 PINCH는 물리 삭제되지 않으며 마이페이지에서 조회 가능합니다.</li>
+                  <li>참여자에게 재작성 알림이 발송됩니다(1일 1 PINCH 카운터 리셋).</li>
+                  <li>변경 이력은 audit log 에 영구 보존됩니다.</li>
+                </ul>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setConfirmReplace(null)}>
+              취소
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                const apply = confirmReplace?.applyAsToday ?? false;
+                setConfirmReplace(null);
+                // confirmReplace 가 null 이 된 상태에서 다시 호출 → 정상 흐름
+                handleSubmit(apply);
+              }}
+            >
+              교체 진행
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={!!confirmDelete} onOpenChange={(o) => !o && setConfirmDelete(null)}>
         <AlertDialogContent className="glass">
