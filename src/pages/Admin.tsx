@@ -408,16 +408,11 @@ const TopicsTab = () => {
   const [editReason, setEditReason] = useState("");
   const [confirmReplace, setConfirmReplace] = useState<{ applyAsToday: boolean } | null>(null);
 
-  // editingId가 가리키는 토픽에 달린 PINCH 수 / 좋아요 합 — 백엔드 연결 전까지는 mock
+  // editingId가 가리키는 토픽에 달린 active PINCH 수 / 좋아요 합 — 실제 store 에서 조회
   const editingImpact = useMemo(() => {
     if (!editingId) return { pinchCount: 0, likeCount: 0 };
-    // 결정론적 mock: id 해시 기반
-    const seed = editingId.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-    return {
-      pinchCount: 40 + (seed % 180),
-      likeCount: 200 + (seed * 17) % 4200,
-    };
-  }, [editingId]);
+    return adminStore.getPinchImpactForTopic(editingId);
+  }, [editingId, open]);
 
   const resetForm = () => {
     setForm({
@@ -452,17 +447,20 @@ const TopicsTab = () => {
       return;
     }
     if (editingId) {
-      adminStore.updateTopic(editingId, form);
+      const result = adminStore.updateTopic(editingId, form, {
+        mode: editMode,
+        reason: editReason,
+      });
       if (applyAsToday) adminStore.setActiveTopicId(editingId);
       const replaced = editMode === "replace";
       toast({
         title: replaced
-          ? "토픽 교체 완료 — 기존 PINCH 무효화"
+          ? `토픽 교체 완료 — PINCH ${result.invalidatedCount}개 무효화`
           : applyAsToday
           ? "토픽 수정 + 오늘 적용"
           : "토픽 수정 완료",
         description: replaced
-          ? `${editingImpact.pinchCount}개 PINCH가 보존되되 새 토픽 맥락에서 숨김 처리됩니다.`
+          ? `좋아요 ${result.affectedLikeCount.toLocaleString()}개 보존 · 작성자 ${result.invalidatedCount}명에게 재작성 알림 발송 · audit log 기록 완료`
           : undefined,
       });
     } else {
