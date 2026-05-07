@@ -477,6 +477,7 @@ const TopicsTab = () => {
       });
     }
     setOpen(false);
+    setConfirmReplace(null);
     resetForm();
   };
 
@@ -492,6 +493,8 @@ const TopicsTab = () => {
       newsSource: t.newsSource,
       date: t.date,
     });
+    setEditMode("minor");
+    setEditReason("");
     setOpen(true);
   };
 
