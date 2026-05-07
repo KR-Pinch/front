@@ -59,6 +59,66 @@ export interface AdminTopicDraft {
   createdAt: string;
 }
 
+// ----- 토픽 교체 시 영향받는 PINCH / audit log / 알림 ------------------------
+// 백엔드 연결 시 각 인터페이스는 그대로 테이블 스키마로 매핑됩니다.
+//   pinches.status, topic_revisions, user_notifications
+
+/**
+ * PINCH 상태:
+ * - "active": 정상. 토픽에 노출 / 좋아요 가능 / 랭킹·아카이브 후보.
+ * - "archived_invalid": 어드민이 토픽을 "교체"하면서 맥락이 깨져 무효화됨.
+ *     · 물리 삭제(DELETE) 절대 금지 — 본인 마이페이지에서는 항상 조회 가능.
+ *     · 토픽 화면 / 아카이브 / 랭킹 집계에서는 숨김.
+ *     · 좋아요 수치는 보존되되 랭킹 점수 산정에서 제외.
+ */
+export type PinchStatus = "active" | "archived_invalid";
+
+export interface PinchSnapshot {
+  id: string;
+  topicId: string;
+  /** 작성 당시 토픽 제목 — 토픽이 교체되어도 본인이 "어떤 논점에 썼었는지" 추적 */
+  originalTopicTitle: string;
+  username: string;
+  text: string;
+  likes: number;
+  status: PinchStatus;
+  /** archived_invalid 로 전환된 시점 (ISO) */
+  invalidatedAt?: string;
+  /** 어드민이 입력한 교체 사유 (audit + 사용자 공지에 표시) */
+  invalidatedReason?: string;
+  createdAt: string;
+}
+
+export interface TopicRevision {
+  id: string;
+  topicId: string;
+  /** "minor" = 오타·문구 다듬기 (PINCH 영향 없음) / "replace" = 토픽 교체 */
+  mode: "minor" | "replace";
+  /** snapshot of fields BEFORE the change */
+  before: Pick<AdminTopicDraft, "category" | "title" | "description" | "newsUrl" | "newsSource">;
+  /** snapshot of fields AFTER the change */
+  after: Pick<AdminTopicDraft, "category" | "title" | "description" | "newsUrl" | "newsSource">;
+  reason: string;
+  /** "replace" 일 때만 채워짐: 영향받은 PINCH 수 / 좋아요 합 */
+  affectedPinchCount: number;
+  affectedLikeCount: number;
+  changedAt: string;
+  changedBy: string; // admin user id (mock: "admin")
+}
+
+export interface UserNotification {
+  id: string;
+  userId: string;
+  type: "pinch_invalidated";
+  topicId: string;
+  /** 무효화된 본인 PINCH id */
+  pinchId: string;
+  message: string;
+  reason: string;
+  createdAt: string;
+  read: boolean;
+}
+
 // ----- Initial mock seed --------------------------------------------------
 
 // Raw seed values use plain numbers; we normalize them to branded PinchCount
@@ -125,6 +185,13 @@ const KEYS = {
   // Per-category forced topic overrides: { [categoryId]: topicId }
   // Independent of the global override; both can coexist.
   activeByCategory: "hanmadi:admin:activeTopicByCategory",
+  // 토픽별 PINCH 스냅샷 (백엔드 연결 전 mock).
+  // 키: topicId, 값: PinchSnapshot[] — adminStore.getPinchesForTopic 로 접근.
+  pinchesByTopic: "hanmadi:admin:pinchesByTopic",
+  // 토픽 변경 이력 (audit log).
+  topicRevisions: "hanmadi:admin:topicRevisions",
+  // 사용자에게 발송된 알림 큐.
+  notifications: "hanmadi:admin:notifications",
 } as const;
 
 const EVENT = "hanmadi:admin-change";
@@ -179,6 +246,63 @@ export const adminStore = {
     ensureSeeded();
     return read<AdminTopicDraft[]>(KEYS.topics, []);
   },
+
+  // ----- 토픽별 PINCH 스냅샷 ------------------------------------------------
+  // 백엔드 연결 전 mock: 토픽이 처음 조회될 때 결정론적 시드로 PINCH를 생성해
+  // localStorage 에 한 번만 적재한다. 이후 invalidate / like 변경은 모두 여기서
+  // 일어나며 Topic / Archive / Ranking / MyPage 가 같은 소스를 본다.
+  getPinchesForTopic(topicId: string): PinchSnapshot[] {
+    ensureSeeded();
+    const all = read<Record<string, PinchSnapshot[]>>(KEYS.pinchesByTopic, {});
+    if (all[topicId]) return all[topicId];
+
+    const topic = this.getTopics().find((t) => t.id === topicId);
+    const seedTitle = topic?.title ?? "오늘의 PINCH";
+    const seedCount = 6 + (topicId.length % 5);
+    const seedUsersList = this.getUsers().slice(0, seedCount);
+    const sampleTexts = [
+      "이 주제는 단순히 찬반으로 나누기 어렵습니다. 맥락이 더 중요합니다.",
+      "법·제도가 따라가지 못하는 사이 피해는 늘어나고 있어요.",
+      "현실적으로 단속 인력부터 확보하지 않으면 의미가 없다고 봅니다.",
+      "기술적 해결책과 제도적 해결책은 함께 가야 합니다.",
+      "당사자의 목소리를 더 들어볼 필요가 있어 보입니다.",
+      "장기적으로 봤을 때 교육이 가장 큰 지렛대라고 생각합니다.",
+    ];
+    const seeded: PinchSnapshot[] = seedUsersList.map((u, i) => ({
+      id: `${topicId}-p${i + 1}`,
+      topicId,
+      originalTopicTitle: seedTitle,
+      username: u.username,
+      text: sampleTexts[i % sampleTexts.length],
+      likes: 30 + ((topicId.charCodeAt(0) + i * 17) % 220),
+      status: "active",
+      createdAt: new Date(Date.now() - (i + 1) * 3600_000).toISOString(),
+    }));
+    all[topicId] = seeded;
+    write(KEYS.pinchesByTopic, all);
+    return seeded;
+  },
+
+  /** 영향 미리보기에 쓰는 active PINCH 수 / 좋아요 합 */
+  getPinchImpactForTopic(topicId: string): { pinchCount: number; likeCount: number } {
+    const list = this.getPinchesForTopic(topicId).filter((p) => p.status === "active");
+    return {
+      pinchCount: list.length,
+      likeCount: list.reduce((sum, p) => sum + p.likes, 0),
+    };
+  },
+
+  getTopicRevisions(topicId?: string): TopicRevision[] {
+    ensureSeeded();
+    const all = read<TopicRevision[]>(KEYS.topicRevisions, []);
+    return topicId ? all.filter((r) => r.topicId === topicId) : all;
+  },
+
+  getNotificationsForUser(userId: string): UserNotification[] {
+    ensureSeeded();
+    return read<UserNotification[]>(KEYS.notifications, []).filter((n) => n.userId === userId);
+  },
+
 
   banUser(userId: string, duration: BanDuration, reason: string) {
     const users = this.getUsers();
@@ -267,9 +391,102 @@ export const adminStore = {
     write(KEYS.topics, topics);
   },
 
-  updateTopic(id: string, patch: Partial<Omit<AdminTopicDraft, "id" | "createdAt">>) {
-    const topics = this.getTopics().map((t) => (t.id === id ? { ...t, ...patch } : t));
-    write(KEYS.topics, topics);
+  /**
+   * 토픽 수정. options.mode 에 따라 부수효과가 갈립니다.
+   *  - "minor"  : 필드만 패치. 기존 PINCH 그대로. revision 만 기록.
+   *  - "replace": 필드 패치 + 기존 active PINCH 전부 archived_invalid 로 전환,
+   *               작성자에게 알림 큐 적재, revision 에 영향 수치 + 사유 기록.
+   *               PINCH 는 절대 물리 삭제하지 않음.
+   */
+  updateTopic(
+    id: string,
+    patch: Partial<Omit<AdminTopicDraft, "id" | "createdAt">>,
+    options: { mode?: "minor" | "replace"; reason?: string; changedBy?: string } = {}
+  ): { invalidatedCount: number; affectedLikeCount: number } {
+    const mode = options.mode ?? "minor";
+    const reason = (options.reason ?? "").trim();
+    const changedBy = options.changedBy ?? "admin";
+
+    const topics = this.getTopics();
+    const before = topics.find((t) => t.id === id);
+    if (!before) return { invalidatedCount: 0, affectedLikeCount: 0 };
+
+    const after: AdminTopicDraft = { ...before, ...patch };
+    write(KEYS.topics, topics.map((t) => (t.id === id ? after : t)));
+
+    let invalidatedCount = 0;
+    let affectedLikeCount = 0;
+
+    if (mode === "replace") {
+      // 1) 영향받는 PINCH 무효화 (보존 + 숨김 처리)
+      const pinchesAll = read<Record<string, PinchSnapshot[]>>(KEYS.pinchesByTopic, {});
+      const list = this.getPinchesForTopic(id);
+      const now = new Date().toISOString();
+      const nextList = list.map((p) => {
+        if (p.status !== "active") return p;
+        invalidatedCount += 1;
+        affectedLikeCount += p.likes;
+        return {
+          ...p,
+          status: "archived_invalid" as const,
+          invalidatedAt: now,
+          invalidatedReason: reason || "어드민 토픽 교체",
+        };
+      });
+      pinchesAll[id] = nextList;
+      write(KEYS.pinchesByTopic, pinchesAll);
+
+      // 2) 작성자 알림 큐 적재 (1인 1 PINCH 카운터 리셋 의도 — 백엔드 연결 시
+      //    submit_pinch 가 archived_invalid 는 카운트하지 않도록 처리)
+      const notifs = read<UserNotification[]>(KEYS.notifications, []);
+      const users = this.getUsers();
+      for (const p of nextList.filter((x) => x.invalidatedAt === now)) {
+        const user = users.find((u) => u.username === p.username);
+        if (!user) continue;
+        notifs.push({
+          id: `n-${id}-${p.id}`,
+          userId: user.id,
+          type: "pinch_invalidated",
+          topicId: id,
+          pinchId: p.id,
+          message: `오늘 토픽이 변경되어 PINCH가 무효화되었습니다. 새 토픽에 다시 작성할 수 있습니다.`,
+          reason: reason || "어드민 토픽 교체",
+          createdAt: now,
+          read: false,
+        });
+      }
+      write(KEYS.notifications, notifs);
+    }
+
+    // 3) audit log
+    const revisions = read<TopicRevision[]>(KEYS.topicRevisions, []);
+    revisions.unshift({
+      id: `rev-${id}-${Date.now()}`,
+      topicId: id,
+      mode,
+      before: {
+        category: before.category,
+        title: before.title,
+        description: before.description,
+        newsUrl: before.newsUrl,
+        newsSource: before.newsSource,
+      },
+      after: {
+        category: after.category,
+        title: after.title,
+        description: after.description,
+        newsUrl: after.newsUrl,
+        newsSource: after.newsSource,
+      },
+      reason: mode === "replace" ? reason || "어드민 토픽 교체" : reason,
+      affectedPinchCount: invalidatedCount,
+      affectedLikeCount,
+      changedAt: new Date().toISOString(),
+      changedBy,
+    });
+    write(KEYS.topicRevisions, revisions);
+
+    return { invalidatedCount, affectedLikeCount };
   },
 
   deleteTopic(id: string) {
