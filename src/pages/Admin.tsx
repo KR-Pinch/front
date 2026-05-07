@@ -403,6 +403,21 @@ const TopicsTab = () => {
     date: new Date().toISOString().slice(0, 10),
   });
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  // 토픽 수정 강도: "minor" = 오타·문구 다듬기 / "replace" = 토픽 자체 교체(기존 PINCH 영향)
+  const [editMode, setEditMode] = useState<"minor" | "replace">("minor");
+  const [editReason, setEditReason] = useState("");
+  const [confirmReplace, setConfirmReplace] = useState<{ applyAsToday: boolean } | null>(null);
+
+  // editingId가 가리키는 토픽에 달린 PINCH 수 / 좋아요 합 — 백엔드 연결 전까지는 mock
+  const editingImpact = useMemo(() => {
+    if (!editingId) return { pinchCount: 0, likeCount: 0 };
+    // 결정론적 mock: id 해시 기반
+    const seed = editingId.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+    return {
+      pinchCount: 40 + (seed % 180),
+      likeCount: 200 + (seed * 17) % 4200,
+    };
+  }, [editingId]);
 
   const resetForm = () => {
     setForm({
@@ -414,6 +429,8 @@ const TopicsTab = () => {
       date: new Date().toISOString().slice(0, 10),
     });
     setEditingId(null);
+    setEditMode("minor");
+    setEditReason("");
   };
 
   const handleSubmit = (applyAsToday = false) => {
@@ -421,11 +438,32 @@ const TopicsTab = () => {
       toast({ title: "제목과 설명을 입력해주세요", variant: "destructive" });
       return;
     }
+    // 토픽 교체 모드는 더블 컨펌 + 사유 필수
+    if (editingId && editMode === "replace" && !confirmReplace) {
+      if (!editReason.trim()) {
+        toast({
+          title: "토픽 교체 사유를 입력해주세요",
+          description: "기존 PINCH가 영향을 받기 때문에 사유 기록이 필요합니다.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setConfirmReplace({ applyAsToday });
+      return;
+    }
     if (editingId) {
       adminStore.updateTopic(editingId, form);
       if (applyAsToday) adminStore.setActiveTopicId(editingId);
+      const replaced = editMode === "replace";
       toast({
-        title: applyAsToday ? "토픽 수정 + 오늘 적용" : "토픽 수정 완료",
+        title: replaced
+          ? "토픽 교체 완료 — 기존 PINCH 무효화"
+          : applyAsToday
+          ? "토픽 수정 + 오늘 적용"
+          : "토픽 수정 완료",
+        description: replaced
+          ? `${editingImpact.pinchCount}개 PINCH가 보존되되 새 토픽 맥락에서 숨김 처리됩니다.`
+          : undefined,
       });
     } else {
       // addTopic uses unshift internally; the new id will be at index 0.
