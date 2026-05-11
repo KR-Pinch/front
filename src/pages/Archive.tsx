@@ -305,6 +305,13 @@ const Archive = () => {
             })}
           </div>
         </div>
+
+        <ResponsiveAdFitBanner
+          mobileSlot={adfitSlots.archiveBottom}
+          wideSlot={adfitSlots.listWide}
+          className="mb-4 w-full"
+        />
+
         <AnimatePresence mode="wait">
           {filtered.length === 0 ? (
             <motion.div
@@ -406,12 +413,6 @@ const Archive = () => {
           )}
         </AnimatePresence>
 
-        {/* Ad Banner */}
-        <ResponsiveAdFitBanner
-          mobileSlot={adfitSlots.archiveBottom}
-          wideSlot={adfitSlots.listWide}
-          className="w-full mt-6"
-        />
       </motion.div>
 
       {/* Deep-link detail dialog — driven by ?item=<id> so refresh + share work */}

@@ -514,6 +514,11 @@ const Topic = () => {
 
         <div className="h-px bg-border" />
 
+        <AdFitBanner
+          {...adfitSlots.topicBottom}
+          className="mobile-only w-full"
+        />
+
         {/* PINCH list */}
         <div ref={pinchesRef}>
           <div className="mb-4 flex items-center gap-2">
@@ -608,10 +613,6 @@ const Topic = () => {
             );})}
           </div>
 
-          <AdFitBanner
-            {...adfitSlots.topicBottom}
-            className="mobile-only mt-4 w-full"
-          />
         </div>
 
       </motion.div>
