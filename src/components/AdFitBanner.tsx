@@ -1,10 +1,14 @@
 import { useEffect, useRef } from "react";
 
+const ADFIT_SCRIPT_ID = "kakao-adfit-sdk";
+const ADFIT_SCRIPT_SRC = "https://t1.daumcdn.net/kas/static/ba.min.js";
+
 declare global {
   interface Window {
     adfit?: {
       display: (adUnitId: string) => void;
     };
+    __adfitSdkPromise?: Promise<void>;
   }
 }
 
@@ -17,6 +21,30 @@ interface AdFitBannerProps {
   height?: number;
   className?: string;
 }
+
+const loadAdFitSdk = () => {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.__adfitSdkPromise) return window.__adfitSdkPromise;
+
+  window.__adfitSdkPromise = new Promise<void>((resolve, reject) => {
+    const existing = document.getElementById(ADFIT_SCRIPT_ID) as HTMLScriptElement | null;
+    if (existing) {
+      if (window.adfit) resolve();
+      else existing.addEventListener("load", () => resolve(), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = ADFIT_SCRIPT_ID;
+    script.async = true;
+    script.src = ADFIT_SCRIPT_SRC;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load Kakao AdFit SDK"));
+    document.head.appendChild(script);
+  });
+
+  return window.__adfitSdkPromise;
+};
 
 /**
  * 카카오 AdFit 배너 광고 컴포넌트
@@ -34,8 +62,11 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
     if (!adUnitId || initialized.current) return;
     if (!containerRef.current) return;
 
+    let ins: HTMLModElement | null = null;
+    let isMounted = true;
+
     try {
-      const ins = document.createElement("ins");
+      ins = document.createElement("ins");
       ins.className = "kakao_ad_area";
       ins.style.display = "none";
       ins.setAttribute("data-ad-unit", adUnitId);
@@ -44,13 +75,19 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
       containerRef.current.appendChild(ins);
 
       // AdFit SDK가 로드되어 있으면 광고 렌더
-      window.adfit?.display(adUnitId);
+      loadAdFitSdk()
+        .then(() => {
+          if (isMounted) window.adfit?.display(adUnitId);
+        })
+        .catch((error) => console.error("AdFit SDK load error:", error));
       initialized.current = true;
     } catch (e) {
       console.error("AdFit load error:", e);
     }
 
     return () => {
+      isMounted = false;
+      ins?.remove();
       initialized.current = false;
     };
   }, [adUnitId, width, height]);
@@ -58,8 +95,10 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
   return (
     <div
       ref={containerRef}
-      className={`flex items-center justify-center overflow-hidden rounded-xl bg-secondary/50 border border-border/30 ${className}`}
-      style={{ minHeight: height }}
+      className={`flex items-center justify-center overflow-hidden rounded-xl ${
+        adUnitId ? "" : "bg-secondary/50 border border-border/30"
+      } ${className}`}
+      style={{ minHeight: height, maxWidth: "100%" }}
     >
       {!adUnitId && (
         <div className="flex flex-col items-center gap-1 py-4 text-center">

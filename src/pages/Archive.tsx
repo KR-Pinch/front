@@ -9,6 +9,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { adfitSlots } from "@/config/adfit";
 import {
   archiveCollectionJsonLd,
   archiveItemJsonLd,
@@ -407,7 +408,7 @@ const Archive = () => {
         </AnimatePresence>
 
         {/* Ad Banner */}
-        <AdFitBanner className="w-full mt-6" />
+        <AdFitBanner {...adfitSlots.archiveBottom} className="w-full mt-6" />
       </motion.div>
 
       {/* Deep-link detail dialog — driven by ?item=<id> so refresh + share work */}

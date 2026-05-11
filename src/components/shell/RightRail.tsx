@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Trophy, Flame, ArrowRight } from "lucide-react";
 import { useRanking } from "@/data/mockData";
 import AdFitBanner from "@/components/AdFitBanner";
+import { adfitSlots } from "@/config/adfit";
 
 /**
  * Desktop-only right rail (xl+). Shows weekly ranking + ad slot.
@@ -11,7 +12,7 @@ const RightRail = () => {
   const top5 = useRanking("weekly").slice(0, 5);
 
   return (
-    <aside className="wide-up-flex w-[300px] shrink-0 flex-col gap-4 px-4 py-6 border-l border-border/50">
+    <aside className="wide-up-flex w-[334px] shrink-0 flex-col gap-4 px-4 py-6 border-l border-border/50">
       <div className="sticky top-6 space-y-4">
         {/* Weekly ranking */}
         <div className="rounded-2xl border border-border/50 bg-card/50 p-4 noise">
@@ -60,11 +61,11 @@ const RightRail = () => {
         </div>
 
         {/* Ad slot */}
-        <div className="rounded-2xl border border-border/50 bg-card/50 p-3">
-          <p className="mb-2 px-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-2xl border border-border/50 bg-card/50 p-0">
+          <p className="px-3 pb-2 pt-3 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
             광고
           </p>
-          <AdFitBanner />
+          <AdFitBanner {...adfitSlots.rightRail} />
         </div>
 
         <p className="px-1 text-[10px] leading-relaxed text-muted-foreground">

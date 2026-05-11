@@ -9,6 +9,7 @@ import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { adfitSlots } from "@/config/adfit";
 import { homeJsonLd } from "@/lib/seo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -531,7 +532,7 @@ const Index = () => {
 
         {/* Ad Banner — placed after primary content so first paint shows topic + nav cards */}
         <motion.div variants={item}>
-          <AdFitBanner className="w-full" />
+          <AdFitBanner {...adfitSlots.homeMid} className="w-full" />
         </motion.div>
 
         {/* Weekly Top 3 Preview */}
