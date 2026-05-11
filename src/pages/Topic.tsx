@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Clock, MessageCircle, Send, Heart, Crown, LogIn, Lock, Sparkles, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,6 +7,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { adfitSlots } from "@/config/adfit";
 import { cleanDescription, topicJsonLd, topicPath } from "@/lib/seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
@@ -526,8 +527,8 @@ const Topic = () => {
             {sorted.map((entry, idx) => {
               const isNew = entry.id === newPinchId;
               return (
+              <Fragment key={entry.id}>
               <motion.div
-                key={entry.id}
                 className={`glass rounded-xl p-4 transition-all ${
                   idx === 0 && entry.likes > 0 ? "border border-accent/30 glow-accent" : ""
                 } ${isNew ? "ring-2 ring-accent/60" : ""}`}
@@ -604,8 +605,20 @@ const Topic = () => {
                   </motion.button>
                 </div>
               </motion.div>
+              {idx === 2 && (
+                <AdFitBanner
+                  {...adfitSlots.topicMid}
+                  className="mobile-only my-2 w-full"
+                />
+              )}
+              </Fragment>
             );})}
           </div>
+
+          <AdFitBanner
+            {...adfitSlots.topicBottom}
+            className="mobile-only mt-4 w-full"
+          />
         </div>
 
       </motion.div>

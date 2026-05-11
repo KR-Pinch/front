@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Crown, Trophy, Medal, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
-import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
+import AdFitBanner, { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
@@ -87,6 +87,11 @@ const Ranking = () => {
             </button>
           ))}
         </div>
+
+        <AdFitBanner
+          {...adfitSlots.rankingMid}
+          className="mobile-only mb-6 w-full"
+        />
 
         <AnimatePresence mode="wait">
           <motion.div

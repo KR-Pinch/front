@@ -24,4 +24,29 @@ export const adfitSlots = {
     width: 728,
     height: 90,
   },
+  mobileHomeBottom: {
+    adUnitId: "DAN-ktANAP2SsaPQ5hs7",
+    width: 320,
+    height: 100,
+  },
+  topicMid: {
+    adUnitId: "DAN-4FNZpT2zhOt0vw8I",
+    width: 320,
+    height: 100,
+  },
+  topicBottom: {
+    adUnitId: "DAN-eS8gHAkgYtRGp3V8",
+    width: 320,
+    height: 100,
+  },
+  archiveMid: {
+    adUnitId: "DAN-4FNZpT2zhOt0vw8I",
+    width: 320,
+    height: 100,
+  },
+  rankingMid: {
+    adUnitId: "DAN-4FNZpT2zhOt0vw8I",
+    width: 320,
+    height: 100,
+  },
 } as const;
