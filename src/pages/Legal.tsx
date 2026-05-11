@@ -8,6 +8,7 @@ import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
 import Seo from "@/components/Seo";
 import { legalDocs } from "@/data/legalContent";
+import { cleanDescription, legalJsonLd } from "@/lib/seo";
 
 const Legal = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -26,8 +27,9 @@ const Legal = () => {
     <PageTransition>
       <Seo
         title={`${doc.title} — PINCH`}
-        description={`PINCH의 ${doc.title} 문서입니다.`}
+        description={cleanDescription(doc.description || `PINCH의 ${doc.title} 문서입니다.`)}
         path={pathname}
+        jsonLd={legalJsonLd(doc.title, doc.description, pathname)}
       />
       <div className="min-h-screen bg-background pb-24 noise">
         {/* Header */}

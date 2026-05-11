@@ -9,6 +9,7 @@ import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { homeJsonLd } from "@/lib/seo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -269,7 +270,7 @@ const Index = () => {
   // Live admin-aware "today" topic — re-renders when admin pushes/changes one.
   const todayTopic = useTodayTopic();
   // Re-render when admin topic list changes so per-category lists stay fresh.
-  useMergedTopics();
+  const mergedTopics = useMergedTopics();
 
   // 표시할 단일 토픽 결정
   const displayTopic = useMemo<TodayTopic>(() => {
@@ -282,6 +283,7 @@ const Index = () => {
     () => categories.find((c) => c.id === displayTopic.category),
     [displayTopic]
   );
+  const structuredData = useMemo(() => homeJsonLd(mergedTopics), [mergedTopics]);
 
   const handleLogout = () => {
     logout();
@@ -295,17 +297,7 @@ const Index = () => {
       title="PINCH — 매일 하나의 선택된 의견 | 오늘의 PINCH"
       description="PINCH는 매일 하나의 핫토픽에 1인 1 PINCH으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다."
       path="/"
-      jsonLd={{
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        name: "PINCH",
-        applicationCategory: "SocialNetworkingApplication",
-        operatingSystem: "Web",
-        url: "https://usepinch.lovable.app/",
-        inLanguage: "ko-KR",
-        description:
-          "매일 하나의 주제, 1인 1 PINCH. 가장 공감받은 의견 하나만 아카이브에 남습니다.",
-      }}
+      jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">
       <div className="relative overflow-hidden">

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import PageTransition from "@/components/PageTransition";
+import Seo from "@/components/Seo";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 const AdminLogin = () => {
@@ -50,6 +51,7 @@ const AdminLogin = () => {
 
   return (
     <PageTransition>
+      <Seo title="관리자 로그인 — PINCH" description="PINCH 내부 운영자 로그인 페이지입니다." path="/admin/login" noindex />
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 12 }}

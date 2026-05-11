@@ -26,6 +26,7 @@ import {
 import { fetchTopNewsByCategory, type NewsItem } from "@/lib/googleNews";
 import type { CategoryId } from "@/data/mockData";
 import PageTransition from "@/components/PageTransition";
+import Seo from "@/components/Seo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -1238,6 +1239,7 @@ const Admin = () => {
 
   return (
     <PageTransition>
+      <Seo title="관리자 — PINCH" description="PINCH 내부 운영자 전용 페이지입니다." path="/admin" noindex />
       <div className="min-h-screen bg-background pb-12">
         {/* Top bar */}
         <div className="sticky top-0 z-20 glass border-b border-border/40">

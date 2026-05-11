@@ -7,6 +7,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { cleanDescription, topicJsonLd, topicPath } from "@/lib/seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
@@ -298,13 +299,28 @@ const Topic = () => {
   };
 
   const sorted = [...pinches].sort((a, b) => b.likes - a.likes);
+  const seoPath = topicPath(todayTopic);
+  const seoDescription = cleanDescription(
+    `${todayTopic.title} — ${todayTopic.description} PINCH에서 오늘의 핫토픽에 의견을 남기고 가장 공감받은 생각을 확인하세요.`,
+  );
+  const structuredData = useMemo(
+    () =>
+      topicJsonLd(todayTopic, {
+        categoryLabel: categoryMeta?.label,
+        pinchCount: Number(todayTopic.pinchCount),
+      }),
+    [todayTopic, categoryMeta?.label],
+  );
 
   return (
     <PageTransition>
     <Seo
       title={`${todayTopic.title} — 오늘의 PINCH | PINCH`}
-      description={`${todayTopic.title} — PINCH에서 오늘의 핫토픽에 PINCH을 남기고 가장 공감받은 의견을 확인하세요.`}
-      path="/topic"
+      description={seoDescription}
+      path={seoPath}
+      ogImageAlt={`${todayTopic.title} — PINCH 토론 주제`}
+      ogType="article"
+      jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}

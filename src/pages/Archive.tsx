@@ -10,6 +10,11 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import {
+  archiveCollectionJsonLd,
+  archiveItemJsonLd,
+  cleanDescription,
+} from "@/lib/seo";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -47,13 +52,23 @@ const Archive = () => {
   const validCatIds = useMemo(() => new Set(["all", ...categories.map((c) => c.id)]), []);
   const catParam = searchParams.get("cat");
   const activeCat = catParam && validCatIds.has(catParam) ? catParam : "all";
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
   const [sortKey, setSortKey] = useState<SortKey>("recent");
 
   const setActiveCat = (catId: string) => {
     const next = new URLSearchParams(searchParams);
     if (catId === "all") next.delete("cat");
     else next.set("cat", catId);
+    setSearchParams(next, { replace: true });
+  };
+
+  const updateQuery = (value: string) => {
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    const trimmed = value.trim();
+    if (trimmed) next.set("q", trimmed);
+    else next.delete("q");
+    next.delete("item");
     setSearchParams(next, { replace: true });
   };
 
@@ -159,17 +174,23 @@ const Archive = () => {
   const selectedCat = selected
     ? categories.find((c) => c.id === selected.category)
     : undefined;
+  const selectedPath = selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive";
+  const seoDescription = selected
+    ? cleanDescription(`${selected.description} 오늘의 PINCH: ${selected.bestPinch}`)
+    : "PINCH 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PINCH을 다시 만나보세요.";
+  const structuredData = selected
+    ? archiveItemJsonLd(selected, selectedPath)
+    : archiveCollectionJsonLd(archiveData);
 
   return (
     <PageTransition>
     <Seo
       title={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브 — 지난 주제와 선택된 PINCH"}
-      description={
-        selected
-          ? `${selected.title} — ${selected.bestPinch.slice(0, 110)}`
-          : "PINCH 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PINCH을 다시 만나보세요."
-      }
-      path={selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive"}
+      description={seoDescription}
+      path={selectedPath}
+      ogImageAlt={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브"}
+      ogType={selected ? "article" : "website"}
+      jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">
       <div className="page-sticky-header">
@@ -207,7 +228,7 @@ const Archive = () => {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => updateQuery(e.target.value)}
               placeholder="제목·설명으로 검색"
               aria-label="아카이브 검색"
               className="w-full rounded-full bg-secondary/70 border border-border/50 py-2.5 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/40"

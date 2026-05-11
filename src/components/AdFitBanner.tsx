@@ -1,5 +1,13 @@
 import { useEffect, useRef } from "react";
 
+declare global {
+  interface Window {
+    adfit?: {
+      display: (adUnitId: string) => void;
+    };
+  }
+}
+
 interface AdFitBannerProps {
   /** AdFit 광고 단위 ID */
   adUnitId?: string;
@@ -36,9 +44,7 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
       containerRef.current.appendChild(ins);
 
       // AdFit SDK가 로드되어 있으면 광고 렌더
-      if ((window as any).adfit) {
-        (window as any).adfit.display(adUnitId);
-      }
+      window.adfit?.display(adUnitId);
       initialized.current = true;
     } catch (e) {
       console.error("AdFit load error:", e);

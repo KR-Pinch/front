@@ -7,6 +7,7 @@ import AdFitBanner from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
+import { rankingJsonLd } from "@/lib/seo";
 import { useRanking } from "@/data/mockData";
 import { navRoutes } from "@/config/navIcons";
 
@@ -20,13 +21,15 @@ const getRankStyle = (rank: number) => {
 const Ranking = () => {
   const [period, setPeriod] = useState<"weekly" | "monthly">("weekly");
   const data = useRanking(period);
+  const periodLabel = period === "weekly" ? "주간" : "월간";
 
   return (
     <PageTransition>
     <Seo
-      title="PINCH 랭킹 — 이번 주의 똑똑이"
-      description="PINCH에서 가장 공감받은 PINCH을 남긴 유저들의 주간·월간 랭킹을 확인하세요."
+      title={`PINCH 랭킹 — ${period === "weekly" ? "이번 주" : "이번 달"}의 똑똑이`}
+      description={`PINCH에서 ${periodLabel} 기준 가장 공감받은 PINCH을 남긴 유저 랭킹을 확인하세요.`}
       path="/ranking"
+      jsonLd={rankingJsonLd(data, periodLabel)}
     />
     <div className="min-h-screen bg-background pb-24">
       <div className="page-sticky-header">

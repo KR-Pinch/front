@@ -11,6 +11,20 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+.gsc-service-account.json
+google-service-account*.json
+service-account*.json
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+*.keystore
+*.db
+*.sqlite
+*.sqlite3
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +36,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+coverage
+.nyc_output
+playwright-report
+test-results
+reports/seo/*.json
+reports/seo/*.md
+reports/seo/input/*
+!reports/seo/README.md
+!reports/seo/input/.gitkeep
