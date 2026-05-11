@@ -24,7 +24,7 @@
 | Test | Vitest + Testing Library + Playwright |
 | Lint | ESLint + 자체 브랜드 용어 스캐너 |
 
-> Backend (Supabase DDL/RLS/함수) 는 별도 패키지: [`backend/`](backend/README.md)
+> Backend는 MySQL 8.x 기준 설계 문서와 초기 SQL을 [`backend/`](backend/README.md)에 둡니다.
 
 ---
 
@@ -132,10 +132,10 @@ src/
 | 규칙 | 위치 |
 | :-- | :-- |
 | 1인 1일 1 PINCH (KST 자정 기준) | `Topic.tsx`, `data/__tests__/topicDeadline.test.ts` |
-| 자정 마감 → 최고 좋아요 1개 아카이브 | mock: `data/mockData.ts` · backend: `13_functions.sql::close_topic_day` |
-| 카테고리당 1일 1 토픽 | seed: `backend/seed/02_topics.sql` |
+| 자정 마감 → 최고 좋아요 1개 아카이브 | mock: `data/mockData.ts` · backend: `daily_winners` |
+| 카테고리당 1일 1 토픽 | seed: `backend/seed/001_seed.sql` |
 | 주간/월간 랭킹 = 선정 횟수 + 누적 좋아요 | `useRanking()` (`data/mockData.ts`) |
-| **`archived_invalid` PINCH 는 랭킹/집계에서 제외** | `computeInvalidationPenalty()` + backend `12_views.sql` |
+| **`archived_invalid` PINCH 는 랭킹/집계에서 제외** | `computeInvalidationPenalty()` + backend active PINCH 집계 쿼리 |
 | 어드민 토픽 강제 교체 시 기존 PINCH 처리 모달 | `pages/Admin.tsx` |
 
 ---
@@ -159,17 +159,18 @@ npm run scan:brand     # 브랜드 용어 스캐너 (PINCH 표기 검증)
 
 ## 8. Backend 연동 지점
 
-`backend/` 는 Supabase 기준 DDL/RLS/함수 패키지입니다. 프론트가 의존하는 핵심 계약:
+`backend/`는 MySQL 8.x 기준 초기 스키마와 프론트 API 요구사항을 담고 있습니다. 프론트가 의존하는 핵심 계약:
 
 | 프론트 사용처 | 백엔드 |
 | :-- | :-- |
-| `useRanking(period)` | `view_weekly_ranking` / `view_monthly_ranking` |
-| 마이페이지 통계 | `view_my_stats` |
-| 토픽 마감 처리 | `close_topic_day(topic_id)` |
-| PINCH 작성 | `submit_pinch(topic_id, content)` (1일 1 PINCH UNIQUE) |
-| 토픽 강제 교체 / 무효화 | `pinch.status = 'archived_invalid'` (모든 집계 view 에서 제외) |
+| `useAuth`, `useAdminAuth` | `/api/auth/*`, `/api/admin/auth/*` |
+| `src/data/mockData.ts` | `/api/home`, `/api/topics`, `/api/archive`, `/api/rankings` |
+| `src/data/myPageData.ts` | `/api/me/profile`, `/api/me/stats`, `/api/me/pinches` |
+| `src/data/adminData.ts` | `/api/admin/*` |
+| PINCH 작성/좋아요 | `pinches`, `pinch_likes` MySQL 테이블 + API 트랜잭션 |
+| 토픽 교체 / 무효화 | `pinches.status = 'archived_invalid'`로 보존하고 집계에서 제외 |
 
-자세한 스키마는 [`backend/README.md`](backend/README.md).
+자세한 스키마는 [`backend/README.md`](backend/README.md), API 계약은 [`backend/FRONTEND_API_REQUIREMENTS.md`](backend/FRONTEND_API_REQUIREMENTS.md).
 
 ---
 

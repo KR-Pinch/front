@@ -1,23 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-const ADFIT_SCRIPT_ID = "kakao-adfit-sdk";
-const ADFIT_SCRIPT_SRC = "https://t1.daumcdn.net/kas/static/ba.min.js";
-
-declare global {
-  interface Window {
-    adfit?: {
-      display: (adUnitId: string) => void;
-    };
-    __adfitSdkPromise?: Promise<void>;
-  }
-}
+const ADFIT_SCRIPT_SRC = "https://t1.kakaocdn.net/kas/static/ba.min.js";
 
 interface AdFitBannerProps {
-  /** AdFit 광고 단위 ID */
   adUnitId?: string;
-  /** 광고 너비 (기본 320) */
   width?: number;
-  /** 광고 높이 (기본 100) */
   height?: number;
   className?: string;
 }
@@ -31,38 +18,6 @@ interface ResponsiveAdFitBannerProps {
   className?: string;
 }
 
-const loadAdFitSdk = () => {
-  if (typeof window === "undefined") return Promise.resolve();
-  if (window.__adfitSdkPromise) return window.__adfitSdkPromise;
-
-  window.__adfitSdkPromise = new Promise<void>((resolve, reject) => {
-    const existing = document.getElementById(ADFIT_SCRIPT_ID) as HTMLScriptElement | null;
-    if (existing) {
-      if (window.adfit) resolve();
-      else existing.addEventListener("load", () => resolve(), { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.id = ADFIT_SCRIPT_ID;
-    script.async = true;
-    script.src = ADFIT_SCRIPT_SRC;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Failed to load Kakao AdFit SDK"));
-    document.head.appendChild(script);
-  });
-
-  return window.__adfitSdkPromise;
-};
-
-/**
- * 카카오 AdFit 배너 광고 컴포넌트
- * 
- * 사용법:
- * 1. index.html <head>에 AdFit SDK 스크립트 추가:
- *    <script async src="https://t1.daumcdn.net/kas/static/ba.min.js"></script>
- * 2. adUnitId에 발급받은 광고 단위 ID를 전달
- */
 const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: AdFitBannerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
@@ -72,31 +27,33 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
     if (!containerRef.current) return;
 
     let ins: HTMLModElement | null = null;
-    let isMounted = true;
+    let script: HTMLScriptElement | null = null;
 
     try {
       ins = document.createElement("ins");
       ins.className = "kakao_ad_area";
       ins.style.display = "none";
+      ins.style.width = "100%";
       ins.setAttribute("data-ad-unit", adUnitId);
       ins.setAttribute("data-ad-width", String(width));
       ins.setAttribute("data-ad-height", String(height));
       containerRef.current.appendChild(ins);
 
-      // AdFit SDK가 로드되어 있으면 광고 렌더
-      loadAdFitSdk()
-        .then(() => {
-          if (isMounted) window.adfit?.display(adUnitId);
-        })
-        .catch((error) => console.error("AdFit SDK load error:", error));
+      script = document.createElement("script");
+      script.async = true;
+      script.type = "text/javascript";
+      script.src = ADFIT_SCRIPT_SRC;
+      script.onerror = () => console.error("AdFit SDK load error:", adUnitId);
+      containerRef.current.appendChild(script);
+
       initialized.current = true;
-    } catch (e) {
-      console.error("AdFit load error:", e);
+    } catch (error) {
+      console.error("AdFit load error:", error);
     }
 
     return () => {
-      isMounted = false;
       ins?.remove();
+      script?.remove();
       initialized.current = false;
     };
   }, [adUnitId, width, height]);
@@ -107,7 +64,11 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
       className={`flex items-center justify-center overflow-hidden rounded-xl ${
         adUnitId ? "" : "bg-secondary/50 border border-border/30"
       } ${className}`}
-      style={{ minHeight: height, maxWidth: "100%" }}
+      style={{
+        minHeight: height,
+        width: "100%",
+        maxWidth: "100%",
+      }}
     >
       {!adUnitId && (
         <div className="flex flex-col items-center gap-1 py-4 text-center">
@@ -115,7 +76,7 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
             AD
           </span>
           <span className="text-xs text-muted-foreground/40">
-            광고 영역 ({width}×{height})
+            AD area ({width}x{height})
           </span>
         </div>
       )}
