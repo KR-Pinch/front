@@ -4,7 +4,7 @@ import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, 
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import FirstVisitOnboarding from "@/components/onboarding/FirstVisitOnboarding";
-import AdFitBanner, { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
+import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -575,10 +575,6 @@ const Index = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
-
-        <motion.div variants={item} className="mobile-only">
-          <AdFitBanner {...adfitSlots.mobileHomeBottom} className="w-full" />
         </motion.div>
       </motion.div>
 

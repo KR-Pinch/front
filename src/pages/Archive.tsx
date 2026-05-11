@@ -5,7 +5,7 @@ import { navRoutes } from "@/config/navIcons";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
-import AdFitBanner, { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
+import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
@@ -305,12 +305,6 @@ const Archive = () => {
             })}
           </div>
         </div>
-
-        <AdFitBanner
-          {...adfitSlots.archiveMid}
-          className="mobile-only mb-4 w-full"
-        />
-
         <AnimatePresence mode="wait">
           {filtered.length === 0 ? (
             <motion.div
