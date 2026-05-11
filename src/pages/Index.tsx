@@ -4,7 +4,7 @@ import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, 
 import { AnimatePresence, motion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import FirstVisitOnboarding from "@/components/onboarding/FirstVisitOnboarding";
-import AdFitBanner from "@/components/AdFitBanner";
+import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -532,7 +532,11 @@ const Index = () => {
 
         {/* Ad Banner — placed after primary content so first paint shows topic + nav cards */}
         <motion.div variants={item}>
-          <AdFitBanner {...adfitSlots.homeMid} className="w-full" />
+          <ResponsiveAdFitBanner
+            mobileSlot={adfitSlots.homeMid}
+            wideSlot={adfitSlots.listWide}
+            className="w-full"
+          />
         </motion.div>
 
         {/* Weekly Top 3 Preview */}

@@ -5,7 +5,7 @@ import { navRoutes } from "@/config/navIcons";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
-import AdFitBanner from "@/components/AdFitBanner";
+import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
 import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
@@ -408,7 +408,11 @@ const Archive = () => {
         </AnimatePresence>
 
         {/* Ad Banner */}
-        <AdFitBanner {...adfitSlots.archiveBottom} className="w-full mt-6" />
+        <ResponsiveAdFitBanner
+          mobileSlot={adfitSlots.archiveBottom}
+          wideSlot={adfitSlots.listWide}
+          className="w-full mt-6"
+        />
       </motion.div>
 
       {/* Deep-link detail dialog — driven by ?item=<id> so refresh + share work */}

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ADFIT_SCRIPT_ID = "kakao-adfit-sdk";
 const ADFIT_SCRIPT_SRC = "https://t1.daumcdn.net/kas/static/ba.min.js";
@@ -19,6 +19,15 @@ interface AdFitBannerProps {
   width?: number;
   /** 광고 높이 (기본 100) */
   height?: number;
+  className?: string;
+}
+
+type AdFitSlot = Required<Pick<AdFitBannerProps, "adUnitId" | "width" | "height">>;
+
+interface ResponsiveAdFitBannerProps {
+  mobileSlot: AdFitSlot;
+  wideSlot: AdFitSlot;
+  breakpoint?: number;
   className?: string;
 }
 
@@ -111,6 +120,36 @@ const AdFitBanner = ({ adUnitId, width = 320, height = 100, className = "" }: Ad
         </div>
       )}
     </div>
+  );
+};
+
+export const ResponsiveAdFitBanner = ({
+  mobileSlot,
+  wideSlot,
+  breakpoint = 768,
+  className = "",
+}: ResponsiveAdFitBannerProps) => {
+  const [isWide, setIsWide] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(`(min-width: ${breakpoint}px)`).matches;
+  });
+
+  useEffect(() => {
+    const media = window.matchMedia(`(min-width: ${breakpoint}px)`);
+    const sync = () => setIsWide(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, [breakpoint]);
+
+  const slot = isWide ? wideSlot : mobileSlot;
+
+  return (
+    <AdFitBanner
+      key={`${slot.adUnitId}-${slot.width}x${slot.height}`}
+      {...slot}
+      className={className}
+    />
   );
 };
 
