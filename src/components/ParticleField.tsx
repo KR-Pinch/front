@@ -9,6 +9,7 @@ interface Particle {
   opacity: number;
   pulse: number;
   pulseSpeed: number;
+  hue: number;
 }
 
 const ParticleField = () => {
@@ -32,16 +33,17 @@ const ParticleField = () => {
 
     const initParticles = () => {
       const rect = canvas.getBoundingClientRect();
-      const count = Math.floor((rect.width * rect.height) / 8000);
+      const count = Math.min(90, Math.max(28, Math.floor((rect.width * rect.height) / 5200)));
       particlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * rect.width,
         y: Math.random() * rect.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
+        vx: (Math.random() - 0.5) * 0.48,
+        vy: (Math.random() - 0.5) * 0.42,
+        size: Math.random() * 2.6 + 0.7,
+        opacity: Math.random() * 0.58 + 0.16,
         pulse: Math.random() * Math.PI * 2,
-        pulseSpeed: Math.random() * 0.02 + 0.005,
+        pulseSpeed: Math.random() * 0.03 + 0.008,
+        hue: Math.random() > 0.22 ? 42 : 28,
       }));
     };
 
@@ -49,7 +51,15 @@ const ParticleField = () => {
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
       const particles = particlesRef.current;
-      const connectionDist = 120;
+      const connectionDist = Math.min(160, Math.max(108, rect.width * 0.18));
+      const time = performance.now() * 0.001;
+
+      const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      gradient.addColorStop(0, "hsla(42, 100%, 58%, 0.03)");
+      gradient.addColorStop(0.5, "hsla(28, 95%, 48%, 0.025)");
+      gradient.addColorStop(1, "hsla(42, 100%, 58%, 0)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, rect.width, rect.height);
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -71,10 +81,10 @@ const ParticleField = () => {
           const dy = p.y - q.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < connectionDist) {
-            const lineAlpha = (1 - dist / connectionDist) * 0.08;
+            const lineAlpha = (1 - dist / connectionDist) * 0.15;
             ctx.beginPath();
-            ctx.strokeStyle = `hsla(45, 100%, 58%, ${lineAlpha})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `hsla(${p.hue}, 100%, 58%, ${lineAlpha})`;
+            ctx.lineWidth = 0.65;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(q.x, q.y);
             ctx.stroke();
@@ -84,8 +94,15 @@ const ParticleField = () => {
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(45, 100%, 70%, ${alpha})`;
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 70%, ${alpha})`;
         ctx.fill();
+
+        if (Math.sin(p.pulse + time) > 0.92) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 2.4, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${p.hue}, 100%, 64%, ${alpha * 0.16})`;
+          ctx.fill();
+        }
       }
 
       animRef.current = requestAnimationFrame(draw);
@@ -95,14 +112,16 @@ const ParticleField = () => {
     initParticles();
     draw();
 
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       resize();
       initParticles();
-    });
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(animRef.current);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

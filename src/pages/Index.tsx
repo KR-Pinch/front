@@ -301,9 +301,14 @@ const Index = () => {
       jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">
-      <div className="relative overflow-hidden">
+      <div className="hero-stage relative overflow-hidden">
         <ParticleField />
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent" />
+        <motion.div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/15 via-accent/5 to-transparent"
+          animate={{ opacity: [0.45, 0.95, 0.45] }}
+          transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+        />
         {/* Top bar */}
         <div
           data-topbar
@@ -363,23 +368,44 @@ const Index = () => {
         </div>
         <motion.div
           className="container relative pt-12 pb-8"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          initial={{ opacity: 0, y: -18, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="mb-2 flex items-center gap-2">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-accent" />
+          <motion.div
+            className="mb-2 flex items-center gap-2"
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.08, duration: 0.35, ease: "easeOut" }}
+          >
+            <motion.div
+              className="h-2 w-2 rounded-full bg-accent"
+              animate={{ scale: [1, 1.65, 1], opacity: [0.75, 1, 0.75] }}
+              transition={{ duration: 1.35, repeat: Infinity, ease: "easeInOut" }}
+            />
             <span className="brand-eyebrow !text-accent">Live Now</span>
-          </div>
+          </motion.div>
           <h1 className="text-gradient-white text-4xl font-black leading-tight tracking-tight md:text-5xl lg:text-6xl">
             오늘의
             <br />
-            <span className="brand-wordmark text-gradient">PINCH</span>
+            <motion.span
+              className="hero-wordmark brand-wordmark text-gradient inline-block"
+              initial={{ opacity: 0, y: 18, rotateX: -12 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ delay: 0.08, duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+            >
+              PINCH
+            </motion.span>
           </h1>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+          <motion.p
+            className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.18, duration: 0.42, ease: "easeOut" }}
+          >
             매일 하나의 주제, 단 하나의 의견.<br />
             모든 의견이 남지 않습니다. 오직 선택된 하나만 남습니다.
-          </p>
+          </motion.p>
         </motion.div>
       </div>
 
