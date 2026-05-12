@@ -8,7 +8,7 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
-import { cleanDescription, topicJsonLd, topicPath } from "@/lib/seo";
+import { TOPIC_SEO_KEYWORDS, cleanDescription, topicJsonLd, topicPath } from "@/lib/seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
@@ -319,6 +319,7 @@ const Topic = () => {
       title={`${todayTopic.title} — 오늘의 PINCH | PINCH`}
       description={seoDescription}
       path={seoPath}
+      keywords={[todayTopic.title, categoryMeta?.label ?? todayTopic.category, ...TOPIC_SEO_KEYWORDS]}
       ogImageAlt={`${todayTopic.title} — PINCH 토론 주제`}
       ogType="article"
       jsonLd={structuredData}

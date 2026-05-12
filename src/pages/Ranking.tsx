@@ -8,7 +8,7 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
-import { rankingJsonLd } from "@/lib/seo";
+import { RANKING_SEO_KEYWORDS, rankingJsonLd } from "@/lib/seo";
 import { useRanking } from "@/data/mockData";
 import { navRoutes } from "@/config/navIcons";
 
@@ -30,6 +30,7 @@ const Ranking = () => {
       title={`PINCH 랭킹 — ${period === "weekly" ? "이번 주" : "이번 달"}의 똑똑이`}
       description={`PINCH에서 ${periodLabel} 기준 가장 공감받은 PINCH을 남긴 유저 랭킹을 확인하세요.`}
       path="/ranking"
+      keywords={RANKING_SEO_KEYWORDS}
       jsonLd={rankingJsonLd(data, periodLabel)}
     />
     <div className="min-h-screen bg-background pb-24">

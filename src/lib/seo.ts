@@ -19,6 +19,43 @@ export const SITE_KEYWORDS = [
   "토론 플랫폼",
   "의견 아카이브",
 ];
+export const HOME_SEO_KEYWORDS = [
+  ...SITE_KEYWORDS,
+  "오늘의 핫토픽",
+  "오늘의 토론",
+  "한국 토론 플랫폼",
+  "1인 1의견",
+  "댓글 랭킹",
+  "의견 랭킹",
+  "이슈 토론",
+  "시사 토론",
+];
+export const TOPIC_SEO_KEYWORDS = [
+  "오늘의 PINCH",
+  "오늘의 핫토픽",
+  "오늘의 토론 주제",
+  "실시간 의견",
+  "이슈 토론",
+  "1인 1의견",
+  "PINCH 토론",
+];
+export const ARCHIVE_SEO_KEYWORDS = [
+  "PINCH 아카이브",
+  "토론 아카이브",
+  "선택된 의견",
+  "베스트 댓글",
+  "지난 핫토픽",
+  "의견 모음",
+];
+export const RANKING_SEO_KEYWORDS = [
+  "PINCH 랭킹",
+  "댓글 랭킹",
+  "의견 랭킹",
+  "토론 랭킹",
+  "베스트 의견",
+  "주간 랭킹",
+  "월간 랭킹",
+];
 export const PRIMARY_NAVIGATION = [
   { name: "오늘의 PINCH", path: "/" },
   { name: "토론 참여", path: "/topic" },
@@ -122,6 +159,38 @@ export const siteJsonLd = (): JsonLdObject[] => [
 
 export const homeJsonLd = (topics: TodayTopic[]): JsonLdObject[] => [
   ...siteJsonLd(),
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${SITE_URL}/#faq`,
+    inLanguage: SITE_LANGUAGE,
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "PINCH는 어떤 서비스인가요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PINCH는 매일 하나의 핫토픽에 1인 1의견으로 참여하고, 가장 공감받은 의견을 아카이브하는 한국형 토론 플랫폼입니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "PINCH는 어떤 검색어와 관련 있나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "오늘의 PINCH, 오늘의 핫토픽, 오늘의 토론, 한국 토론 플랫폼, 댓글 랭킹, 의견 아카이브 같은 검색어와 관련 있습니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "PINCH 아카이브에는 무엇이 남나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "지난 토론 주제와 그날 가장 공감받은 선택된 의견 하나가 PINCH 아카이브에 기록됩니다.",
+        },
+      },
+    ],
+  },
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

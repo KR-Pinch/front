@@ -17,6 +17,7 @@ interface SeoProps {
   ogImage?: string;
   ogImageAlt?: string;
   ogType?: "website" | "article";
+  keywords?: string[];
   /** When true, sets robots = noindex,follow (e.g. auth, admin, mypage). */
   noindex?: boolean;
   /** Optional JSON-LD object — stringified and injected as a script tag. */
@@ -53,6 +54,7 @@ const Seo = ({
   ogImage,
   ogImageAlt = DEFAULT_OG_ALT,
   ogType = "website",
+  keywords,
   noindex,
   jsonLd,
 }: SeoProps) => {
@@ -65,6 +67,9 @@ const Seo = ({
     document.title = title;
 
     upsertMeta('meta[name="description"]', { name: "description", content: description });
+    if (keywords?.length) {
+      upsertMeta('meta[name="keywords"]', { name: "keywords", content: keywords.join(", ") });
+    }
     upsertMeta('meta[name="robots"]', {
       name: "robots",
       content: noindex
@@ -134,6 +139,7 @@ const Seo = ({
     ogImage,
     ogImageAlt,
     ogType,
+    keywords,
     noindex,
     jsonLd,
     location.pathname,

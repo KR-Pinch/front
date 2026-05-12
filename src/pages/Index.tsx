@@ -10,7 +10,7 @@ import ParticleField from "@/components/ParticleField";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
-import { homeJsonLd } from "@/lib/seo";
+import { HOME_SEO_KEYWORDS, homeJsonLd } from "@/lib/seo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -298,6 +298,7 @@ const Index = () => {
       title="PINCH — 매일 하나의 선택된 의견 | 오늘의 PINCH"
       description="PINCH는 매일 하나의 핫토픽에 1인 1 PINCH으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다."
       path="/"
+      keywords={HOME_SEO_KEYWORDS}
       jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">

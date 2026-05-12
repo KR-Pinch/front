@@ -11,6 +11,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
 import {
+  ARCHIVE_SEO_KEYWORDS,
   archiveCollectionJsonLd,
   archiveItemJsonLd,
   cleanDescription,
@@ -189,6 +190,7 @@ const Archive = () => {
       title={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브 — 지난 주제와 선택된 PINCH"}
       description={seoDescription}
       path={selectedPath}
+      keywords={selected ? [selected.title, selected.category, ...ARCHIVE_SEO_KEYWORDS] : ARCHIVE_SEO_KEYWORDS}
       ogImageAlt={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브"}
       ogType={selected ? "article" : "website"}
       jsonLd={structuredData}
