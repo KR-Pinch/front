@@ -117,7 +117,7 @@ const MyPage = () => {
             >
               <Settings className="h-4 w-4" />
             </Link>
-            <div className="md:hidden">
+            <div className="mobile-only">
               <ThemeToggle />
             </div>
           </div>

@@ -356,7 +356,7 @@ const Topic = () => {
               <Clock className={`h-3.5 w-3.5 ${closed ? "text-destructive" : "text-accent"}`} />
               {closed ? "마감" : remainingLabel}
             </div>
-            <div className="md:hidden">
+            <div className="mobile-only">
               <ThemeToggle />
             </div>
           </div>

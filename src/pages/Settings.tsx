@@ -109,6 +109,7 @@ const Settings = () => {
       localStorage.setItem("theme", themeMode);
     }
     localStorage.setItem("theme-mode", themeMode);
+    window.dispatchEvent(new Event("pinch-theme-change"));
   }, [themeMode]);
 
   if (!user) return null;

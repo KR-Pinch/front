@@ -40,7 +40,7 @@ const Ranking = () => {
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <p className="flex-1 text-sm font-bold">똑똑이 랭킹</p>
-          <div className="md:hidden">
+          <div className="mobile-only">
             <ThemeToggle />
           </div>
         </div>

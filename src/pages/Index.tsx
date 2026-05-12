@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Clock, MessageCircle, Archive, Trophy, Flame, LogIn, User, Settings, LogOut, ChevronDown, Brain, Heart } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import FirstVisitOnboarding from "@/components/onboarding/FirstVisitOnboarding";
 import { ResponsiveAdFitBanner } from "@/components/AdFitBanner";
@@ -46,6 +46,7 @@ const item = {
 const Index = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const focusCategory = searchParams.get("category");
@@ -307,8 +308,8 @@ const Index = () => {
         <motion.div
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/15 via-accent/5 to-transparent"
-          animate={{ opacity: [0.45, 0.95, 0.45] }}
-          transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+          animate={prefersReducedMotion ? { opacity: 0.55 } : { opacity: [0.45, 0.95, 0.45] }}
+          transition={prefersReducedMotion ? { duration: 0.2 } : { duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* Top bar */}
         <div
@@ -365,7 +366,7 @@ const Index = () => {
               로그인
             </Link>
           )}
-          <div className="md:hidden">
+          <div className="mobile-only">
             <ThemeToggle />
           </div>
         </div>
@@ -383,8 +384,8 @@ const Index = () => {
           >
             <motion.div
               className="h-2 w-2 rounded-full bg-accent"
-              animate={{ scale: [1, 1.65, 1], opacity: [0.75, 1, 0.75] }}
-              transition={{ duration: 1.35, repeat: Infinity, ease: "easeInOut" }}
+              animate={prefersReducedMotion ? { scale: 1, opacity: 0.9 } : { scale: [1, 1.65, 1], opacity: [0.75, 1, 0.75] }}
+              transition={prefersReducedMotion ? { duration: 0.2 } : { duration: 1.35, repeat: Infinity, ease: "easeInOut" }}
             />
             <span className="brand-eyebrow !text-accent">Live Now</span>
           </motion.div>
