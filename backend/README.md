@@ -1,6 +1,6 @@
 # PINCH Backend
 
-PINCH 백엔드는 MySQL 8.x 기준으로 설계합니다. 기존 프론트의 mock 데이터, localStorage 기반 인증, 관리자 mock 데이터, Google News 직접 호출을 실제 API와 DB로 옮기기 위한 기준 문서와 초기 SQL을 이 폴더에 둡니다.
+PINCH 백엔드는 MySQL 8.x 기준으로 설계합니다. 기존 프론트의 mock 데이터, localStorage 기반 인증, 관리자 mock 데이터를 실제 API와 DB로 옮기기 위한 기준 문서와 초기 SQL을 이 폴더에 둡니다.
 
 ## 폴더 구조
 
@@ -45,7 +45,6 @@ mysql -u root -p pinch < backend/seed/001_seed.sql
 | `src/data/mockData.ts` | `/api/home`, `/api/topics`, `/api/archive`, `/api/rankings` |
 | `src/data/adminData.ts` | `/api/admin/*` |
 | `src/data/myPageData.ts` | `/api/me/profile`, `/api/me/stats`, `/api/me/pinches` |
-| `src/lib/googleNews.ts` | `/api/admin/news/top` 프록시 |
 
 상세 API 계약은 `FRONTEND_API_REQUIREMENTS.md`를 기준으로 합니다.
 

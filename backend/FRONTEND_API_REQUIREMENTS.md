@@ -1,6 +1,6 @@
 # PINCH Frontend API Requirements
 
-현재 프론트엔드가 mock 데이터, localStorage, 외부 RSS 직접 호출로 처리하는 기능을 실제 백엔드 API로 옮기기 위한 요구사항입니다.
+현재 프론트엔드가 mock 데이터와 localStorage로 처리하는 기능을 실제 백엔드 API로 옮기기 위한 요구사항입니다.
 
 Target DB: MySQL 8.x
 
@@ -115,7 +115,6 @@ Target DB: MySQL 8.x
 
 - `src/pages/Admin.tsx`
 - `src/data/adminData.ts`
-- `src/lib/googleNews.ts`
 
 | Method | Endpoint | 설명 | Auth |
 | --- | --- | --- | --- |
@@ -136,7 +135,6 @@ Target DB: MySQL 8.x
 | `PUT` | `/api/admin/topics/active/categories/:categoryId` | 카테고리별 오늘의 토픽 지정/해제 | Admin |
 | `GET` | `/api/admin/reports` | 신고 목록 | Admin |
 | `POST` | `/api/admin/reports/:reportId/resolve` | 신고 처리 | Admin |
-| `GET` | `/api/admin/news/top` | Google News RSS 기반 토픽 후보 | Admin |
 
 토픽 replace 처리:
 
@@ -181,7 +179,6 @@ Target DB: MySQL 8.x
 8. 유저 검색/정지/전화번호 차단
 9. 관리자 토픽 생성/수정/오늘 적용
 10. 신고 처리
-11. Google News RSS 프록시 + 캐시
 
 ## 9. 프론트 교체 계획
 
@@ -192,7 +189,6 @@ Target DB: MySQL 8.x
 | `src/data/myPageData.ts` | `/api/me/profile`, `/api/me/stats`, `/api/me/pinches` 호출 |
 | `src/hooks/useAuth.ts` | 토큰 기반 auth client |
 | `src/hooks/useAdminAuth.ts` | 관리자 세션 API |
-| `src/lib/googleNews.ts` | `/api/admin/news/top` 프록시 |
 
 추천 프론트 클라이언트 형태:
 

@@ -311,15 +311,3 @@ CREATE TABLE admin_audit_logs (
     FOREIGN KEY (admin_user_id) REFERENCES users(id)
     ON DELETE SET NULL
 ) ENGINE=InnoDB;
-
-CREATE TABLE news_cache (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  cache_key VARCHAR(160) NOT NULL,
-  payload JSON NOT NULL,
-  expires_at DATETIME(3) NOT NULL,
-  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  PRIMARY KEY (id),
-  UNIQUE KEY uq_news_cache_key (cache_key),
-  KEY idx_news_cache_expires (expires_at)
-) ENGINE=InnoDB;
