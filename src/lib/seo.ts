@@ -11,7 +11,7 @@ export const SITE_DESCRIPTION =
   "PINCH는 매일 하나의 핫토픽에 1인 1 PINCH으로 의견을 남기는 한국형 토론 플랫폼입니다. 가장 공감받은 의견 하나만 아카이브에 기록됩니다.";
 export const DEFAULT_OG_IMAGE = "/og-cover.png";
 export const DEFAULT_OG_ALT = "PINCH — 매일 하나의 선택된 의견";
-export const SEARCH_ICON_URL = "/favicon-48x48.png?v=20260512";
+export const SEARCH_ICON_URL = "/google-favicon-48x48.png";
 export const SITE_KEYWORDS = [
   "PINCH",
   "핀치",
