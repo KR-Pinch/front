@@ -3,6 +3,6 @@
   <ShortName>PINCH</ShortName>
   <Description>PINCH 아카이브와 오늘의 핫토픽 토론 검색</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image height="48" width="48" type="image/png">https://pinch.kr/favicon-48x48.png</Image>
+  <Image height="48" width="48" type="image/png">https://pinch.kr/favicon-48x48.png?v=20260512</Image>
   <Url type="text/html" method="get" template="https://pinch.kr/archive?q={searchTerms}" />
 </OpenSearchDescription>
