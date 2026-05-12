@@ -365,7 +365,9 @@ const Index = () => {
               로그인
             </Link>
           )}
-          <ThemeToggle />
+          <div className="md:hidden">
+            <ThemeToggle />
+          </div>
         </div>
         <motion.div
           className="container relative pt-12 pb-8"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import ThemeToggle from "@/components/ThemeToggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "./AppSidebar";
 import RightRail from "./RightRail";
@@ -90,6 +91,7 @@ const AppShell = () => {
               </span>
             </a>
             <div className="flex-1" />
+            <ThemeToggle />
           </div>
 
           <main className="min-w-0 flex-1">

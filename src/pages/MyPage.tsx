@@ -117,7 +117,9 @@ const MyPage = () => {
             >
               <Settings className="h-4 w-4" />
             </Link>
-            <ThemeToggle />
+            <div className="md:hidden">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
