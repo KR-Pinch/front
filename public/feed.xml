@@ -7,7 +7,7 @@
     <link>https://pinch.kr/</link>
     <description>매일 하나의 핫토픽에 1인 1 PINCH로 의견을 남기고, 가장 공감받은 의견을 확인하는 한국형 토론 플랫폼입니다.</description>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 11 May 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 13 May 2026 00:00:00 +0900</lastBuildDate>
     <atom:link href="https://pinch.kr/feed.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://pinch.kr/google-favicon-48x48.png</url>
@@ -19,7 +19,7 @@
       <link>https://pinch.kr/topic?topic=society-1&amp;category=society</link>
       <guid isPermaLink="true">https://pinch.kr/topic?topic=society-1&amp;category=society</guid>
       <category>사회</category>
-      <pubDate>Mon, 11 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 May 2026 00:00:00 +0900</pubDate>
       <description>공공자전거 음주운전 처벌과 보행자 안전을 두고 의견을 나누는 오늘의 PINCH 토론입니다.</description>
     </item>
     <item>
@@ -27,7 +27,7 @@
       <link>https://pinch.kr/topic?topic=politics-1&amp;category=politics</link>
       <guid isPermaLink="true">https://pinch.kr/topic?topic=politics-1&amp;category=politics</guid>
       <category>정치</category>
-      <pubDate>Mon, 11 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 May 2026 00:00:00 +0900</pubDate>
       <description>표현의 자유와 책임의 균형을 주제로 의견을 모으는 PINCH 정치 토론입니다.</description>
     </item>
     <item>
@@ -35,7 +35,7 @@
       <link>https://pinch.kr/topic?topic=tech-1&amp;category=tech</link>
       <guid isPermaLink="true">https://pinch.kr/topic?topic=tech-1&amp;category=tech</guid>
       <category>개발/테크</category>
-      <pubDate>Mon, 11 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 May 2026 00:00:00 +0900</pubDate>
       <description>AI 코드 리뷰와 개발자의 역할 변화를 두고 의견을 나누는 PINCH 기술 토론입니다.</description>
     </item>
     <item>
@@ -43,7 +43,7 @@
       <link>https://pinch.kr/topic?topic=economy-1&amp;category=economy</link>
       <guid isPermaLink="true">https://pinch.kr/topic?topic=economy-1&amp;category=economy</guid>
       <category>경제</category>
-      <pubDate>Mon, 11 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 May 2026 00:00:00 +0900</pubDate>
       <description>투자자 이탈, 시장 위축, 과세 형평성을 두고 의견을 남기는 PINCH 경제 토론입니다.</description>
     </item>
     <item>
@@ -51,7 +51,7 @@
       <link>https://pinch.kr/topic?topic=culture-1&amp;category=culture</link>
       <guid isPermaLink="true">https://pinch.kr/topic?topic=culture-1&amp;category=culture</guid>
       <category>문화</category>
-      <pubDate>Mon, 11 May 2026 00:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 May 2026 00:00:00 +0900</pubDate>
       <description>AI 자막 번역의 비용 절감과 콘텐츠 경험을 함께 따져보는 PINCH 문화 토론입니다.</description>
     </item>
   </channel>

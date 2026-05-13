@@ -8,7 +8,7 @@ import PageTransition from "@/components/PageTransition";
 import ThemeToggle from "@/components/ThemeToggle";
 import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
-import { TOPIC_SEO_KEYWORDS, cleanDescription, topicJsonLd, topicPath } from "@/lib/seo";
+import { SEO_LAST_MODIFIED, TOPIC_SEO_KEYWORDS, cleanDescription, toKstIsoDate, topicJsonLd, topicPath } from "@/lib/seo";
 import HeartBurst from "@/components/topic/HeartBurst";
 import { toast } from "sonner";
 import {
@@ -301,6 +301,7 @@ const Topic = () => {
 
   const sorted = [...pinches].sort((a, b) => b.likes - a.likes);
   const seoPath = topicPath(todayTopic);
+  const publishedTime = toKstIsoDate(todayTopic.date);
   const seoDescription = cleanDescription(
     `${todayTopic.title} — ${todayTopic.description} PINCH에서 오늘의 핫토픽에 의견을 남기고 가장 공감받은 생각을 확인하세요.`,
   );
@@ -322,6 +323,10 @@ const Topic = () => {
       keywords={[todayTopic.title, categoryMeta?.label ?? todayTopic.category, ...TOPIC_SEO_KEYWORDS]}
       ogImageAlt={`${todayTopic.title} — PINCH 토론 주제`}
       ogType="article"
+      publishedTime={publishedTime}
+      modifiedTime={SEO_LAST_MODIFIED}
+      section={categoryMeta?.label ?? todayTopic.category}
+      tags={[todayTopic.title, categoryMeta?.label ?? todayTopic.category, "오늘의 PINCH", "토론"]}
       jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">

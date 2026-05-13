@@ -4,8 +4,10 @@ import {
   absoluteUrl,
   DEFAULT_OG_ALT,
   DEFAULT_OG_IMAGE,
+  SEO_LAST_MODIFIED,
   SITE_LOCALE,
   SITE_NAME,
+  SITE_URL,
   type JsonLdObject,
 } from "@/lib/seo";
 
@@ -18,6 +20,10 @@ interface SeoProps {
   ogImageAlt?: string;
   ogType?: "website" | "article";
   keywords?: string[];
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
+  tags?: string[];
   /** When true, sets robots = noindex,follow (e.g. auth, admin, mypage). */
   noindex?: boolean;
   /** Optional JSON-LD object — stringified and injected as a script tag. */
@@ -55,6 +61,10 @@ const Seo = ({
   ogImageAlt = DEFAULT_OG_ALT,
   ogType = "website",
   keywords,
+  publishedTime,
+  modifiedTime = SEO_LAST_MODIFIED,
+  section,
+  tags,
   noindex,
   jsonLd,
 }: SeoProps) => {
@@ -115,6 +125,29 @@ const Seo = ({
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: ogType });
     upsertMeta('meta[property="og:locale"]', { property: "og:locale", content: SITE_LOCALE });
     upsertMeta('meta[property="og:site_name"]', { property: "og:site_name", content: SITE_NAME });
+    upsertMeta('meta[property="og:updated_time"]', { property: "og:updated_time", content: modifiedTime });
+    document.head.querySelectorAll('meta[property^="article:"]').forEach((el) => el.remove());
+    if (ogType === "article") {
+      if (publishedTime) {
+        upsertMeta('meta[property="article:published_time"]', {
+          property: "article:published_time",
+          content: publishedTime,
+        });
+      }
+      upsertMeta('meta[property="article:modified_time"]', {
+        property: "article:modified_time",
+        content: modifiedTime,
+      });
+      if (section) {
+        upsertMeta('meta[property="article:section"]', { property: "article:section", content: section });
+      }
+      tags?.forEach((tag) => {
+        const el = document.createElement("meta");
+        el.setAttribute("property", "article:tag");
+        el.setAttribute("content", tag);
+        document.head.appendChild(el);
+      });
+    }
 
     upsertMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
     upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: title });
@@ -125,11 +158,35 @@ const Seo = ({
     // JSON-LD per page (replace any prior page-scoped block)
     const PREV_ID = "page-jsonld";
     document.getElementById(PREV_ID)?.remove();
-    if (jsonLd) {
+    const baseJsonLd: JsonLdObject | null = noindex
+      ? null
+      : {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": `${url}#webpage`,
+          url,
+          name: title,
+          description,
+          inLanguage: "ko-KR",
+          isPartOf: { "@id": `${SITE_URL}/#website` },
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: image,
+            width: 1200,
+            height: 630,
+          },
+          datePublished: publishedTime ?? modifiedTime,
+          dateModified: modifiedTime,
+        };
+    const jsonLdPayload = [
+      ...(baseJsonLd ? [baseJsonLd] : []),
+      ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []),
+    ];
+    if (jsonLdPayload.length) {
       const script = document.createElement("script");
       script.type = "application/ld+json";
       script.id = PREV_ID;
-      script.text = JSON.stringify(jsonLd);
+      script.text = JSON.stringify(jsonLdPayload);
       document.head.appendChild(script);
     }
   }, [
@@ -140,6 +197,10 @@ const Seo = ({
     ogImageAlt,
     ogType,
     keywords,
+    publishedTime,
+    modifiedTime,
+    section,
+    tags,
     noindex,
     jsonLd,
     location.pathname,

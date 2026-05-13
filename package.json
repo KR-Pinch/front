@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "scan:brand": "node ./scripts/scan-brand-terms.mjs",
     "seo:gsc": "node ./scripts/gsc-export-report.mjs",
+    "seo:indexnow": "node ./scripts/submit-indexnow.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

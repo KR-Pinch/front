@@ -11,6 +11,7 @@ Allow: /icon-192.png
 Allow: /icon-512.png
 Allow: /pinch-mark.png
 Allow: /og-cover.png
+Allow: /72f7ac74b49e4de295f3d9763ec57762.txt
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/login
@@ -31,6 +32,7 @@ Allow: /icon-192.png
 Allow: /icon-512.png
 Allow: /pinch-mark.png
 Allow: /og-cover.png
+Allow: /72f7ac74b49e4de295f3d9763ec57762.txt
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/login
@@ -51,6 +53,7 @@ Allow: /icon-192.png
 Allow: /icon-512.png
 Allow: /pinch-mark.png
 Allow: /og-cover.png
+Allow: /72f7ac74b49e4de295f3d9763ec57762.txt
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/login
@@ -73,6 +76,7 @@ Allow: /pinch-mark.png
 Allow: /og-cover.png
 Allow: /feed.xml
 Allow: /opensearch.xml
+Allow: /72f7ac74b49e4de295f3d9763ec57762.txt
 Disallow: /admin
 Disallow: /admin/
 Disallow: /admin/login

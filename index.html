@@ -77,7 +77,13 @@
             "name": "PINCH",
             "alternateName": "핀치",
             "url": "https://pinch.kr/",
-            "logo": "https://pinch.kr/google-favicon-48x48.png"
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://pinch.kr/icon-512.png",
+              "width": 512,
+              "height": 512
+            },
+            "image": "https://pinch.kr/og-cover.png"
           },
           {
             "@type": "WebSite",
@@ -87,6 +93,8 @@
             "alternateName": ["오늘의 PINCH", "핀치"],
             "description": "매일 하나의 주제, 오직 선택된 하나의 의견만 남는 토론 플랫폼.",
             "inLanguage": "ko-KR",
+            "datePublished": "2026-05-11T00:00:00+09:00",
+            "dateModified": "2026-05-13T00:00:00+09:00",
             "publisher": {
               "@id": "https://pinch.kr/#organization"
             },
@@ -100,6 +108,49 @@
             }
           },
           {
+            "@type": "ItemList",
+            "@id": "https://pinch.kr/#site-navigation",
+            "name": "PINCH 주요 메뉴",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                  "@type": "SiteNavigationElement",
+                  "name": "오늘의 PINCH",
+                  "url": "https://pinch.kr/"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                  "@type": "SiteNavigationElement",
+                  "name": "토론 참여",
+                  "url": "https://pinch.kr/topic"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                  "@type": "SiteNavigationElement",
+                  "name": "PINCH 아카이브",
+                  "url": "https://pinch.kr/archive"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "item": {
+                  "@type": "SiteNavigationElement",
+                  "name": "PINCH 랭킹",
+                  "url": "https://pinch.kr/ranking"
+                }
+              }
+            ]
+          },
+          {
             "@type": "WebApplication",
             "@id": "https://pinch.kr/#app",
             "name": "PINCH",
@@ -108,6 +159,8 @@
             "operatingSystem": "Web",
             "inLanguage": "ko-KR",
             "description": "오늘의 핫토픽에 1인 1 PINCH로 의견을 남기고 가장 공감받은 의견을 확인하는 토론 서비스.",
+            "datePublished": "2026-05-11T00:00:00+09:00",
+            "dateModified": "2026-05-13T00:00:00+09:00",
             "offers": {
               "@type": "Offer",
               "price": "0",

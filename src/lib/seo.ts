@@ -12,6 +12,9 @@ export const SITE_DESCRIPTION =
 export const DEFAULT_OG_IMAGE = "/og-cover.png";
 export const DEFAULT_OG_ALT = "PINCH — 매일 하나의 선택된 의견";
 export const SEARCH_ICON_URL = "/google-favicon-48x48.png";
+export const BRAND_LOGO_URL = "/icon-512.png";
+export const SEO_PUBLISHED_AT = "2026-05-11T00:00:00+09:00";
+export const SEO_LAST_MODIFIED = "2026-05-13T00:00:00+09:00";
 export const SITE_KEYWORDS = [
   "PINCH",
   "핀치",
@@ -75,6 +78,14 @@ export const cleanDescription = (value: string, maxLength = 155) => {
   return `${normalized.slice(0, maxLength - 1).trimEnd()}…`;
 };
 
+export const toKstIsoDate = (value?: string, fallback = SEO_LAST_MODIFIED) => {
+  if (!value) return fallback;
+  const match = value.match(/(\d+)\uB144\s*(\d+)\uC6D4\s*(\d+)\uC77C/);
+  if (!match) return fallback;
+  const [, year, month, day] = match;
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00+09:00`;
+};
+
 export const topicPath = (topic: Pick<TodayTopic, "id" | "category">) =>
   `/topic?topic=${encodeURIComponent(topic.id)}&category=${encodeURIComponent(topic.category)}`;
 
@@ -99,8 +110,14 @@ export const siteJsonLd = (): JsonLdObject[] => [
     name: SITE_NAME,
     alternateName: ["핀치", "오늘의 PINCH"],
     url: SITE_URL,
-    logo: absoluteUrl(SEARCH_ICON_URL),
-    sameAs: [SITE_URL],
+    logo: {
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}/#logo`,
+      url: absoluteUrl(BRAND_LOGO_URL),
+      width: 512,
+      height: 512,
+    },
+    image: { "@id": `${SITE_URL}/#logo` },
   },
   {
     "@context": "https://schema.org",
@@ -113,6 +130,8 @@ export const siteJsonLd = (): JsonLdObject[] => [
     inLanguage: SITE_LANGUAGE,
     keywords: SITE_KEYWORDS,
     image: absoluteUrl(DEFAULT_OG_IMAGE),
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
@@ -150,6 +169,8 @@ export const siteJsonLd = (): JsonLdObject[] => [
     description: SITE_DESCRIPTION,
     keywords: SITE_KEYWORDS,
     image: absoluteUrl(DEFAULT_OG_IMAGE),
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     offers: {
       "@type": "Offer",
       price: "0",
@@ -200,6 +221,8 @@ export const homeJsonLd = (topics: TodayTopic[]): JsonLdObject[] => [
     name: `오늘의 PINCH | ${SITE_NAME}`,
     description: SITE_DESCRIPTION,
     inLanguage: SITE_LANGUAGE,
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     mainEntity: {
       "@type": "ItemList",
@@ -237,8 +260,13 @@ export const topicJsonLd = (
       text: description,
       articleBody: description,
       inLanguage: SITE_LANGUAGE,
+      datePublished: toKstIsoDate(topic.date),
+      dateModified: SEO_LAST_MODIFIED,
+      dateCreated: toKstIsoDate(topic.date),
+      author: { "@id": `${SITE_URL}/#organization` },
       isPartOf: { "@id": `${SITE_URL}/#website` },
       about: options.categoryLabel ?? topic.category,
+      articleSection: options.categoryLabel ?? topic.category,
       discussionUrl: absoluteUrl(path),
       image: absoluteUrl(DEFAULT_OG_IMAGE),
       mainEntityOfPage: absoluteUrl(path),
@@ -268,6 +296,8 @@ export const archiveCollectionJsonLd = (items: ArchiveItem[]): JsonLdObject[] =>
     description: "지난 핫토픽과 그날 가장 공감받은 단 하나의 PINCH 모음입니다.",
     inLanguage: SITE_LANGUAGE,
     image: absoluteUrl(DEFAULT_OG_IMAGE),
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     keywords: ["PINCH 아카이브", "토론 아카이브", "오늘의 의견"],
     isPartOf: { "@id": `${SITE_URL}/#website` },
     mainEntity: {
@@ -298,8 +328,11 @@ export const archiveItemJsonLd = (item: ArchiveItem, path: string): JsonLdObject
     description: cleanDescription(item.description, 180),
     articleBody: cleanDescription(item.bestPinch, 500),
     inLanguage: SITE_LANGUAGE,
+    datePublished: toKstIsoDate(item.date),
+    dateModified: SEO_LAST_MODIFIED,
     image: absoluteUrl(DEFAULT_OG_IMAGE),
     mainEntityOfPage: absoluteUrl(path),
+    articleSection: item.category,
     keywords: [item.category, "PINCH 아카이브", "선택된 의견"],
     author: {
       "@type": "Person",
@@ -335,6 +368,8 @@ export const rankingJsonLd = (entries: RankingEntry[], periodLabel: string): Jso
     description: "PINCH에서 가장 공감받은 의견 작성자 순위입니다.",
     inLanguage: SITE_LANGUAGE,
     image: absoluteUrl(DEFAULT_OG_IMAGE),
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     keywords: ["PINCH 랭킹", "토론 랭킹", "의견 랭킹"],
     isPartOf: { "@id": `${SITE_URL}/#website` },
     mainEntity: {
@@ -371,6 +406,8 @@ export const legalJsonLd = (
     name: title,
     description,
     inLanguage: SITE_LANGUAGE,
+    datePublished: SEO_PUBLISHED_AT,
+    dateModified: SEO_LAST_MODIFIED,
     isPartOf: { "@id": `${SITE_URL}/#website` },
   },
 ];

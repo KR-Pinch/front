@@ -12,9 +12,11 @@ import Seo from "@/components/Seo";
 import { adfitSlots } from "@/config/adfit";
 import {
   ARCHIVE_SEO_KEYWORDS,
+  SEO_LAST_MODIFIED,
   archiveCollectionJsonLd,
   archiveItemJsonLd,
   cleanDescription,
+  toKstIsoDate,
 } from "@/lib/seo";
 import {
   Dialog,
@@ -177,6 +179,7 @@ const Archive = () => {
     ? categories.find((c) => c.id === selected.category)
     : undefined;
   const selectedPath = selected ? `/archive?item=${getArchiveItemId(selected)}` : "/archive";
+  const publishedTime = selected ? toKstIsoDate(selected.date) : undefined;
   const seoDescription = selected
     ? cleanDescription(`${selected.description} 오늘의 PINCH: ${selected.bestPinch}`)
     : "PINCH 아카이브에서 지난 핫토픽과 그날 가장 공감받은 단 하나의 PINCH을 다시 만나보세요.";
@@ -193,6 +196,10 @@ const Archive = () => {
       keywords={selected ? [selected.title, selected.category, ...ARCHIVE_SEO_KEYWORDS] : ARCHIVE_SEO_KEYWORDS}
       ogImageAlt={selected ? `${selected.title} — PINCH 아카이브` : "PINCH 아카이브"}
       ogType={selected ? "article" : "website"}
+      publishedTime={publishedTime}
+      modifiedTime={SEO_LAST_MODIFIED}
+      section={selectedCat?.label ?? selected?.category}
+      tags={selected ? [selected.title, selectedCat?.label ?? selected.category, "PINCH 아카이브", "선택된 의견"] : undefined}
       jsonLd={structuredData}
     />
     <div className="min-h-screen bg-background pb-24">
