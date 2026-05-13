@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom";
 import PinchLogo from "@/components/brand/PinchLogo";
 
+const seoGuideLinks = [
+  { href: "/guide/today-pinch/", label: "오늘의 PINCH" },
+  { href: "/guide/today-hot-topic/", label: "오늘의 핫토픽" },
+  { href: "/guide/one-opinion/", label: "1인 1의견" },
+  { href: "/guide/opinion-archive/", label: "의견 아카이브" },
+  { href: "/guide/comment-ranking/", label: "댓글 랭킹" },
+  { href: "/guide/korean-debate-platform/", label: "한국형 토론 플랫폼" },
+];
+
 /**
  * Brand footer rendered inside AppShell on tablet+ screens.
  *
@@ -53,7 +62,7 @@ const SiteFooter = () => {
           {/* Link columns */}
           <nav
             aria-label="푸터 내비게이션"
-            className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm sm:grid-cols-3"
+            className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm sm:grid-cols-4"
           >
             <div className="flex flex-col gap-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -95,6 +104,21 @@ const SiteFooter = () => {
               >
                 설정
               </Link>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                키워드
+              </p>
+              {seoGuideLinks.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-foreground/80 transition-colors hover:text-accent"
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
 
             <div className="flex flex-col gap-2">

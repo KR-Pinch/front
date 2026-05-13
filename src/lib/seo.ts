@@ -22,6 +22,11 @@ export const SITE_KEYWORDS = [
   "오늘의 핫토픽",
   "토론 플랫폼",
   "의견 아카이브",
+  "PINCH 토론",
+  "오늘의 토론",
+  "1인 1의견",
+  "댓글 랭킹",
+  "한국형 토론 플랫폼",
 ];
 export const HOME_SEO_KEYWORDS = [
   ...SITE_KEYWORDS,
@@ -33,6 +38,11 @@ export const HOME_SEO_KEYWORDS = [
   "의견 랭킹",
   "이슈 토론",
   "시사 토론",
+  "오늘 토론 주제",
+  "1인 1의견",
+  "베스트 댓글",
+  "한국형 토론 플랫폼",
+  "PINCH 토론",
 ];
 export const TOPIC_SEO_KEYWORDS = [
   "오늘의 PINCH",
@@ -65,6 +75,7 @@ export const PRIMARY_NAVIGATION = [
   { name: "토론 참여", path: "/topic" },
   { name: "PINCH 아카이브", path: "/archive" },
   { name: "PINCH 랭킹", path: "/ranking" },
+  { name: "PINCH 검색 가이드", path: "/guide/" },
 ];
 
 export const absoluteUrl = (path = "/") => {
