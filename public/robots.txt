@@ -19,6 +19,46 @@ Disallow: /mypage
 Disallow: /settings
 Disallow: /_dev/
 
+User-agent: Googlebot
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon-16x16.png
+Allow: /favicon-32x32.png
+Allow: /favicon-48x48.png
+Allow: /google-favicon-48x48.png
+Allow: /apple-touch-icon.png
+Allow: /icon-192.png
+Allow: /icon-512.png
+Allow: /pinch-mark.png
+Allow: /og-cover.png
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /auth
+Disallow: /mypage
+Disallow: /settings
+Disallow: /_dev/
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon-16x16.png
+Allow: /favicon-32x32.png
+Allow: /favicon-48x48.png
+Allow: /google-favicon-48x48.png
+Allow: /apple-touch-icon.png
+Allow: /icon-192.png
+Allow: /icon-512.png
+Allow: /pinch-mark.png
+Allow: /og-cover.png
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /auth
+Disallow: /mypage
+Disallow: /settings
+Disallow: /_dev/
+
 User-agent: Yeti
 Allow: /
 Allow: /favicon.ico
